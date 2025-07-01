@@ -1,0 +1,20 @@
+services:
+  tagger_java:
+    build:
+      context: .
+      dockerfile: ./docker-files/java/Dockerfile
+    container_name: tagger_java
+    restart: always
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+      - ~/.m2:/root/.m2
+    networks:
+      - network
+
+networks:
+  network:
+    driver: bridge
