@@ -21,7 +21,7 @@ import pl.sgorski.Tagger.service.ItemsServiceImpl;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest
@@ -64,7 +64,7 @@ public class PromptControllerTest {
 
         when(itemsService.getFullInfo(request)).thenReturn(response);
 
-        mockMvc.perform(get("/api/tags")
+        mockMvc.perform(post("/api/tags")
                         .contentType("application/json")
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
@@ -83,7 +83,7 @@ public class PromptControllerTest {
 
         when(itemsService.getFullInfo(request)).thenReturn(response);
 
-        mockMvc.perform(get("/api/tags")
+        mockMvc.perform(post("/api/tags")
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isConflict())
@@ -99,7 +99,7 @@ public class PromptControllerTest {
 
     @Test
     void shouldReturnProblemDetail_getInfo_NotValidFormatInTagsQuantity() throws Exception {
-        mockMvc.perform(get("/api/tags")
+        mockMvc.perform(post("/api/tags")
                         .contentType("application/json")
                         .content("{\"item\":\"test item\",\"platform\":\"olx\",\"responseStyle\":\"formal\",\"targetAudience\":\"adults\",\"tagsQuantity\":\"not_valid\"}"))
                 .andExpect(status().isBadRequest())
@@ -127,7 +127,7 @@ public class PromptControllerTest {
 
         when(clothesService.getFullInfo(request)).thenReturn(response);
 
-        mockMvc.perform(get("/api/tags/clothes")
+        mockMvc.perform(post("/api/tags/clothes")
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
@@ -154,7 +154,7 @@ public class PromptControllerTest {
 
         when(clothesService.getFullInfo(request)).thenThrow(new RuntimeException("Something wrong happened"));
 
-        mockMvc.perform(get("/api/tags/clothes")
+        mockMvc.perform(post("/api/tags/clothes")
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isInternalServerError())
@@ -184,7 +184,7 @@ public class PromptControllerTest {
 
         when(electronicsService.getFullInfo(request)).thenReturn(response);
 
-        mockMvc.perform(get("/api/tags/electronics")
+        mockMvc.perform(post("/api/tags/electronics")
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
@@ -213,7 +213,7 @@ public class PromptControllerTest {
 
         when(electronicsService.getFullInfo(request)).thenThrow(new AiParsingException("Parsing error"));
 
-        mockMvc.perform(get("/api/tags/electronics")
+        mockMvc.perform(post("/api/tags/electronics")
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
