@@ -40,7 +40,7 @@ public class ExceptionController {
         log.error("Ai parsing error: {}", e.getMessage(), e);
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
                 HttpStatus.BAD_REQUEST,
-                "Validation has failed: " + e.getMessage()
+                "Parsing has failed: " + e.getMessage()
         );
         problemDetail.setTitle("Could not parse response");
         return problemDetail;
