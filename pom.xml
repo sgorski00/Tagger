@@ -133,7 +133,8 @@
 				</executions>
 				<configuration>
 					<excludes>
-						<exclude />
+						<exclude>**/TaggerApplication.class</exclude>
+						<exclude>**/exception/**</exclude>
 					</excludes>
 				</configuration>
 			</plugin>
