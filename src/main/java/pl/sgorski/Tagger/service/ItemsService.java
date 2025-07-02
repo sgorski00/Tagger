@@ -10,12 +10,15 @@ public interface ItemsService {
     String generatePrompt(PromptRequest request);
 
     default String generateBasePrompt(PromptRequest request) {
-        return String.format(
-                "Item: %s. " +
-                        "Create %s tags. " +
-                        "Platform: %s. " +
-                        "Style: %s. " +
-                        "Target audience: %s. ",
+        return """
+                Please provide a detailed description of the item, including its features, benefits, and any other relevant information.
+                General response info:
+                - Item: %s
+                - Tags quantity: %s
+                - Selling platform: %s
+                - Response style: %s
+                - Target audience: %s
+                """.formatted(
                 request.getItem(),
                 request.getTagsQuantity(),
                 request.getPlatform(),

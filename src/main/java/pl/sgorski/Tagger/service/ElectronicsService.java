@@ -1,6 +1,5 @@
 package pl.sgorski.Tagger.service;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.sgorski.Tagger.dto.ElectronicsRequest;
@@ -24,7 +23,7 @@ public class ElectronicsService implements ItemsService {
 
     @Override
     public String generatePrompt(PromptRequest request) {
-        if(request instanceof ElectronicsRequest electronicsRequest) {
+        if (request instanceof ElectronicsRequest electronicsRequest) {
             return createElectronicsPrompt(electronicsRequest);
         } else {
             throw new IllegalArgumentException("Invalid request type. Expected ElectronicsRequest.");
@@ -32,8 +31,17 @@ public class ElectronicsService implements ItemsService {
     }
 
     private String createElectronicsPrompt(ElectronicsRequest request) {
-        return String.format(
-                "%sDescribe the electronic item: brand: %s, model: %s, specs: %s, color: %s, months of warranty: %s.",
+        return """
+                %s
+                Describe the electronic item.
+                
+                Additional info:
+                - Brand: %s
+                - Model: %s
+                - Specifications: %s
+                - Color: %s
+                - Months of Warranty: %s
+                """.formatted(
                 generateBasePrompt(request),
                 request.getBrand(),
                 request.getModel(),

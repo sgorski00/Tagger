@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.sgorski.Tagger.dto.ClothesRequest;
 import pl.sgorski.Tagger.dto.ElectronicsRequest;
+import pl.sgorski.Tagger.dto.PromptRequest;
 import pl.sgorski.Tagger.service.ClothesService;
 import pl.sgorski.Tagger.service.ElectronicsService;
+import pl.sgorski.Tagger.service.ItemsServiceImpl;
 
 @RestController
 @RequestMapping("/api/tags")
@@ -19,6 +21,14 @@ public class PromptController {
 
     private final ClothesService clothingService;
     private final ElectronicsService electronicsService;
+    private final ItemsServiceImpl itemsService;
+
+    @GetMapping
+    public ResponseEntity<?> getInfo(
+            @RequestBody @Valid PromptRequest request
+    ) {
+        return ResponseEntity.ok(itemsService.getFullInfo(request));
+    }
 
     @GetMapping("/clothes")
     public ResponseEntity<?> getClothesInfo(

@@ -1,6 +1,5 @@
 package pl.sgorski.Tagger.service;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.sgorski.Tagger.dto.ClothesRequest;
@@ -24,7 +23,7 @@ public class ClothesService implements ItemsService {
 
     @Override
     public String generatePrompt(PromptRequest request) {
-        if(request instanceof ClothesRequest clothesRequest) {
+        if (request instanceof ClothesRequest clothesRequest) {
             return createClothsPrompt(clothesRequest);
         } else {
             throw new IllegalArgumentException("Invalid request type. Expected ClothesRequest.");
@@ -32,8 +31,15 @@ public class ClothesService implements ItemsService {
     }
 
     private String createClothsPrompt(ClothesRequest request) {
-        return String.format(
-                "%s\nDescribe the clothing item: color: %s, size: %s, material: %s.",
+        return """
+                %s
+                Describe the clothing item.
+                
+                Additional info:
+                 - Color: %s
+                 - Size: %s
+                 - Material: %s
+                """.formatted(
                 generateBasePrompt(request),
                 request.getColor(),
                 request.getSize(),
