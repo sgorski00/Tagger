@@ -1,0 +1,76 @@
+type Query {
+    """It generates a product listing based on the provided input."""
+    generateListing(input: ProductInput!): ListingResponse!
+    """More specific for clothes, it generates a clothing product listing."""
+    generateListingClothes(input: ClothesInput!): ListingResponse!
+    """More specific for electronics, it generates an electronics product listing."""
+    generateListingElectronics(input: ElectronicsInput!): ListingResponse!
+}
+
+"""Response type for the generated listing."""
+type ListingResponse {
+    """The generated listing title."""
+    title: String!
+    """The generated listing description."""
+    description: String!
+    """The generated listing tags."""
+    tags: [String!]!
+}
+
+"""Input type for generating a product listing."""
+input ProductInput {
+    """The item to be listed, e.g., 'smartphone', 't-shirt'."""
+    item: String!
+    """The style of response, e.g., 'detailed', 'concise'."""
+    responseStyle: String!
+    """The target audience for the listing, e.g., 'tech enthusiasts', 'fashion lovers'."""
+    targetAudience: String!
+    """The number of tags to generate for the listing. [Max. 50]"""
+    tagsQuantity: Int
+    """The platform where the listing will be posted, e.g., 'eBay', 'Amazon'."""
+    platform: String
+}
+
+"""Input type for generating more detailed clothing product listing."""
+input ClothesInput {
+    """The item to be listed, e.g., 't-shirt', 'jeans'."""
+    item: String!
+    """The style of response, e.g., 'detailed', 'concise'."""
+    responseStyle: String!
+    """The target audience for the listing, e.g., 'fashion lovers', 'casual wear enthusiasts'."""
+    targetAudience: String!
+    """The number of tags to generate for the listing. [Max. 50]"""
+    tagsQuantity: Int
+    """The platform where the listing will be posted, e.g., 'eBay', 'Amazon'."""
+    platform: String
+    """The color of the clothing item, e.g., 'Red', 'blue'."""
+    color: String
+    """The size of the clothing item, e.g., 'XL', 'S'."""
+    size: String
+    """The material of the clothing item, e.g., 'Cotton', 'Polyester Cotton 10/90'."""
+    material: String
+}
+
+"""Input type for generating more detailed electronics product listing."""
+input ElectronicsInput {
+    """The item to be listed, e.g., 'smartphone', 'laptop'."""
+    item: String!
+    """The style of response, e.g., 'detailed', 'concise'."""
+    responseStyle: String!
+    """The target audience for the listing, e.g., 'tech enthusiasts', 'gamers'."""
+    targetAudience: String!
+    """The number of tags to generate for the listing. [Max. 50]"""
+    tagsQuantity: Int
+    """The platform where the listing will be posted, e.g., 'eBay', 'Amazon'."""
+    platform: String
+    """The brand of the electronic item, e.g., 'Apple', 'Samsung'."""
+    brand: String
+    """The model of the electronic item, e.g., 'iPhone 14', 'Galaxy S21'."""
+    model: String
+    """The specifications of the electronic item, e.g., '128GB storage, 6GB RAM'."""
+    specifications: String
+    """The color of the electronic item, e.g., 'Black', 'Silver'."""
+    color: String
+    """The warranty period for the electronic item in months, e.g., '12'."""
+    monthsOfWarranty: Int
+}
