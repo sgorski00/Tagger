@@ -3,11 +3,10 @@ name: auto-release
 on:
   push:
     branches:
-      - main
+      - test-release
 
 jobs:
   release:
-    needs: test-coverage
     runs-on: ubuntu-latest
 
     steps:
