@@ -1,4 +1,4 @@
-package pl.sgorski.Tagger.controller;
+package pl.sgorski.Tagger.controller.rest;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.sgorski.Tagger.dto.ClothesRequest;
 import pl.sgorski.Tagger.dto.ElectronicsRequest;
 import pl.sgorski.Tagger.dto.PromptRequest;
-import pl.sgorski.Tagger.service.ClothesService;
-import pl.sgorski.Tagger.service.ElectronicsService;
-import pl.sgorski.Tagger.service.ItemsServiceImpl;
+import pl.sgorski.Tagger.service.PromptService;
 
 @RestController
 @RequestMapping("/api/tags")
@@ -34,16 +32,14 @@ import pl.sgorski.Tagger.service.ItemsServiceImpl;
 })
 public class PromptController {
 
-    private final ClothesService clothingService;
-    private final ElectronicsService electronicsService;
-    private final ItemsServiceImpl itemsService;
+    private final PromptService promptService;
 
     @PostMapping
     @Operation(summary = "Get tags, title and description for every product. Check other endpoints for specific products that are more detailed.")
     public ResponseEntity<?> getInfo(
             @RequestBody @Valid PromptRequest request
     ) {
-        return ResponseEntity.ok(itemsService.getFullInfo(request));
+        return ResponseEntity.ok(promptService.getInfo(request));
     }
 
     @PostMapping("/clothes")
@@ -51,7 +47,7 @@ public class PromptController {
     public ResponseEntity<?> getClothesInfo(
             @RequestBody @Valid ClothesRequest request
     ) {
-        return ResponseEntity.ok(clothingService.getFullInfo(request));
+        return ResponseEntity.ok(promptService.getInfo(request));
     }
 
     @PostMapping("/electronics")
@@ -59,6 +55,6 @@ public class PromptController {
     public ResponseEntity<?> getElectronicsInfo(
             @RequestBody @Valid ElectronicsRequest request
     ) {
-        return ResponseEntity.ok(electronicsService.getFullInfo(request));
+        return ResponseEntity.ok(promptService.getInfo(request));
     }
 }

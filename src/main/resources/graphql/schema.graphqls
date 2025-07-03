@@ -1,0 +1,43 @@
+type Query {
+    generateListing(input: ProductInput!): ListingResponse!
+    generateListingClothes(input: ClothesInput!): ListingResponse!
+    generateListingElectronics(input: ElectronicsInput!): ListingResponse!
+}
+
+type ListingResponse {
+    title: String!
+    description: String!
+    tags: [String!]!
+}
+
+input ProductInput {
+    item: String!
+    responseStyle: String!
+    targetAudience: String!
+    tagsQuantity: Int
+    platform: String
+}
+
+input ClothesInput {
+    item: String!
+    responseStyle: String!
+    targetAudience: String!
+    tagsQuantity: Int
+    platform: String
+    color: String
+    size: String
+    material: String
+}
+
+input ElectronicsInput {
+    item: String!
+    responseStyle: String!
+    targetAudience: String!
+    tagsQuantity: Int
+    platform: String
+    brand: String
+    model: String
+    specifications: String
+    color: String
+    monthsOfWarranty: Int
+}

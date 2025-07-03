@@ -15,9 +15,7 @@ import pl.sgorski.Tagger.dto.ElectronicsRequest;
 import pl.sgorski.Tagger.dto.PromptRequest;
 import pl.sgorski.Tagger.dto.PromptResponse;
 import pl.sgorski.Tagger.exception.AiParsingException;
-import pl.sgorski.Tagger.service.ClothesService;
-import pl.sgorski.Tagger.service.ElectronicsService;
-import pl.sgorski.Tagger.service.ItemsServiceImpl;
+import pl.sgorski.Tagger.service.PromptService;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -35,13 +33,7 @@ public class PromptControllerTest {
     private ObjectMapper objectMapper;
 
     @MockitoBean
-    private ClothesService clothesService;
-
-    @MockitoBean
-    private ElectronicsService electronicsService;
-
-    @MockitoBean
-    private ItemsServiceImpl itemsService;
+    private PromptService promptService;
 
     PromptResponse response;
 
@@ -62,7 +54,7 @@ public class PromptControllerTest {
         request.setTargetAudience("young adults");
         request.setTagsQuantity(10);
 
-        when(itemsService.getFullInfo(request)).thenReturn(response);
+        when(promptService.getInfo(request)).thenReturn(response);
 
         mockMvc.perform(post("/api/tags")
                         .contentType("application/json")
@@ -74,14 +66,14 @@ public class PromptControllerTest {
                     assertEquals("This is a test item description.", resultResponse.getDescription());
                     assertEquals(2, resultResponse.getTags().length);
                 });
-        verify(itemsService, times(1)).getFullInfo(any(PromptRequest.class));
+        verify(promptService, times(1)).getInfo(any(PromptRequest.class));
     }
 
     @Test
     void shouldReturnProblemDetail_getInfo_EmptyRequest() throws Exception {
         PromptRequest request = new PromptRequest();
 
-        when(itemsService.getFullInfo(request)).thenReturn(response);
+        when(promptService.getInfo(request)).thenReturn(response);
 
         mockMvc.perform(post("/api/tags")
                         .contentType("application/json")
@@ -125,7 +117,7 @@ public class PromptControllerTest {
         request.setMaterial("Cotton");
         request.setSize("M");
 
-        when(clothesService.getFullInfo(request)).thenReturn(response);
+        when(promptService.getInfo(request)).thenReturn(response);
 
         mockMvc.perform(post("/api/tags/clothes")
                         .contentType("application/json")
@@ -137,7 +129,7 @@ public class PromptControllerTest {
                     assertEquals("This is a test item description.", resultResponse.getDescription());
                     assertEquals(2, resultResponse.getTags().length);
                 });
-        verify(clothesService, times(1)).getFullInfo(any(PromptRequest.class));
+        verify(promptService, times(1)).getInfo(any(PromptRequest.class));
     }
 
     @Test
@@ -152,7 +144,7 @@ public class PromptControllerTest {
         request.setMaterial("Cotton");
         request.setSize("M");
 
-        when(clothesService.getFullInfo(request)).thenThrow(new RuntimeException("Something wrong happened"));
+        when(promptService.getInfo(request)).thenThrow(new RuntimeException("Something wrong happened"));
 
         mockMvc.perform(post("/api/tags/clothes")
                         .contentType("application/json")
@@ -165,7 +157,7 @@ public class PromptControllerTest {
                     assertEquals("Something wrong happened", problemDetail.getDetail());
                     assertEquals("Unexpected Error", problemDetail.getTitle());
                 });
-        verify(clothesService, times(1)).getFullInfo(any(PromptRequest.class));
+        verify(promptService, times(1)).getInfo(any(PromptRequest.class));
     }
 
     @Test
@@ -182,7 +174,7 @@ public class PromptControllerTest {
         request.setMonthsOfWarranty(12);
         request.setSpecifications("Test specifications");
 
-        when(electronicsService.getFullInfo(request)).thenReturn(response);
+        when(promptService.getInfo(request)).thenReturn(response);
 
         mockMvc.perform(post("/api/tags/electronics")
                         .contentType("application/json")
@@ -194,7 +186,7 @@ public class PromptControllerTest {
                     assertEquals("This is a test item description.", resultResponse.getDescription());
                     assertEquals(2, resultResponse.getTags().length);
                 });
-        verify(electronicsService, times(1)).getFullInfo(any(PromptRequest.class));
+        verify(promptService, times(1)).getInfo(any(PromptRequest.class));
     }
 
     @Test
@@ -211,7 +203,7 @@ public class PromptControllerTest {
         request.setMonthsOfWarranty(12);
         request.setSpecifications("Test specifications");
 
-        when(electronicsService.getFullInfo(request)).thenThrow(new AiParsingException("Parsing error"));
+        when(promptService.getInfo(request)).thenThrow(new AiParsingException("Parsing error"));
 
         mockMvc.perform(post("/api/tags/electronics")
                         .contentType("application/json")
@@ -225,6 +217,6 @@ public class PromptControllerTest {
                     assertFalse(problemDetail.getDetail().isBlank());
                     assertEquals("Could not parse response", problemDetail.getTitle());
                 });
-        verify(electronicsService, times(1)).getFullInfo(any(PromptRequest.class));
+        verify(promptService, times(1)).getInfo(any(PromptRequest.class));
     }
 }
