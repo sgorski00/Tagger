@@ -14,7 +14,13 @@ Application demo is hosted on Render and can be accessed at the following link:
 
 At this link you can also find the documentation for the API.
 
-## Example
+## API
+
+---
+
+## REST
+
+Rest API documentation is available at `/docs`. Below is a simple example of how to use the REST API.
 
 ### Request
 `POST /api/tags`
@@ -44,6 +50,55 @@ At this link you can also find the documentation for the API.
   ],
 }
 ```
+
+---
+
+## GraphQL
+
+GraphQL API playground and documentation is available at `/graphiql`. Below is a simple example of how to use the GraphQL API.
+
+### Request
+
+```graphql
+query {
+  generateListingElectronics(input: {
+    item: "smartphone"
+    responseStyle: "detailed"
+    targetAudience: "tech enthusiasts"
+    tagsQuantity: 5
+    platform: "eBay"
+    brand: "Apple"
+    model: "iPhone 14"
+    specifications: "128GB storage, 6GB RAM"
+    color: "Black"
+    monthsOfWarranty: 12
+  }) {
+    title
+    tags
+  }
+}
+```
+
+### Response
+
+```json
+{
+  "data": {
+    "generateListingElectronics": {
+      "title": "Apple iPhone 14 - 128GB, Black - Unleash Your Tech Passion",
+      "tags": [
+        "#Apple",
+        "#iPhone14",
+        "#Smartphone",
+        "#TechEnthusiasts",
+        "#eBayDeals"
+      ]
+    }
+  }
+}
+```
+
+---
 
 ## Configuration
 

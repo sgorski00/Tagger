@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.2] - 2025-07-03
+### Added
+- GraphQL support
+- GraphQL documentation
+- PromptService implementation
+
 ## [1.0.1] - 2025-07-02
 ### Added
 - Swagger documentation

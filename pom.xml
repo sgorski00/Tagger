@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>pl.sgorski</groupId>
 	<artifactId>Tagger</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.2</version>
 	<name>Tagger</name>
 	<description>Tags, description and title creator.</description>
 	<developers>
