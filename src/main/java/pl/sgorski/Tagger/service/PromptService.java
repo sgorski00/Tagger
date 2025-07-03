@@ -15,8 +15,7 @@ public class PromptService {
     private final ElectronicsService electronicsService;
     private final ClothesService clothesService;
 
-    //TODO: Add tests for this service
-    public PromptResponse getInfo(PromptRequest request) {
+    public PromptResponse getResponse(PromptRequest request) {
         return switch (request) {
             case ElectronicsRequest electronicsRequest -> electronicsService.getFullInfo(electronicsRequest);
             case ClothesRequest clothesRequest -> clothesService.getFullInfo(clothesRequest);

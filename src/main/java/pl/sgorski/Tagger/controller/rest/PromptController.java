@@ -39,7 +39,7 @@ public class PromptController {
     public ResponseEntity<?> getInfo(
             @RequestBody @Valid PromptRequest request
     ) {
-        return ResponseEntity.ok(promptService.getInfo(request));
+        return ResponseEntity.ok(promptService.getResponse(request));
     }
 
     @PostMapping("/clothes")
@@ -47,7 +47,7 @@ public class PromptController {
     public ResponseEntity<?> getClothesInfo(
             @RequestBody @Valid ClothesRequest request
     ) {
-        return ResponseEntity.ok(promptService.getInfo(request));
+        return ResponseEntity.ok(promptService.getResponse(request));
     }
 
     @PostMapping("/electronics")
@@ -55,6 +55,6 @@ public class PromptController {
     public ResponseEntity<?> getElectronicsInfo(
             @RequestBody @Valid ElectronicsRequest request
     ) {
-        return ResponseEntity.ok(promptService.getInfo(request));
+        return ResponseEntity.ok(promptService.getResponse(request));
     }
 }

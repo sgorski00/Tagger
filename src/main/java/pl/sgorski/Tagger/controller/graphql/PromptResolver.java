@@ -1,5 +1,6 @@
 package pl.sgorski.Tagger.controller.graphql;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
@@ -17,17 +18,17 @@ public class PromptResolver {
     private final PromptService promptService;
 
     @QueryMapping(name = "generateListing")
-    public PromptResponse getProductInfo(@Argument("input") PromptRequest request) {
-        return promptService.getInfo(request);
+    public PromptResponse getProductInfo(@Argument("input") @Valid PromptRequest request) {
+        return promptService.getResponse(request);
     }
 
     @QueryMapping(name = "generateListingClothes")
-    public PromptResponse getClothesInfo(@Argument("input") ClothesRequest request) {
-        return promptService.getInfo(request);
+    public PromptResponse getClothesInfo(@Argument("input") @Valid ClothesRequest request) {
+        return promptService.getResponse(request);
     }
 
     @QueryMapping(name = "generateListingElectronics")
-    public PromptResponse getElectronicsInfo(@Argument("input") ElectronicsRequest request) {
-        return promptService.getInfo(request);
+    public PromptResponse getElectronicsInfo(@Argument("input") @Valid ElectronicsRequest request) {
+        return promptService.getResponse(request);
     }
 }
