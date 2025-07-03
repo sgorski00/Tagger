@@ -1,8 +1,9 @@
-name: Test and Coverage
+name: test-coverage
 
 on: 
  push:
-  branches: main
+  branches:
+   - main
 
 jobs:
   build:
