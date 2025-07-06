@@ -14,6 +14,7 @@ import org.springframework.ai.chat.model.Generation;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.ai.retry.NonTransientAiException;
+import org.springframework.context.MessageSource;
 import org.springframework.web.client.RestClientException;
 import pl.sgorski.Tagger.dto.PromptResponse;
 import pl.sgorski.Tagger.exception.AiParsingException;
@@ -31,6 +32,9 @@ public class AiServiceTest {
 
     @Mock
     private ObjectMapper objectMapper;
+
+    @Mock
+    private MessageSource messageSource;
 
     @InjectMocks
     private AiService aiService;
