@@ -1,6 +1,8 @@
 package pl.sgorski.Tagger.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import pl.sgorski.Tagger.dto.ElectronicsRequest;
 import pl.sgorski.Tagger.dto.PromptRequest;
@@ -11,13 +13,14 @@ import pl.sgorski.Tagger.dto.PromptResponse;
 public class ElectronicsService implements ItemsService {
 
     private final AiService aiService;
+    private final MessageSource messageSource;
 
     @Override
     public PromptResponse getFullInfo(PromptRequest request) {
         if (request instanceof ElectronicsRequest electronicsRequest) {
             return aiService.generateResponse(generatePrompt(electronicsRequest));
         } else {
-            throw new IllegalArgumentException("Invalid request type. Expected ElectronicsRequest.");
+            throw new IllegalArgumentException(messageSource.getMessage("exception.illegal.argument",new String[]{"Electronics request"}, LocaleContextHolder.getLocale()));
         }
     }
 
@@ -26,7 +29,7 @@ public class ElectronicsService implements ItemsService {
         if (request instanceof ElectronicsRequest electronicsRequest) {
             return createElectronicsPrompt(electronicsRequest);
         } else {
-            throw new IllegalArgumentException("Invalid request type. Expected ElectronicsRequest.");
+            throw new IllegalArgumentException(messageSource.getMessage("exception.illegal.argument",new String[]{"Electronics request"}, LocaleContextHolder.getLocale()));
         }
     }
 
