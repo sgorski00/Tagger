@@ -12,9 +12,30 @@ services:
     volumes:
       - .:/app
       - ~/.m2:/root/.m2
+    depends_on:
+      - tagger_postgres
+    networks:
+      - network
+
+  tagger_postgres:
+    image: postgres:17.2
+    container_name: tagger_postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     networks:
       - network
 
 networks:
   network:
     driver: bridge
+
+volumes:
+    postgres_data:
+        driver: local
