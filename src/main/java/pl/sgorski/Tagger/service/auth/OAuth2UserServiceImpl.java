@@ -20,21 +20,21 @@ public class OAuth2UserServiceImpl extends DefaultOAuth2UserService {
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        log.info("Loading user from OAuth2 provider: {}", userRequest.getClientRegistration().getRegistrationId());
+        log.debug("Loading user from OAuth2 provider: {}", userRequest.getClientRegistration().getRegistrationId());
         OAuth2User oAuth2User = super.loadUser(userRequest);
-        log.info("User logged: {}", oAuth2User);
+        log.debug("User logged: {}", oAuth2User);
         User user = getUserOrCreateWithOAuth2User(oAuth2User);
-        log.info("Mapped User: {}", user);
+        log.debug("Mapped User: {}", user);
         return new CustomOAuth2User(user, oAuth2User.getAttributes());
     }
 
-    public User getUserOrCreateWithOAuth2User(OAuth2User oAuth2User) {
+    private User getUserOrCreateWithOAuth2User(OAuth2User oAuth2User) {
         String email = getEmailOrThrow(oAuth2User);
         if(userService.existsByEmail(email)) {
-            log.info("User with email {} already exists, fetching from database.", email);
+            log.debug("User with email {} already exists, fetching from database.", email);
             return userService.findByEmail(email);
         } else {
-            log.info("Creating new user with email: {}", email);
+            log.debug("Creating new user with email: {}", email);
             return userService.save(new User(oAuth2User));
         }
     }
