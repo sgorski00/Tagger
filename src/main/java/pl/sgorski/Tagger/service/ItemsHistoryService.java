@@ -20,7 +20,6 @@ public class ItemsHistoryService {
 
     public void save(ItemDescription itemDescription) {
         log.debug("Saving new item description");
-        log.info("Saving item description: {}", itemDescription);
         itemDescriptionRepository.save(itemDescription);
     }
 

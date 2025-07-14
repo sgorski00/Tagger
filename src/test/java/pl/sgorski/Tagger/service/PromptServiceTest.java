@@ -11,10 +11,13 @@ import pl.sgorski.Tagger.dto.ElectronicsRequest;
 import pl.sgorski.Tagger.dto.ItemDescriptionRequest;
 import pl.sgorski.Tagger.dto.ItemDescriptionResponse;
 import pl.sgorski.Tagger.mapper.ItemDescriptionMapper;
+import pl.sgorski.Tagger.model.ItemDescription;
+import pl.sgorski.Tagger.model.Tag;
+import pl.sgorski.Tagger.model.User;
 import pl.sgorski.Tagger.service.auth.UserService;
 
 import java.security.Principal;
-import java.util.NoSuchElementException;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -65,6 +68,7 @@ public class PromptServiceTest {
         verify(electronicsService, times(1)).getFullInfo(any(ElectronicsRequest.class));
         verify(itemsService, never()).getFullInfo(any());
         verify(clothesService, never()).getFullInfo(any());
+        verify(itemsHistoryService, never()).save(any());
     }
 
     @Test
@@ -85,6 +89,7 @@ public class PromptServiceTest {
         verify(electronicsService, never()).getFullInfo(any());
         verify(itemsService, never()).getFullInfo(any());
         verify(clothesService, times(1)).getFullInfo(any(ClothesRequest.class));
+        verify(itemsHistoryService, never()).save(any());
     }
 
     @Test
@@ -105,6 +110,7 @@ public class PromptServiceTest {
         verify(electronicsService, never()).getFullInfo(any());
         verify(itemsService, times(1)).getFullInfo(any(ItemDescriptionRequest.class));
         verify(clothesService, never()).getFullInfo(any());
+        verify(itemsHistoryService, never()).save(any());
     }
 
     @Test
@@ -114,5 +120,60 @@ public class PromptServiceTest {
         verify(electronicsService, never()).getFullInfo(any());
         verify(itemsService, never()).getFullInfo(any());
         verify(clothesService, never()).getFullInfo(any());
+        verify(itemsHistoryService, never()).save(any());
+    }
+
+    @Test
+    void shouldGetResponseForElectronicsRequest_LoggedAndNoTags() {
+        ElectronicsRequest request = new ElectronicsRequest();
+        request.setItem("Laptop");
+        request.setBrand("Dell");
+        request.setModel("XPS 13");
+        Principal principal = mock(Principal.class);
+        when(principal.getName()).thenReturn("test@email.com");
+        when(userService.findByEmail(anyString())).thenReturn(new User());
+        when(mapper.toDescription(any(ItemDescriptionResponse.class), any(User.class))).thenReturn(new ItemDescription());
+        when(electronicsService.getFullInfo(any(ElectronicsRequest.class))).thenReturn(response);
+
+        ItemDescriptionResponse result = promptService.getResponseAndSaveHistory(request, principal);
+
+        assertNotNull(result);
+        assertEquals("Sample Title", result.getTitle());
+        assertEquals("Sample Description", result.getDescription());
+        assertArrayEquals(new String[]{"#tag1", "#tag2"}, result.getTags());
+        verify(electronicsService, times(1)).getFullInfo(any(ElectronicsRequest.class));
+        verify(itemsService, never()).getFullInfo(any());
+        verify(clothesService, never()).getFullInfo(any());
+        verify(itemsHistoryService, times(1)).save(any());
+    }
+
+    @Test
+    void shouldGetResponseForElectronicsRequest_LoggedAndWithTags() {
+        ElectronicsRequest request = new ElectronicsRequest();
+        request.setItem("Laptop");
+        request.setBrand("Dell");
+        request.setModel("XPS 13");
+        Set<Tag> tags = Set.of(new Tag("#tag1"), new Tag("#tag2"));
+        ItemDescription itemDescription = new ItemDescription();
+        itemDescription.setTags(tags);
+
+        Principal principal = mock(Principal.class);
+        when(principal.getName()).thenReturn("test@email.com");
+        when(userService.findByEmail(anyString())).thenReturn(new User());
+        when(mapper.toDescription(any(ItemDescriptionResponse.class), any(User.class))).thenReturn(itemDescription);
+        when(electronicsService.getFullInfo(any(ElectronicsRequest.class))).thenReturn(response);
+
+        ItemDescriptionResponse result = promptService.getResponseAndSaveHistory(request, principal);
+
+        assertNotNull(result);
+        assertEquals("Sample Title", result.getTitle());
+        assertEquals("Sample Description", result.getDescription());
+        assertArrayEquals(new String[]{"#tag1", "#tag2"}, result.getTags());
+        assertAll(itemDescription.getTags().stream()
+                .map(tag -> () -> assertNotNull(tag.getName())));
+        verify(electronicsService, times(1)).getFullInfo(any(ElectronicsRequest.class));
+        verify(itemsService, never()).getFullInfo(any());
+        verify(clothesService, never()).getFullInfo(any());
+        verify(itemsHistoryService, times(1)).save(any());
     }
 }
