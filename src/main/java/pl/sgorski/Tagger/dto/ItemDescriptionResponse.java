@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
-public class PromptResponse {
+public class ItemDescriptionResponse {
 
     @Schema(description = "Generated listing title", example = "Stylish Summer Dress")
     private String title;

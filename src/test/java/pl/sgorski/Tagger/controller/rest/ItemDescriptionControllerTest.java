@@ -6,27 +6,30 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import pl.sgorski.Tagger.config.SecurityConfig;
 import pl.sgorski.Tagger.dto.ClothesRequest;
 import pl.sgorski.Tagger.dto.ElectronicsRequest;
-import pl.sgorski.Tagger.dto.PromptRequest;
-import pl.sgorski.Tagger.dto.PromptResponse;
+import pl.sgorski.Tagger.dto.ItemDescriptionRequest;
+import pl.sgorski.Tagger.dto.ItemDescriptionResponse;
 import pl.sgorski.Tagger.exception.AiParsingException;
+import pl.sgorski.Tagger.service.ItemsHistoryService;
 import pl.sgorski.Tagger.service.PromptService;
+import pl.sgorski.Tagger.service.auth.JwtService;
+import pl.sgorski.Tagger.service.auth.UserService;
+
+import java.security.Principal;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(PromptController.class)
+@WebMvcTest(ItemDescriptionController.class)
 @AutoConfigureMockMvc(addFilters = false)
-public class PromptControllerTest {
+public class ItemDescriptionControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -35,13 +38,22 @@ public class PromptControllerTest {
     private ObjectMapper objectMapper;
 
     @MockitoBean
+    private JwtService jwtService;
+
+    @MockitoBean
+    private UserService userService;
+
+    @MockitoBean
+    private ItemsHistoryService itemsHistoryService;
+
+    @MockitoBean
     private PromptService promptService;
 
-    PromptResponse response;
+    private ItemDescriptionResponse response;
 
     @BeforeEach
     void setUp() {
-        response = new PromptResponse();
+        response = new ItemDescriptionResponse();
         response.setTitle("Test Item");
         response.setDescription("This is a test item description.");
         response.setTags(new String[]{"#test", "#item"});
@@ -49,33 +61,33 @@ public class PromptControllerTest {
 
     @Test
     void shouldReturnResponse_getInfo_AllInfo() throws Exception {
-        PromptRequest request = new PromptRequest();
+        ItemDescriptionRequest request = new ItemDescriptionRequest();
         request.setItem("Test Item");
         request.setPlatform("Allegro");
         request.setResponseStyle("formal");
         request.setTargetAudience("young adults");
         request.setTagsQuantity(10);
 
-        when(promptService.getResponse(request)).thenReturn(response);
+        when(promptService.getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class))).thenReturn(response);
 
         mockMvc.perform(post("/api/tags")
                         .contentType("application/json")
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andExpect(result -> {
-                    PromptResponse resultResponse = objectMapper.readValue(result.getResponse().getContentAsString(), PromptResponse.class);
+                    ItemDescriptionResponse resultResponse = objectMapper.readValue(result.getResponse().getContentAsString(), ItemDescriptionResponse.class);
                     assertEquals("Test Item", resultResponse.getTitle());
                     assertEquals("This is a test item description.", resultResponse.getDescription());
                     assertEquals(2, resultResponse.getTags().length);
                 });
-        verify(promptService, times(1)).getResponse(any(PromptRequest.class));
+        verify(promptService, times(1)).getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class));
     }
 
     @Test
     void shouldReturnProblemDetail_getInfo_EmptyRequest() throws Exception {
-        PromptRequest request = new PromptRequest();
+        ItemDescriptionRequest request = new ItemDescriptionRequest();
 
-        when(promptService.getResponse(request)).thenReturn(response);
+        when(promptService.getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class))).thenReturn(response);
 
         mockMvc.perform(post("/api/tags")
                         .contentType("application/json")
@@ -119,19 +131,19 @@ public class PromptControllerTest {
         request.setMaterial("Cotton");
         request.setSize("M");
 
-        when(promptService.getResponse(request)).thenReturn(response);
+        when(promptService.getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class))).thenReturn(response);
 
         mockMvc.perform(post("/api/tags/clothes")
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andExpect(result -> {
-                    PromptResponse resultResponse = objectMapper.readValue(result.getResponse().getContentAsString(), PromptResponse.class);
+                    ItemDescriptionResponse resultResponse = objectMapper.readValue(result.getResponse().getContentAsString(), ItemDescriptionResponse.class);
                     assertEquals("Test Item", resultResponse.getTitle());
                     assertEquals("This is a test item description.", resultResponse.getDescription());
                     assertEquals(2, resultResponse.getTags().length);
                 });
-        verify(promptService, times(1)).getResponse(any(PromptRequest.class));
+        verify(promptService, times(1)).getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class));
     }
 
     @Test
@@ -146,7 +158,7 @@ public class PromptControllerTest {
         request.setMaterial("Cotton");
         request.setSize("M");
 
-        when(promptService.getResponse(request)).thenThrow(new RuntimeException("Something wrong happened"));
+        when(promptService.getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class))).thenThrow(new RuntimeException("Something wrong happened"));
 
         mockMvc.perform(post("/api/tags/clothes")
                         .contentType("application/json")
@@ -159,7 +171,7 @@ public class PromptControllerTest {
                     assertEquals("Something wrong happened", problemDetail.getDetail());
                     assertEquals("Unexpected Error", problemDetail.getTitle());
                 });
-        verify(promptService, times(1)).getResponse(any(PromptRequest.class));
+        verify(promptService, times(1)).getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class));
     }
 
     @Test
@@ -176,19 +188,19 @@ public class PromptControllerTest {
         request.setMonthsOfWarranty(12);
         request.setSpecifications("Test specifications");
 
-        when(promptService.getResponse(request)).thenReturn(response);
+        when(promptService.getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class))).thenReturn(response);
 
         mockMvc.perform(post("/api/tags/electronics")
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andExpect(result -> {
-                    PromptResponse resultResponse = objectMapper.readValue(result.getResponse().getContentAsString(), PromptResponse.class);
+                    ItemDescriptionResponse resultResponse = objectMapper.readValue(result.getResponse().getContentAsString(), ItemDescriptionResponse.class);
                     assertEquals("Test Item", resultResponse.getTitle());
                     assertEquals("This is a test item description.", resultResponse.getDescription());
                     assertEquals(2, resultResponse.getTags().length);
                 });
-        verify(promptService, times(1)).getResponse(any(PromptRequest.class));
+        verify(promptService, times(1)).getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class));
     }
 
     @Test
@@ -205,7 +217,7 @@ public class PromptControllerTest {
         request.setMonthsOfWarranty(12);
         request.setSpecifications("Test specifications");
 
-        when(promptService.getResponse(request)).thenThrow(new AiParsingException("Parsing error"));
+        when(promptService.getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class))).thenThrow(new AiParsingException("Parsing error"));
 
         mockMvc.perform(post("/api/tags/electronics")
                         .contentType("application/json")
@@ -219,6 +231,6 @@ public class PromptControllerTest {
                     assertFalse(problemDetail.getDetail().isBlank());
                     assertEquals("Could not parse response", problemDetail.getTitle());
                 });
-        verify(promptService, times(1)).getResponse(any(PromptRequest.class));
+        verify(promptService, times(1)).getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class));
     }
 }

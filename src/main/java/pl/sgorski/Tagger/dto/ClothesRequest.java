@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = false)
 @Data
-public class ClothesRequest extends PromptRequest {
+public class ClothesRequest extends ItemDescriptionRequest {
 
     @Schema(description = "Color of the clothes", examples = {"red", "blue", "green", "black", "white"})
     private String color;

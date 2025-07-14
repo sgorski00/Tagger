@@ -8,8 +8,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.sgorski.Tagger.dto.ClothesRequest;
 import pl.sgorski.Tagger.dto.ElectronicsRequest;
-import pl.sgorski.Tagger.dto.PromptRequest;
-import pl.sgorski.Tagger.dto.PromptResponse;
+import pl.sgorski.Tagger.dto.ItemDescriptionRequest;
+import pl.sgorski.Tagger.dto.ItemDescriptionResponse;
+import pl.sgorski.Tagger.mapper.ItemDescriptionMapper;
+import pl.sgorski.Tagger.service.auth.UserService;
+
+import java.security.Principal;
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -23,18 +28,28 @@ public class PromptServiceTest {
     private ElectronicsService electronicsService;
     @Mock
     private ClothesService clothesService;
-
+    @Mock
+    private ItemsHistoryService itemsHistoryService;
+    @Mock
+    private ItemDescriptionMapper mapper;
+    @Mock
+    private UserService userService;
     @InjectMocks
     private PromptService promptService;
 
-    private PromptResponse response;
+    @Mock
+    private Principal principal;
+
+    private ItemDescriptionResponse response;
 
     @BeforeEach
     void setUp() {
-        response = new PromptResponse();
+        response = new ItemDescriptionResponse();
         response.setTitle("Sample Title");
         response.setDescription("Sample Description");
         response.setTags(new String[]{"#tag1", "#tag2"});
+
+        when(principal.getName()).thenReturn("testUser");
     }
 
     @Test
@@ -44,9 +59,10 @@ public class PromptServiceTest {
         request.setBrand("Dell");
         request.setModel("XPS 13");
 
+        when(userService.findByEmail("testUser")).thenThrow(new NoSuchElementException("User not found"));
         when(electronicsService.getFullInfo(request)).thenReturn(response);
 
-        PromptResponse result = promptService.getResponse(request);
+        ItemDescriptionResponse result = promptService.getResponseAndSaveHistory(request, principal);
 
         assertNotNull(result);
         assertEquals("Sample Title", result.getTitle());
@@ -64,9 +80,10 @@ public class PromptServiceTest {
         request.setSize("XL");
         request.setMaterial("Cotton");
 
+        when(userService.findByEmail("testUser")).thenThrow(new NoSuchElementException("User not found"));
         when(clothesService.getFullInfo(request)).thenReturn(response);
 
-        PromptResponse result = promptService.getResponse(request);
+        ItemDescriptionResponse result = promptService.getResponseAndSaveHistory(request, principal);
 
         assertNotNull(result);
         assertEquals("Sample Title", result.getTitle());
@@ -79,27 +96,28 @@ public class PromptServiceTest {
 
     @Test
     void shouldGetResponseForGeneralRequest() {
-        PromptRequest request = new PromptRequest();
+        ItemDescriptionRequest request = new ItemDescriptionRequest();
         request.setItem("Dress");
         request.setPlatform("ebay");
         request.setResponseStyle("detailed");
 
+        when(userService.findByEmail("testUser")).thenThrow(new NoSuchElementException("User not found"));
         when(itemsService.getFullInfo(request)).thenReturn(response);
 
-        PromptResponse result = promptService.getResponse(request);
+        ItemDescriptionResponse result = promptService.getResponseAndSaveHistory(request, principal);
 
         assertNotNull(result);
         assertEquals("Sample Title", result.getTitle());
         assertEquals("Sample Description", result.getDescription());
         assertArrayEquals(new String[]{"#tag1", "#tag2"}, result.getTags());
         verify(electronicsService, never()).getFullInfo(any());
-        verify(itemsService, times(1)).getFullInfo(any(PromptRequest.class));
+        verify(itemsService, times(1)).getFullInfo(any(ItemDescriptionRequest.class));
         verify(clothesService, never()).getFullInfo(any());
     }
 
     @Test
-    void shouldThrowWhenNull() {
-        assertThrows(NullPointerException.class, () -> promptService.getResponse(null));
+    void shouldThrowWhenRequestIsNull() {
+        assertThrows(NullPointerException.class, () -> promptService.getResponseAndSaveHistory(null, principal));
 
         verify(electronicsService, never()).getFullInfo(any());
         verify(itemsService, never()).getFullInfo(any());

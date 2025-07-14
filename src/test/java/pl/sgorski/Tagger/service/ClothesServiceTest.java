@@ -6,8 +6,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.sgorski.Tagger.dto.ClothesRequest;
-import pl.sgorski.Tagger.dto.PromptRequest;
-import pl.sgorski.Tagger.dto.PromptResponse;
+import pl.sgorski.Tagger.dto.ItemDescriptionRequest;
+import pl.sgorski.Tagger.dto.ItemDescriptionResponse;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -25,16 +25,16 @@ public class ClothesServiceTest {
     @Test
     void shouldReturnResponse_getFullInfo() {
         ClothesRequest request = new ClothesRequest();
-        when(aiService.generateResponse(any(String.class))).thenReturn(new PromptResponse());
+        when(aiService.generateResponse(any(String.class))).thenReturn(new ItemDescriptionResponse());
 
-        PromptResponse result = clothesService.getFullInfo(request);
+        ItemDescriptionResponse result = clothesService.getFullInfo(request);
 
         assertNotNull(result);
     }
 
     @Test
     void shouldThrow_getFullInfo_WrongRequest() {
-        PromptRequest request = new PromptRequest();
+        ItemDescriptionRequest request = new ItemDescriptionRequest();
 
         assertThrows(IllegalArgumentException.class, () -> clothesService.getFullInfo(request));
     }
@@ -57,7 +57,7 @@ public class ClothesServiceTest {
 
     @Test
     void shouldThrow_generatePrompt_WrongRequest() {
-        PromptRequest request = new PromptRequest();
+        ItemDescriptionRequest request = new ItemDescriptionRequest();
 
         assertThrows(IllegalArgumentException.class, () -> clothesService.generatePrompt(request));
     }

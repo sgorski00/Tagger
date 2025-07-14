@@ -7,55 +7,61 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.sgorski.Tagger.dto.ClothesRequest;
 import pl.sgorski.Tagger.dto.ElectronicsRequest;
-import pl.sgorski.Tagger.dto.PromptRequest;
-import pl.sgorski.Tagger.dto.PromptResponse;
+import pl.sgorski.Tagger.dto.ItemDescriptionRequest;
+import pl.sgorski.Tagger.dto.ItemDescriptionResponse;
 import pl.sgorski.Tagger.service.PromptService;
+
+import java.security.Principal;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.*;
 
+//TODO: Repair tests (+ use graphqltest instead of mockito extension)
 @ExtendWith(MockitoExtension.class)
 public class PromptResolverTest {
 
     @Mock
     private PromptService promptService;
 
+    @Mock
+    private Principal principal;
+
     @InjectMocks
     private PromptResolver promptResolver;
 
     @Test
     void shouldReturnProductInfo() {
-        PromptRequest request = new PromptRequest();
-        PromptResponse response = new PromptResponse();
-        when(promptService.getResponse(request)).thenReturn(response);
+        ItemDescriptionResponse response = new ItemDescriptionResponse();
+        when(promptService.getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class))).thenReturn(response);
+        when(principal.getName()).thenReturn("testUser");
 
-        PromptResponse result = promptResolver.getProductInfo(request);
+        ItemDescriptionResponse result = promptResolver.getProductInfo(new ItemDescriptionRequest(), principal);
 
         assertSame(response, result);
-        verify(promptService, times(1)).getResponse(request);
+        verify(promptService, times(1)).getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class));
     }
 
     @Test
     void shouldReturnClothesInfo() {
-        ClothesRequest request = new ClothesRequest();
-        PromptResponse response = new PromptResponse();
-        when(promptService.getResponse(request)).thenReturn(response);
+        ItemDescriptionResponse response = new ItemDescriptionResponse();
+        when(promptService.getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class))).thenReturn(response);
+        when(principal.getName()).thenReturn("testUser");
 
-        PromptResponse result = promptResolver.getClothesInfo(request);
+        ItemDescriptionResponse result = promptResolver.getClothesInfo(new ClothesRequest(), principal);
 
         assertSame(response, result);
-        verify(promptService, times(1)).getResponse(request);
+        verify(promptService, times(1)).getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class));
     }
 
     @Test
     void shouldReturnElectronicsInfo() {
-        ElectronicsRequest request = new ElectronicsRequest();
-        PromptResponse response = new PromptResponse();
-        when(promptService.getResponse(request)).thenReturn(response);
+        ItemDescriptionResponse response = new ItemDescriptionResponse();
+        when(promptService.getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class))).thenReturn(response);
+        when(principal.getName()).thenReturn("testUser");
 
-        PromptResponse result = promptResolver.getElectronicsInfo(request);
+        ItemDescriptionResponse result = promptResolver.getElectronicsInfo(new ElectronicsRequest(), principal);
 
         assertSame(response, result);
-        verify(promptService, times(1)).getResponse(request);
+        verify(promptService, times(1)).getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class));
     }
 }

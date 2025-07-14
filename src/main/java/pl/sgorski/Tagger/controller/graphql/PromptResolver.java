@@ -2,33 +2,55 @@ package pl.sgorski.Tagger.controller.graphql;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import pl.sgorski.Tagger.dto.ClothesRequest;
 import pl.sgorski.Tagger.dto.ElectronicsRequest;
-import pl.sgorski.Tagger.dto.PromptRequest;
-import pl.sgorski.Tagger.dto.PromptResponse;
+import pl.sgorski.Tagger.dto.ItemDescriptionRequest;
+import pl.sgorski.Tagger.dto.ItemDescriptionResponse;
+import pl.sgorski.Tagger.mapper.ItemDescriptionMapper;
+import pl.sgorski.Tagger.service.ItemsHistoryService;
 import pl.sgorski.Tagger.service.PromptService;
+
+import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 public class PromptResolver {
 
     private final PromptService promptService;
+    private final ItemsHistoryService itemsHistoryService;
+    private final ItemDescriptionMapper mapper;
 
     @QueryMapping(name = "generateListing")
-    public PromptResponse getProductInfo(@Argument("input") @Valid PromptRequest request) {
-        return promptService.getResponse(request);
+    public ItemDescriptionResponse getProductInfo(@Argument("input") @Valid ItemDescriptionRequest request, Principal principal) {
+        return promptService.getResponseAndSaveHistory(request, principal);
     }
 
     @QueryMapping(name = "generateListingClothes")
-    public PromptResponse getClothesInfo(@Argument("input") @Valid ClothesRequest request) {
-        return promptService.getResponse(request);
+    public ItemDescriptionResponse getClothesInfo(@Argument("input") @Valid ClothesRequest request, Principal principal) {
+        return promptService.getResponseAndSaveHistory(request, principal);
     }
 
     @QueryMapping(name = "generateListingElectronics")
-    public PromptResponse getElectronicsInfo(@Argument("input") @Valid ElectronicsRequest request) {
-        return promptService.getResponse(request);
+    public ItemDescriptionResponse getElectronicsInfo(@Argument("input") @Valid ElectronicsRequest request, Principal principal) {
+        return promptService.getResponseAndSaveHistory(request, principal);
+    }
+
+    @QueryMapping(name = "getHistory")
+    @PreAuthorize("isAuthenticated()")
+    public List<ItemDescriptionResponse> getHistory(
+            @Argument("page") int page,
+            @Argument("size") int size,
+            Principal principal
+    ) {
+        PageRequest pageRequest = PageRequest.of(page - 1, size);
+        var result = itemsHistoryService.getHistory(principal.getName(), pageRequest);
+        return result.map(mapper::toResponse).getContent();
     }
 }
