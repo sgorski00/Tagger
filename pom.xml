@@ -189,6 +189,9 @@
 					<excludes>
 						<exclude>**/TaggerApplication.class</exclude>
 						<exclude>**/exception/**</exclude>
+						<exclude>**/config/**</exclude>
+						<exclude>**/dto/**</exclude>
+						<exclude>**/mapper/**</exclude>
 					</excludes>
 				</configuration>
 			</plugin>
