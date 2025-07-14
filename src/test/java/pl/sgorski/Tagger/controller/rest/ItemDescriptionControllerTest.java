@@ -15,6 +15,7 @@ import pl.sgorski.Tagger.dto.ElectronicsRequest;
 import pl.sgorski.Tagger.dto.ItemDescriptionRequest;
 import pl.sgorski.Tagger.dto.ItemDescriptionResponse;
 import pl.sgorski.Tagger.exception.AiParsingException;
+import pl.sgorski.Tagger.mapper.ItemDescriptionMapper;
 import pl.sgorski.Tagger.service.ItemsHistoryService;
 import pl.sgorski.Tagger.service.PromptService;
 import pl.sgorski.Tagger.service.auth.JwtService;
@@ -47,6 +48,9 @@ public class ItemDescriptionControllerTest {
     private ItemsHistoryService itemsHistoryService;
 
     @MockitoBean
+    private ItemDescriptionMapper itemDescriptionMapper;
+
+    @MockitoBean
     private PromptService promptService;
 
     private ItemDescriptionResponse response;
@@ -68,7 +72,7 @@ public class ItemDescriptionControllerTest {
         request.setTargetAudience("young adults");
         request.setTagsQuantity(10);
 
-        when(promptService.getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class))).thenReturn(response);
+        when(promptService.getResponseAndSaveHistory(any(ItemDescriptionRequest.class), nullable(Principal.class))).thenReturn(response);
 
         mockMvc.perform(post("/api/tags")
                         .contentType("application/json")
@@ -80,14 +84,14 @@ public class ItemDescriptionControllerTest {
                     assertEquals("This is a test item description.", resultResponse.getDescription());
                     assertEquals(2, resultResponse.getTags().length);
                 });
-        verify(promptService, times(1)).getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class));
+        verify(promptService, times(1)).getResponseAndSaveHistory(any(ItemDescriptionRequest.class), nullable(Principal.class));
     }
 
     @Test
     void shouldReturnProblemDetail_getInfo_EmptyRequest() throws Exception {
         ItemDescriptionRequest request = new ItemDescriptionRequest();
 
-        when(promptService.getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class))).thenReturn(response);
+        when(promptService.getResponseAndSaveHistory(any(ItemDescriptionRequest.class), nullable(Principal.class))).thenReturn(response);
 
         mockMvc.perform(post("/api/tags")
                         .contentType("application/json")
@@ -131,7 +135,7 @@ public class ItemDescriptionControllerTest {
         request.setMaterial("Cotton");
         request.setSize("M");
 
-        when(promptService.getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class))).thenReturn(response);
+        when(promptService.getResponseAndSaveHistory(any(ItemDescriptionRequest.class), nullable(Principal.class))).thenReturn(response);
 
         mockMvc.perform(post("/api/tags/clothes")
                         .contentType("application/json")
@@ -143,7 +147,7 @@ public class ItemDescriptionControllerTest {
                     assertEquals("This is a test item description.", resultResponse.getDescription());
                     assertEquals(2, resultResponse.getTags().length);
                 });
-        verify(promptService, times(1)).getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class));
+        verify(promptService, times(1)).getResponseAndSaveHistory(any(ItemDescriptionRequest.class), nullable(Principal.class));
     }
 
     @Test
@@ -158,7 +162,7 @@ public class ItemDescriptionControllerTest {
         request.setMaterial("Cotton");
         request.setSize("M");
 
-        when(promptService.getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class))).thenThrow(new RuntimeException("Something wrong happened"));
+        when(promptService.getResponseAndSaveHistory(any(ItemDescriptionRequest.class), nullable(Principal.class))).thenThrow(new RuntimeException("Something wrong happened"));
 
         mockMvc.perform(post("/api/tags/clothes")
                         .contentType("application/json")
@@ -171,7 +175,7 @@ public class ItemDescriptionControllerTest {
                     assertEquals("Something wrong happened", problemDetail.getDetail());
                     assertEquals("Unexpected Error", problemDetail.getTitle());
                 });
-        verify(promptService, times(1)).getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class));
+        verify(promptService, times(1)).getResponseAndSaveHistory(any(ItemDescriptionRequest.class), nullable(Principal.class));
     }
 
     @Test
@@ -188,7 +192,7 @@ public class ItemDescriptionControllerTest {
         request.setMonthsOfWarranty(12);
         request.setSpecifications("Test specifications");
 
-        when(promptService.getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class))).thenReturn(response);
+        when(promptService.getResponseAndSaveHistory(any(ItemDescriptionRequest.class), nullable(Principal.class))).thenReturn(response);
 
         mockMvc.perform(post("/api/tags/electronics")
                         .contentType("application/json")
@@ -200,7 +204,7 @@ public class ItemDescriptionControllerTest {
                     assertEquals("This is a test item description.", resultResponse.getDescription());
                     assertEquals(2, resultResponse.getTags().length);
                 });
-        verify(promptService, times(1)).getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class));
+        verify(promptService, times(1)).getResponseAndSaveHistory(any(ItemDescriptionRequest.class), nullable(Principal.class));
     }
 
     @Test
@@ -217,7 +221,7 @@ public class ItemDescriptionControllerTest {
         request.setMonthsOfWarranty(12);
         request.setSpecifications("Test specifications");
 
-        when(promptService.getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class))).thenThrow(new AiParsingException("Parsing error"));
+        when(promptService.getResponseAndSaveHistory(any(ItemDescriptionRequest.class), nullable(Principal.class))).thenThrow(new AiParsingException("Parsing error"));
 
         mockMvc.perform(post("/api/tags/electronics")
                         .contentType("application/json")
@@ -231,6 +235,6 @@ public class ItemDescriptionControllerTest {
                     assertFalse(problemDetail.getDetail().isBlank());
                     assertEquals("Could not parse response", problemDetail.getTitle());
                 });
-        verify(promptService, times(1)).getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class));
+        verify(promptService, times(1)).getResponseAndSaveHistory(any(ItemDescriptionRequest.class), nullable(Principal.class));
     }
 }

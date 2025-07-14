@@ -37,9 +37,6 @@ public class PromptServiceTest {
     @InjectMocks
     private PromptService promptService;
 
-    @Mock
-    private Principal principal;
-
     private ItemDescriptionResponse response;
 
     @BeforeEach
@@ -48,21 +45,18 @@ public class PromptServiceTest {
         response.setTitle("Sample Title");
         response.setDescription("Sample Description");
         response.setTags(new String[]{"#tag1", "#tag2"});
-
-        when(principal.getName()).thenReturn("testUser");
     }
 
     @Test
-    void shouldGetResponseForElectronicsRequest() {
+    void shouldGetResponseForElectronicsRequest_NotLogged() {
         ElectronicsRequest request = new ElectronicsRequest();
         request.setItem("Laptop");
         request.setBrand("Dell");
         request.setModel("XPS 13");
 
-        when(userService.findByEmail("testUser")).thenThrow(new NoSuchElementException("User not found"));
-        when(electronicsService.getFullInfo(request)).thenReturn(response);
+        when(electronicsService.getFullInfo(any(ElectronicsRequest.class))).thenReturn(response);
 
-        ItemDescriptionResponse result = promptService.getResponseAndSaveHistory(request, principal);
+        ItemDescriptionResponse result = promptService.getResponseAndSaveHistory(request, null);
 
         assertNotNull(result);
         assertEquals("Sample Title", result.getTitle());
@@ -74,16 +68,15 @@ public class PromptServiceTest {
     }
 
     @Test
-    void shouldGetResponseForClothesRequest() {
+    void shouldGetResponseForClothesRequest_NotLogged() {
         ClothesRequest request = new ClothesRequest();
         request.setItem("Dress");
         request.setSize("XL");
         request.setMaterial("Cotton");
 
-        when(userService.findByEmail("testUser")).thenThrow(new NoSuchElementException("User not found"));
-        when(clothesService.getFullInfo(request)).thenReturn(response);
+        when(clothesService.getFullInfo(any(ClothesRequest.class))).thenReturn(response);
 
-        ItemDescriptionResponse result = promptService.getResponseAndSaveHistory(request, principal);
+        ItemDescriptionResponse result = promptService.getResponseAndSaveHistory(request, null);
 
         assertNotNull(result);
         assertEquals("Sample Title", result.getTitle());
@@ -95,16 +88,15 @@ public class PromptServiceTest {
     }
 
     @Test
-    void shouldGetResponseForGeneralRequest() {
+    void shouldGetResponseForGeneralRequest_NotLogged() {
         ItemDescriptionRequest request = new ItemDescriptionRequest();
         request.setItem("Dress");
         request.setPlatform("ebay");
         request.setResponseStyle("detailed");
 
-        when(userService.findByEmail("testUser")).thenThrow(new NoSuchElementException("User not found"));
-        when(itemsService.getFullInfo(request)).thenReturn(response);
+        when(itemsService.getFullInfo(any(ItemDescriptionRequest.class))).thenReturn(response);
 
-        ItemDescriptionResponse result = promptService.getResponseAndSaveHistory(request, principal);
+        ItemDescriptionResponse result = promptService.getResponseAndSaveHistory(request, null);
 
         assertNotNull(result);
         assertEquals("Sample Title", result.getTitle());
@@ -116,8 +108,8 @@ public class PromptServiceTest {
     }
 
     @Test
-    void shouldThrowWhenRequestIsNull() {
-        assertThrows(NullPointerException.class, () -> promptService.getResponseAndSaveHistory(null, principal));
+    void shouldThrowWhenRequestIsNull_NotLogged() {
+        assertThrows(NullPointerException.class, () -> promptService.getResponseAndSaveHistory(null, null));
 
         verify(electronicsService, never()).getFullInfo(any());
         verify(itemsService, never()).getFullInfo(any());

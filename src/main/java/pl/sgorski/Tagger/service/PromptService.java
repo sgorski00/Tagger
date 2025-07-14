@@ -44,8 +44,7 @@ public class PromptService {
 
     private void createAndSaveItemHistory(ItemDescriptionResponse response, String requesterEmail) {
         User user = userService.findByEmail(requesterEmail);
-        ItemDescription itemDescription = mapper.toDescription(response);
-        itemDescription.setCreatedBy(user);
+        ItemDescription itemDescription = mapper.toDescription(response, user);
         assignParentToTags(itemDescription);
         itemsHistoryService.save(itemDescription);
     }

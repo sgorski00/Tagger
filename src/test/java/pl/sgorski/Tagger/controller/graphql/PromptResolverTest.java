@@ -23,45 +23,39 @@ public class PromptResolverTest {
     @Mock
     private PromptService promptService;
 
-    @Mock
-    private Principal principal;
-
     @InjectMocks
     private PromptResolver promptResolver;
 
     @Test
     void shouldReturnProductInfo() {
         ItemDescriptionResponse response = new ItemDescriptionResponse();
-        when(promptService.getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class))).thenReturn(response);
-        when(principal.getName()).thenReturn("testUser");
+        when(promptService.getResponseAndSaveHistory(any(ItemDescriptionRequest.class), nullable(Principal.class))).thenReturn(response);
 
-        ItemDescriptionResponse result = promptResolver.getProductInfo(new ItemDescriptionRequest(), principal);
+        ItemDescriptionResponse result = promptResolver.getProductInfo(new ItemDescriptionRequest(), null);
 
         assertSame(response, result);
-        verify(promptService, times(1)).getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class));
+        verify(promptService, times(1)).getResponseAndSaveHistory(any(ItemDescriptionRequest.class), nullable(Principal.class));
     }
 
     @Test
     void shouldReturnClothesInfo() {
         ItemDescriptionResponse response = new ItemDescriptionResponse();
-        when(promptService.getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class))).thenReturn(response);
-        when(principal.getName()).thenReturn("testUser");
+        when(promptService.getResponseAndSaveHistory(any(ItemDescriptionRequest.class), nullable(Principal.class))).thenReturn(response);
 
-        ItemDescriptionResponse result = promptResolver.getClothesInfo(new ClothesRequest(), principal);
+        ItemDescriptionResponse result = promptResolver.getClothesInfo(new ClothesRequest(), null);
 
         assertSame(response, result);
-        verify(promptService, times(1)).getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class));
+        verify(promptService, times(1)).getResponseAndSaveHistory(any(ItemDescriptionRequest.class), nullable(Principal.class));
     }
 
     @Test
     void shouldReturnElectronicsInfo() {
         ItemDescriptionResponse response = new ItemDescriptionResponse();
-        when(promptService.getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class))).thenReturn(response);
-        when(principal.getName()).thenReturn("testUser");
+        when(promptService.getResponseAndSaveHistory(any(ItemDescriptionRequest.class), nullable(Principal.class))).thenReturn(response);
 
-        ItemDescriptionResponse result = promptResolver.getElectronicsInfo(new ElectronicsRequest(), principal);
+        ItemDescriptionResponse result = promptResolver.getElectronicsInfo(new ElectronicsRequest(), null);
 
         assertSame(response, result);
-        verify(promptService, times(1)).getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class));
+        verify(promptService, times(1)).getResponseAndSaveHistory(any(ItemDescriptionRequest.class), nullable(Principal.class));
     }
 }
