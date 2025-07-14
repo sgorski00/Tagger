@@ -2,17 +2,23 @@ package pl.sgorski.Tagger.service.auth;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ActiveProfiles;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import pl.sgorski.Tagger.config.JwtProperties;
 import pl.sgorski.Tagger.model.User;
-import pl.sgorski.Tagger.test_config.BaseTestcontainers;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
-@ActiveProfiles("test")
-public class JwtServiceTests extends BaseTestcontainers {
+@ExtendWith(MockitoExtension.class)
+public class JwtServiceTests {
 
-    @Autowired
+    @Mock
+    private JwtProperties jwtProperties;
+
+    @InjectMocks
     private JwtService jwtService;
 
     private String jwt;
@@ -20,6 +26,9 @@ public class JwtServiceTests extends BaseTestcontainers {
 
     @BeforeEach
     void setUp() {
+        when(jwtProperties.getExpirationTime()).thenReturn(3600000L);
+        when(jwtProperties.getSecretKey()).thenReturn("Zm9vYmFyZm9vYmFyZm9vYmFyZm9vYmFyZm9vYmFyZm9vYmFyZm9vYmFyZm9vYmFy");
+
         user = new User();
         user.setEmail("test@user.com");
         jwt = jwtService.generateToken(user);
@@ -50,5 +59,25 @@ public class JwtServiceTests extends BaseTestcontainers {
         boolean result = jwtService.isTokenValid(jwt, new User());
 
         assertFalse(result);
+    }
+
+    @Test
+    void shouldNotValidateToken_ExpiredToken() {
+        when(jwtProperties.getExpirationTime()).thenReturn(-1L);
+        jwt = jwtService.generateToken(user);
+
+        boolean result = jwtService.isTokenValid(jwt, user);
+
+        assertFalse(result);
+    }
+
+    @Test
+    void shouldReturnClaimEvenIfTokenIsExpired() {
+        when(jwtProperties.getExpirationTime()).thenReturn(-1L);
+        jwt = jwtService.generateToken(user);
+
+        String result = jwtService.extractUsername(jwt);
+
+        assertEquals("test@user.com", result);
     }
 }
