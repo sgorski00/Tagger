@@ -26,8 +26,8 @@ public class JwtServiceTests {
 
     @BeforeEach
     void setUp() {
-        when(jwtProperties.getExpirationTime()).thenReturn(3600000L);
-        when(jwtProperties.getSecretKey()).thenReturn("Zm9vYmFyZm9vYmFyZm9vYmFyZm9vYmFyZm9vYmFyZm9vYmFyZm9vYmFyZm9vYmFy");
+        when(jwtProperties.expirationTime()).thenReturn(3600000L);
+        when(jwtProperties.secretKey()).thenReturn("Zm9vYmFyZm9vYmFyZm9vYmFyZm9vYmFyZm9vYmFyZm9vYmFyZm9vYmFyZm9vYmFy");
 
         user = new User();
         user.setEmail("test@user.com");
@@ -63,7 +63,7 @@ public class JwtServiceTests {
 
     @Test
     void shouldNotValidateToken_ExpiredToken() {
-        when(jwtProperties.getExpirationTime()).thenReturn(-1L);
+        when(jwtProperties.expirationTime()).thenReturn(-1L);
         jwt = jwtService.generateToken(user);
 
         boolean result = jwtService.isTokenValid(jwt, user);
@@ -73,7 +73,7 @@ public class JwtServiceTests {
 
     @Test
     void shouldReturnClaimEvenIfTokenIsExpired() {
-        when(jwtProperties.getExpirationTime()).thenReturn(-1L);
+        when(jwtProperties.expirationTime()).thenReturn(-1L);
         jwt = jwtService.generateToken(user);
 
         String result = jwtService.extractUsername(jwt);

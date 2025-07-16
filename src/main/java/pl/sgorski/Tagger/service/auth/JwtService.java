@@ -30,7 +30,7 @@ public class JwtService {
     }
 
     public String generateToken(UserDetails userDetails) {
-        return buildToken(userDetails, jwtProperties.getExpirationTime());
+        return buildToken(userDetails, jwtProperties.expirationTime());
     }
 
     private String buildToken(
@@ -71,7 +71,7 @@ public class JwtService {
     }
 
     private SecretKey getSigningKey(){
-        byte[] keyBytes = Decoders.BASE64.decode(jwtProperties.getSecretKey());
+        byte[] keyBytes = Decoders.BASE64.decode(jwtProperties.secretKey());
         return Keys.hmacShaKeyFor(keyBytes);
     }
 }
