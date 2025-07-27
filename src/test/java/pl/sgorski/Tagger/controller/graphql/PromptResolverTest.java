@@ -23,10 +23,7 @@ import pl.sgorski.Tagger.service.ItemsHistoryService;
 import pl.sgorski.Tagger.service.PromptService;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;

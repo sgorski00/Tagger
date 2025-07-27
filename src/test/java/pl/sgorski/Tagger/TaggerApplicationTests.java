@@ -1,12 +1,11 @@
 package pl.sgorski.Tagger;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-@Disabled // Didabled until test containers are implemented
-// TODO: Implement test containers for integration tests
+@ActiveProfiles("test")
 class TaggerApplicationTests {
 
 	@Test
