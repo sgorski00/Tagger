@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.0.3] - 2025-07-30
+## [1.0.4] - 2025-07-30
 ### Added
 - OAuth2 login with Google
 - Response history endpoint

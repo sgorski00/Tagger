@@ -16,7 +16,7 @@ public class SwaggerConfiguration {
         return new OpenAPI()
                 .info(new Info()
                         .title("Tagger API")
-                        .version("1.0.3")
+                        .version("1.0.4")
                         .description("The Tagger API is AI based application, which allows you to generate tags, titles and descriptions for products.")
                         .contact(new Contact()
                                 .email("sebastiangorski00@gmail.com")
