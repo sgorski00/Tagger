@@ -4,7 +4,7 @@
 
 # Tagger
 
-Tagger is a AI powered web application that allows users to create tags, descriptions and titles for their items.
+Tagger is an AI powered web application that allows users to create tags, descriptions and titles for their items.
 App allows users to create tags for every product they own.
 
 ## Live Demo
@@ -97,6 +97,16 @@ query {
   }
 }
 ```
+
+---
+
+## Response history
+
+Response history is available at `/history`. You can view the history of generated responses, including generated tags, titles, and descriptions.
+
+To save and see history, you need to be logged in. You can log in via Google OAuth2 using the `/auth/login` endpoint.
+
+After logging in, you can access the history of your generated responses at `/history`. Your history is visible only to you.
 
 ---
 
