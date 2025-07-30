@@ -1,15 +1,15 @@
 package pl.sgorski.Tagger.service;
 
-import pl.sgorski.Tagger.dto.PromptRequest;
-import pl.sgorski.Tagger.dto.PromptResponse;
+import pl.sgorski.Tagger.dto.ItemDescriptionRequest;
+import pl.sgorski.Tagger.dto.ItemDescriptionResponse;
 
 public interface ItemsService {
 
-    PromptResponse getFullInfo(PromptRequest request);
+    ItemDescriptionResponse getFullInfo(ItemDescriptionRequest request);
 
-    String generatePrompt(PromptRequest request);
+    String generatePrompt(ItemDescriptionRequest request);
 
-    default String generateBasePrompt(PromptRequest request) {
+    default String generateBasePrompt(ItemDescriptionRequest request) {
         return """
                 Please provide a detailed description of the item, including its features, benefits, and any other relevant information.
                 General response info:

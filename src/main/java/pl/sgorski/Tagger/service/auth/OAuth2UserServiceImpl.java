@@ -7,6 +7,7 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import pl.sgorski.Tagger.exception.OAuth2MissingAttributeException;
 import pl.sgorski.Tagger.model.CustomOAuth2User;
 import pl.sgorski.Tagger.model.User;
@@ -41,9 +42,7 @@ public class OAuth2UserServiceImpl extends DefaultOAuth2UserService {
 
     private String getEmailOrThrow(OAuth2User oAuth2User) {
         String email = oAuth2User.getAttribute("email");
-        if(email == null || email.isEmpty()) {
-            throw new OAuth2MissingAttributeException("email");
-        }
+        if(ObjectUtils.isEmpty(email)) throw new OAuth2MissingAttributeException("email");
         return email;
     }
 }

@@ -6,8 +6,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.sgorski.Tagger.dto.ElectronicsRequest;
-import pl.sgorski.Tagger.dto.PromptRequest;
-import pl.sgorski.Tagger.dto.PromptResponse;
+import pl.sgorski.Tagger.dto.ItemDescriptionRequest;
+import pl.sgorski.Tagger.dto.ItemDescriptionResponse;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -25,16 +25,16 @@ public class ElectronicsServiceTest {
     @Test
     void shouldReturnResponse_getFullInfo() {
         ElectronicsRequest request = new ElectronicsRequest();
-        when(aiService.generateResponse(any(String.class))).thenReturn(new PromptResponse());
+        when(aiService.generateResponse(any(String.class))).thenReturn(new ItemDescriptionResponse());
 
-        PromptResponse result = electronicsService.getFullInfo(request);
+        ItemDescriptionResponse result = electronicsService.getFullInfo(request);
 
         assertNotNull(result);
     }
 
     @Test
     void shouldThrow_getFullInfo_WrongRequest() {
-        PromptRequest request = new PromptRequest();
+        ItemDescriptionRequest request = new ItemDescriptionRequest();
 
         assertThrows(IllegalArgumentException.class, () -> electronicsService.getFullInfo(request));
     }
@@ -57,7 +57,7 @@ public class ElectronicsServiceTest {
 
     @Test
     void shouldThrow_generatePrompt_WrongRequest() {
-        PromptRequest request = new PromptRequest();
+        ItemDescriptionRequest request = new ItemDescriptionRequest();
 
         assertThrows(IllegalArgumentException.class, () -> electronicsService.generatePrompt(request));
     }

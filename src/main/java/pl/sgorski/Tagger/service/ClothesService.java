@@ -3,8 +3,8 @@ package pl.sgorski.Tagger.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.sgorski.Tagger.dto.ClothesRequest;
-import pl.sgorski.Tagger.dto.PromptRequest;
-import pl.sgorski.Tagger.dto.PromptResponse;
+import pl.sgorski.Tagger.dto.ItemDescriptionRequest;
+import pl.sgorski.Tagger.dto.ItemDescriptionResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -13,7 +13,7 @@ public class ClothesService implements ItemsService {
     private final AiService aiService;
 
     @Override
-    public PromptResponse getFullInfo(PromptRequest request) {
+    public ItemDescriptionResponse getFullInfo(ItemDescriptionRequest request) {
         if (request instanceof ClothesRequest clothesRequest) {
             return aiService.generateResponse(generatePrompt(clothesRequest));
         } else {
@@ -22,7 +22,7 @@ public class ClothesService implements ItemsService {
     }
 
     @Override
-    public String generatePrompt(PromptRequest request) {
+    public String generatePrompt(ItemDescriptionRequest request) {
         if (request instanceof ClothesRequest clothesRequest) {
             return createClothsPrompt(clothesRequest);
         } else {

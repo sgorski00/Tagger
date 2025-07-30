@@ -5,8 +5,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pl.sgorski.Tagger.dto.PromptRequest;
-import pl.sgorski.Tagger.dto.PromptResponse;
+import pl.sgorski.Tagger.dto.ItemDescriptionRequest;
+import pl.sgorski.Tagger.dto.ItemDescriptionResponse;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -24,17 +24,17 @@ public class ItemsServiceTest {
 
     @Test
     void shouldReturnResponse_getFullInfo() {
-        when(aiService.generateResponse(anyString())).thenReturn(new PromptResponse());
-        PromptRequest promptRequest = new PromptRequest();
+        when(aiService.generateResponse(anyString())).thenReturn(new ItemDescriptionResponse());
+        ItemDescriptionRequest promptRequest = new ItemDescriptionRequest();
 
-        PromptResponse result = itemsService.getFullInfo(promptRequest);
+        ItemDescriptionResponse result = itemsService.getFullInfo(promptRequest);
 
         assertNotNull(result);
     }
 
     @Test
     void shouldReturnPrompt_getFullInfo() {
-        PromptRequest promptRequest = new PromptRequest();
+        ItemDescriptionRequest promptRequest = new ItemDescriptionRequest();
         promptRequest.setItem("Test Item");
         promptRequest.setTagsQuantity(10);
 

@@ -13,7 +13,7 @@ import org.springframework.ai.openai.api.ResponseFormat;
 import org.springframework.ai.retry.NonTransientAiException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import pl.sgorski.Tagger.dto.PromptResponse;
+import pl.sgorski.Tagger.dto.ItemDescriptionResponse;
 import pl.sgorski.Tagger.exception.AiParsingException;
 
 @Log4j2
@@ -28,8 +28,8 @@ public class AiService {
 
     private final ObjectMapper objectMapper;
 
-    public PromptResponse generateResponse(String userPrompt) {
-        var outputConverter = new BeanOutputConverter<>(PromptResponse.class);
+    public ItemDescriptionResponse generateResponse(String userPrompt) {
+        var outputConverter = new BeanOutputConverter<>(ItemDescriptionResponse.class);
         String jsonSchema = outputConverter.getJsonSchema();
         Prompt prompt;
         String content;
@@ -42,7 +42,7 @@ public class AiService {
             prompt = createPromptWithoutSchemaSupport(userPrompt, jsonSchema);
             content = getAiResponseText(prompt);
             try {
-                return objectMapper.readValue(content, PromptResponse.class);
+                return objectMapper.readValue(content, ItemDescriptionResponse.class);
             } catch (Exception ex) {
                 throw new AiParsingException("Failed to parse AI response: " + ex.getMessage());
             }

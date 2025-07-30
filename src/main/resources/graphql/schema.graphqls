@@ -5,6 +5,8 @@ type Query {
     generateListingClothes(input: ClothesInput!): ListingResponse!
     """More specific for electronics, it generates an electronics product listing."""
     generateListingElectronics(input: ElectronicsInput!): ListingResponse!
+    """Shows the history of generated listings. Available only for logged users."""
+    getHistory(page: Int = 1, size: Int = 10): [ListingResponse!]!
 }
 
 """Response type for the generated listing."""
