@@ -59,7 +59,7 @@ public class PromptServiceTest {
 
         when(electronicsService.getFullInfo(any(ElectronicsRequest.class))).thenReturn(response);
 
-        ItemDescriptionResponse result = promptService.getResponseAndSaveHistory(request, null);
+        ItemDescriptionResponse result = promptService.getResponseAndSaveHistoryIfUserPresent(request, null);
 
         assertNotNull(result);
         assertEquals("Sample Title", result.getTitle());
@@ -80,7 +80,7 @@ public class PromptServiceTest {
 
         when(clothesService.getFullInfo(any(ClothesRequest.class))).thenReturn(response);
 
-        ItemDescriptionResponse result = promptService.getResponseAndSaveHistory(request, null);
+        ItemDescriptionResponse result = promptService.getResponseAndSaveHistoryIfUserPresent(request, null);
 
         assertNotNull(result);
         assertEquals("Sample Title", result.getTitle());
@@ -101,7 +101,7 @@ public class PromptServiceTest {
 
         when(itemsService.getFullInfo(any(ItemDescriptionRequest.class))).thenReturn(response);
 
-        ItemDescriptionResponse result = promptService.getResponseAndSaveHistory(request, null);
+        ItemDescriptionResponse result = promptService.getResponseAndSaveHistoryIfUserPresent(request, null);
 
         assertNotNull(result);
         assertEquals("Sample Title", result.getTitle());
@@ -115,7 +115,7 @@ public class PromptServiceTest {
 
     @Test
     void shouldThrowWhenRequestIsNull_NotLogged() {
-        assertThrows(NullPointerException.class, () -> promptService.getResponseAndSaveHistory(null, null));
+        assertThrows(NullPointerException.class, () -> promptService.getResponseAndSaveHistoryIfUserPresent(null, null));
 
         verify(electronicsService, never()).getFullInfo(any());
         verify(itemsService, never()).getFullInfo(any());
@@ -135,7 +135,7 @@ public class PromptServiceTest {
         when(mapper.toDescription(any(ItemDescriptionResponse.class), any(User.class))).thenReturn(new ItemDescription());
         when(electronicsService.getFullInfo(any(ElectronicsRequest.class))).thenReturn(response);
 
-        ItemDescriptionResponse result = promptService.getResponseAndSaveHistory(request, principal);
+        ItemDescriptionResponse result = promptService.getResponseAndSaveHistoryIfUserPresent(request, principal);
 
         assertNotNull(result);
         assertEquals("Sample Title", result.getTitle());
@@ -163,7 +163,7 @@ public class PromptServiceTest {
         when(mapper.toDescription(any(ItemDescriptionResponse.class), any(User.class))).thenReturn(itemDescription);
         when(electronicsService.getFullInfo(any(ElectronicsRequest.class))).thenReturn(response);
 
-        ItemDescriptionResponse result = promptService.getResponseAndSaveHistory(request, principal);
+        ItemDescriptionResponse result = promptService.getResponseAndSaveHistoryIfUserPresent(request, principal);
 
         assertNotNull(result);
         assertEquals("Sample Title", result.getTitle());

@@ -70,7 +70,7 @@ public class PromptResolverTest {
                     }
                 """;
 
-        when(promptService.getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class)))
+        when(promptService.getResponseAndSaveHistoryIfUserPresent(any(ItemDescriptionRequest.class), any(Principal.class)))
                 .thenReturn(response);
 
         tester.document(query)
@@ -79,7 +79,7 @@ public class PromptResolverTest {
                 .path("generateListing.description").entity(String.class).isEqualTo("Test Description")
                 .path("generateListing.tags").entityList(String.class).hasSize(3);
 
-        verify(promptService, times(1)).getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class));
+        verify(promptService, times(1)).getResponseAndSaveHistoryIfUserPresent(any(ItemDescriptionRequest.class), any(Principal.class));
     }
 
     @Test
@@ -94,7 +94,7 @@ public class PromptResolverTest {
                     }
                 """;
 
-        when(promptService.getResponseAndSaveHistory(any(ClothesRequest.class), any(Principal.class)))
+        when(promptService.getResponseAndSaveHistoryIfUserPresent(any(ClothesRequest.class), any(Principal.class)))
                 .thenReturn(response);
 
         tester.document(query)
@@ -103,7 +103,7 @@ public class PromptResolverTest {
                 .path("generateListingClothes.description").entity(String.class).isEqualTo("Test Description")
                 .path("generateListingClothes.tags").entityList(String.class).hasSize(3);
 
-        verify(promptService, times(1)).getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class));
+        verify(promptService, times(1)).getResponseAndSaveHistoryIfUserPresent(any(ItemDescriptionRequest.class), any(Principal.class));
     }
 
     @Test
@@ -118,7 +118,7 @@ public class PromptResolverTest {
                     }
                 """;
 
-        when(promptService.getResponseAndSaveHistory(any(ElectronicsRequest.class), any(Principal.class)))
+        when(promptService.getResponseAndSaveHistoryIfUserPresent(any(ElectronicsRequest.class), any(Principal.class)))
                 .thenReturn(response);
 
         tester.document(query)
@@ -127,7 +127,7 @@ public class PromptResolverTest {
                 .path("generateListingElectronics.description").entity(String.class).isEqualTo("Test Description")
                 .path("generateListingElectronics.tags").entityList(String.class).hasSize(3);
 
-        verify(promptService, times(1)).getResponseAndSaveHistory(any(ItemDescriptionRequest.class), any(Principal.class));
+        verify(promptService, times(1)).getResponseAndSaveHistoryIfUserPresent(any(ItemDescriptionRequest.class), any(Principal.class));
     }
 
     @Test

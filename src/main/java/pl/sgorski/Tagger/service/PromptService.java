@@ -36,7 +36,7 @@ public class PromptService {
         };
     }
 
-    public ItemDescriptionResponse getResponseAndSaveHistory(ItemDescriptionRequest request, Principal principal) {
+    public ItemDescriptionResponse getResponseAndSaveHistoryIfUserPresent(ItemDescriptionRequest request, Principal principal) {
         ItemDescriptionResponse result = getResponse(request);
         getPrincipalName(principal).ifPresent(email -> createAndSaveItemHistory(result, email));
         return result;

@@ -50,7 +50,7 @@ public class ItemDescriptionController {
             Principal principal
     ) {
         int code = getResponseCode(principal);
-        return ResponseEntity.status(code).body(promptService.getResponseAndSaveHistory(request, principal));
+        return ResponseEntity.status(code).body(promptService.getResponseAndSaveHistoryIfUserPresent(request, principal));
     }
 
     @PostMapping("/clothes")
@@ -70,7 +70,7 @@ public class ItemDescriptionController {
             Principal principal
     ) {
         int code = getResponseCode(principal);
-        return ResponseEntity.status(code).body(promptService.getResponseAndSaveHistory(request, principal));
+        return ResponseEntity.status(code).body(promptService.getResponseAndSaveHistoryIfUserPresent(request, principal));
     }
 
     @PostMapping("/electronics")
@@ -90,7 +90,7 @@ public class ItemDescriptionController {
             Principal principal
     ) {
         int code = getResponseCode(principal);
-        return ResponseEntity.status(code).body(promptService.getResponseAndSaveHistory(request, principal));
+        return ResponseEntity.status(code).body(promptService.getResponseAndSaveHistoryIfUserPresent(request, principal));
     }
 
     @GetMapping("/history")

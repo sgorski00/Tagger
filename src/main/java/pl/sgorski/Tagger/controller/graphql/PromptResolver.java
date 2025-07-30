@@ -28,17 +28,17 @@ public class PromptResolver {
 
     @QueryMapping(name = "generateListing")
     public ItemDescriptionResponse getProductInfo(@Argument("input") @Valid ItemDescriptionRequest request, Principal principal) {
-        return promptService.getResponseAndSaveHistory(request, principal);
+        return promptService.getResponseAndSaveHistoryIfUserPresent(request, principal);
     }
 
     @QueryMapping(name = "generateListingClothes")
     public ItemDescriptionResponse getClothesInfo(@Argument("input") @Valid ClothesRequest request, Principal principal) {
-        return promptService.getResponseAndSaveHistory(request, principal);
+        return promptService.getResponseAndSaveHistoryIfUserPresent(request, principal);
     }
 
     @QueryMapping(name = "generateListingElectronics")
     public ItemDescriptionResponse getElectronicsInfo(@Argument("input") @Valid ElectronicsRequest request, Principal principal) {
-        return promptService.getResponseAndSaveHistory(request, principal);
+        return promptService.getResponseAndSaveHistoryIfUserPresent(request, principal);
     }
 
     @QueryMapping(name = "getHistory")
