@@ -1,136 +1,175 @@
 package pl.sgorski.Tagger.controller.graphql;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest;
 import org.springframework.boot.test.autoconfigure.graphql.tester.AutoConfigureGraphQlTester;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.MessageSource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.graphql.test.tester.GraphQlTester;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import pl.sgorski.Tagger.dto.ClothesRequest;
 import pl.sgorski.Tagger.dto.ElectronicsRequest;
-import pl.sgorski.Tagger.dto.PromptRequest;
-import pl.sgorski.Tagger.dto.PromptResponse;
-import pl.sgorski.Tagger.exception.AiParsingException;
+import pl.sgorski.Tagger.dto.ItemDescriptionRequest;
+import pl.sgorski.Tagger.dto.ItemDescriptionResponse;
+import pl.sgorski.Tagger.mapper.ItemDescriptionMapper;
+import pl.sgorski.Tagger.model.ItemDescription;
+import pl.sgorski.Tagger.service.ItemsHistoryService;
 import pl.sgorski.Tagger.service.PromptService;
 
-import java.util.Locale;
+import java.security.Principal;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@GraphQlTest(PromptResolver.class)
 @AutoConfigureGraphQlTester
-class PromptResolverTest {
+@ActiveProfiles("test")
+public class PromptResolverTest {
 
     @Autowired
-    private GraphQlTester graphQlTester;
+    private GraphQlTester tester;
 
     @MockitoBean
     private PromptService promptService;
 
     @MockitoBean
-    private MessageSource messageSource;
+    private ItemsHistoryService itemsHistoryService;
+
+    @MockitoBean
+    private ItemDescriptionMapper mapper;
+
+    private ItemDescriptionResponse response;
+
+    @BeforeEach
+    void setUp() {
+        response = new ItemDescriptionResponse();
+        response.setTitle("Test Title");
+        response.setDescription("Test Description");
+        response.setTags(new String[]{"#tag1", "#tag2", "#tag3"});
+
+        var auth = new UsernamePasswordAuthenticationToken("testUser", "password");
+        SecurityContextHolder.getContext().setAuthentication(auth);
+    }
 
     @Test
     void shouldReturnProductInfo() {
-        PromptResponse response = new PromptResponse();
-        response.setTitle("Casual T-Shirt");
-        response.setDescription("A comfortable and stylish t-shirt for everyday wear.");
-        response.setTags(new String[]{"#casual", "#t-shirt", "#young adults"});
-        when(promptService.getResponse(any(PromptRequest.class))).thenReturn(response);
-
         String query = """
-            query {
-                generateListing(input: { responseStyle: "casual", item: "t-shirt", targetAudience: "young adults" }) {
-                    title
-                    description
-                    tags
-                }
-            }
-        """;
+                    query {
+                        generateListing(input: { item: "Test Item", responseStyle: "casual", targetAudience: "young adults", tagsQuantity: 10, platform: "ebay" }) {
+                            title
+                            description
+                            tags
+                        }
+                    }
+                """;
 
-        graphQlTester.document(query)
+        when(promptService.getResponseAndSaveHistoryIfUserPresent(any(ItemDescriptionRequest.class), any(Principal.class)))
+                .thenReturn(response);
+
+        tester.document(query)
                 .execute()
-                .path("generateListing")
-                .hasValue()
-                .path("generateListing.title")
-                .entity(String.class)
-                .isEqualTo("Casual T-Shirt")
-                .path("generateListing.description")
-                .entity(String.class)
-                .isEqualTo("A comfortable and stylish t-shirt for everyday wear.")
-                .path("generateListing.tags")
-                .entityList(String.class)
-                .containsExactly("#casual", "#t-shirt", "#young adults");
+                .path("generateListing.title").entity(String.class).isEqualTo("Test Title")
+                .path("generateListing.description").entity(String.class).isEqualTo("Test Description")
+                .path("generateListing.tags").entityList(String.class).hasSize(3);
+
+        verify(promptService, times(1)).getResponseAndSaveHistoryIfUserPresent(any(ItemDescriptionRequest.class), any(Principal.class));
     }
 
     @Test
     void shouldReturnClothesInfo() {
-        PromptResponse response = new PromptResponse();
-        response.setTitle("Casual T-Shirt");
-        when(promptService.getResponse(any(ClothesRequest.class))).thenReturn(response);
-
         String query = """
-            query {
-                generateListingClothes(input: { responseStyle: "casual", item: "t-shirt", targetAudience: "young adults" }) {
-                    title
-                }
-            }
-        """;
+                    query {
+                        generateListingClothes(input: { item: "Test Item", responseStyle: "casual", targetAudience: "young adults", tagsQuantity: 10, platform: "ebay" }) {
+                            title
+                            description
+                            tags
+                        }
+                    }
+                """;
 
-        graphQlTester.document(query)
+        when(promptService.getResponseAndSaveHistoryIfUserPresent(any(ClothesRequest.class), any(Principal.class)))
+                .thenReturn(response);
+
+        tester.document(query)
                 .execute()
-                .path("generateListingClothes")
-                .hasValue()
-                .path("generateListingClothes.title")
-                .entity(String.class)
-                .isEqualTo("Casual T-Shirt");
+                .path("generateListingClothes.title").entity(String.class).isEqualTo("Test Title")
+                .path("generateListingClothes.description").entity(String.class).isEqualTo("Test Description")
+                .path("generateListingClothes.tags").entityList(String.class).hasSize(3);
+
+        verify(promptService, times(1)).getResponseAndSaveHistoryIfUserPresent(any(ItemDescriptionRequest.class), any(Principal.class));
     }
 
     @Test
     void shouldReturnElectronicsInfo() {
-        PromptResponse response = new PromptResponse();
-        response.setTitle("iPhone 16e 128GB");
-        when(promptService.getResponse(any(ElectronicsRequest.class))).thenReturn(response);
-
         String query = """
-            query {
-                generateListingElectronics(input: { responseStyle: "casual", item: "iPhone 16e 128gb", targetAudience: "young adults" }) {
-                    title
-                }
-            }
-        """;
+                    query {
+                        generateListingElectronics(input: { item: "Test Item", responseStyle: "casual", targetAudience: "young adults", tagsQuantity: 10, platform: "ebay" }) {
+                            title
+                            description
+                            tags
+                        }
+                    }
+                """;
 
-        graphQlTester.document(query)
+        when(promptService.getResponseAndSaveHistoryIfUserPresent(any(ElectronicsRequest.class), any(Principal.class)))
+                .thenReturn(response);
+
+        tester.document(query)
                 .execute()
-                .path("generateListingElectronics")
-                .hasValue()
-                .path("generateListingElectronics.title")
-                .entity(String.class)
-                .isEqualTo("iPhone 16e 128GB");
+                .path("generateListingElectronics.title").entity(String.class).isEqualTo("Test Title")
+                .path("generateListingElectronics.description").entity(String.class).isEqualTo("Test Description")
+                .path("generateListingElectronics.tags").entityList(String.class).hasSize(3);
+
+        verify(promptService, times(1)).getResponseAndSaveHistoryIfUserPresent(any(ItemDescriptionRequest.class), any(Principal.class));
     }
 
     @Test
-    void shouldReturnErrorWhenParsingError() {
-        when(promptService.getResponse(any(PromptRequest.class))).thenThrow(new AiParsingException("Parsing error"));
-        when(messageSource.getMessage(anyString(), any(), any(Locale.class))).thenReturn("Parsing error");
+    void shouldReturnHistory() {
         String query = """
-            query {
-                generateListing(input: { responseStyle: "casual", item: "iPhone 16e 128gb", targetAudience: "young adults" }) {
-                    title
-                }
-            }
-        """;
+                    query {
+                        getHistory {
+                            title
+                            description
+                        }
+                    }
+                """;
+        Page<ItemDescription> page = new PageImpl<>(Arrays.asList(new ItemDescription(), new ItemDescription()));
 
-        graphQlTester.document(query)
+        when(itemsHistoryService.getHistory(anyString(), any(Pageable.class))).thenReturn(page);
+        when(mapper.toResponse(any(ItemDescription.class))).thenReturn(response);
+
+        tester.document(query)
+                .execute()
+                .path("getHistory").entityList(ItemDescriptionResponse.class).hasSize(2)
+                .path("getHistory[1].title").entity(String.class).isEqualTo("Test Title")
+                .path("getHistory[1].description").entity(String.class).isEqualTo("Test Description");
+
+        verify(itemsHistoryService, times(1)).getHistory(anyString(), any(Pageable.class));
+    }
+
+    @Test
+    void shouldNotReturnHistory_NotAuthenticated() {
+        SecurityContextHolder.clearContext();
+        String query = """
+                    query {
+                        getHistory {
+                            title
+                            description
+                        }
+                    }
+                """;
+
+        tester.document(query)
                 .execute()
                 .errors()
-                .satisfy(errors -> {
-                    assertEquals(1, errors.size());
-                    assertTrue(errors.getFirst().getMessage().contains("Parsing error"));
-                });
+                .satisfy(err -> assertEquals(1, err.size()));
+        verify(itemsHistoryService, times(0)).getHistory(anyString(), any(Pageable.class));
     }
 }

@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class PromptRequest {
+public class ItemDescriptionRequest {
 
     @NotBlank(message = "{validation.style.notBlank}")
     @Schema(description = "Style of the response", examples = {"casual", "formal", "youthful", "elegant", "modern"})

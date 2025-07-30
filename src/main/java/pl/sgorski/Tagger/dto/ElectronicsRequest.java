@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = false)
 @Data
-public class ElectronicsRequest extends PromptRequest{
+public class ElectronicsRequest extends ItemDescriptionRequest {
 
     @Schema(description = "Brand of the electronic item", examples = {"Apple", "Samsung", "Sony", "LG", "Dell"})
     private String brand;

@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
-import pl.sgorski.Tagger.dto.PromptResponse;
+import pl.sgorski.Tagger.dto.ItemDescriptionResponse;
 import pl.sgorski.Tagger.exception.AiParsingException;
 
 @Log4j2
@@ -30,8 +30,8 @@ public class AiService {
     private final ObjectMapper objectMapper;
     private final MessageSource messageSource;
 
-    public PromptResponse generateResponse(String userPrompt) {
-        var outputConverter = new BeanOutputConverter<>(PromptResponse.class);
+    public ItemDescriptionResponse generateResponse(String userPrompt) {
+        var outputConverter = new BeanOutputConverter<>(ItemDescriptionResponse.class);
         String jsonSchema = outputConverter.getJsonSchema();
         Prompt prompt;
         String content;
@@ -44,7 +44,7 @@ public class AiService {
             prompt = createPromptWithoutSchemaSupport(userPrompt, jsonSchema);
             content = getAiResponseText(prompt);
             try {
-                return objectMapper.readValue(content, PromptResponse.class);
+                return objectMapper.readValue(content, ItemDescriptionResponse.class);
             } catch (Exception ex) {
                 log.error("Failed to parse response: {}", content);
                 String message = messageSource.getMessage("exception.ai.parsing", null, LocaleContextHolder.getLocale());

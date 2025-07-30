@@ -16,7 +16,7 @@ import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.ai.retry.NonTransientAiException;
 import org.springframework.context.MessageSource;
 import org.springframework.web.client.RestClientException;
-import pl.sgorski.Tagger.dto.PromptResponse;
+import pl.sgorski.Tagger.dto.ItemDescriptionResponse;
 import pl.sgorski.Tagger.exception.AiParsingException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -62,7 +62,7 @@ public class AiServiceTest {
 
         String userPrompt = "Describe the clothing item.";
 
-        PromptResponse result = aiService.generateResponse(userPrompt);
+        ItemDescriptionResponse result = aiService.generateResponse(userPrompt);
 
         assertNotNull(result);
         assertEquals("T-shirt", result.getTitle());
@@ -72,7 +72,7 @@ public class AiServiceTest {
 
     @Test
     void shouldReturn_GenerateResponseWithObjectMapper() throws Exception {
-        PromptResponse promptResponse = new PromptResponse();
+        ItemDescriptionResponse promptResponse = new ItemDescriptionResponse();
         promptResponse.setTitle("T-shirt");
         promptResponse.setDescription("Cotton tshirt");
         promptResponse.setTags(new String[]{"#fashion", "#cotton"});
@@ -87,7 +87,7 @@ public class AiServiceTest {
 
         String userPrompt = "Describe the clothing item.";
 
-        PromptResponse result = aiService.generateResponse(userPrompt);
+        ItemDescriptionResponse result = aiService.generateResponse(userPrompt);
 
         assertNotNull(result);
         assertEquals("T-shirt", result.getTitle());

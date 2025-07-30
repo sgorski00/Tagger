@@ -23,3 +23,6 @@ test-class:
 
 shell:
 	docker exec -it tagger_java sh
+
+psql:
+	docker exec -it tagger_postgres psql -U postgres -d Tagger
