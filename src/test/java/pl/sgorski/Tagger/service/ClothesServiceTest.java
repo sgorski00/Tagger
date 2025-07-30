@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.MessageSource;
 import pl.sgorski.Tagger.dto.ClothesRequest;
 import pl.sgorski.Tagger.dto.ItemDescriptionRequest;
 import pl.sgorski.Tagger.dto.ItemDescriptionResponse;
@@ -18,6 +19,9 @@ public class ClothesServiceTest {
 
     @Mock
     private AiService aiService;
+
+    @Mock
+    private MessageSource messageSource;
 
     @InjectMocks
     private ClothesService clothesService;

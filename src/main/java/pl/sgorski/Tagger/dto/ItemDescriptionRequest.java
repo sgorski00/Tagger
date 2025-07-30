@@ -9,20 +9,20 @@ import lombok.Data;
 @Data
 public class ItemDescriptionRequest {
 
-    @NotBlank(message = "Style must be specified")
+    @NotBlank(message = "{validation.style.notBlank}")
     @Schema(description = "Style of the response", examples = {"casual", "formal", "youthful", "elegant", "modern"})
     private String responseStyle;
 
-    @NotBlank(message = "Target audience must be specified")
+    @NotBlank(message = "{validation.target.notBlank}")
     @Schema(description = "Target audience for the product", examples = {"teenagers", "adults", "seniors", "children"})
     private String targetAudience;
 
-    @NotBlank(message = "Item name cannot be blank")
+    @NotBlank(message = "{validation.item.notBlank}")
     @Schema(description = "Name of the item", examples = {"Smartphone", "T-shirt", "Jeans", "iPhone 16e 128GB", "Toyota Corolla 2023"})
     private String item;
 
-    @Min(value = 1, message = "Quantity must be at least 1")
-    @Max(value = 50, message = "Quantity cannot exceed 50")
+    @Min(value = 1, message = "{validation.tags.min}")
+    @Max(value = 50, message = "{validation.tags.max}")
     @Schema(description = "Number of tags to generate", example = "10", defaultValue = "10")
     private int tagsQuantity = 10;
 

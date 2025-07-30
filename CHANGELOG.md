@@ -8,6 +8,12 @@
 - Migrations for PostgreSQL database
 - Security configuration
 
+## [1.0.3] - 2025-07-06
+### Added
+- Multilanguage support
+- Locale Resolver (Accept-Language header)
+- GraphQL custom fetcher exception handling
+
 ## [1.0.2] - 2025-07-03
 ### Added
 - GraphQL support

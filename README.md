@@ -16,6 +16,13 @@ At this link you can also find the documentation for the API.
 
 ## API
 
+Tagger provides both REST and GraphQL APIs for generating tags, titles, and descriptions for various items. The API is designed to be flexible and easy to use, allowing you to generate content for different platforms and audiences.
+
+Tagger supports multilanguage generation. To change language, you can set the `Accept-Language` header in your request.
+The default language is English (`en`), but you can use any other language that is supported by the OpenAI API.
+
+Error messages are available only in english and polish.
+
 ---
 
 ## REST

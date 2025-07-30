@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.MessageSource;
 import pl.sgorski.Tagger.dto.ElectronicsRequest;
 import pl.sgorski.Tagger.dto.ItemDescriptionRequest;
 import pl.sgorski.Tagger.dto.ItemDescriptionResponse;
@@ -18,6 +19,9 @@ public class ElectronicsServiceTest {
 
     @Mock
     private AiService aiService;
+
+    @Mock
+    private MessageSource messageSource;
 
     @InjectMocks
     private ElectronicsService electronicsService;
