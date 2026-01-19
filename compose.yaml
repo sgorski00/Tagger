@@ -4,7 +4,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     container_name: tagger-java
-    restart: always
+    restart: on-failure:5
     ports:
       - "8080:8080"
     env_file:
@@ -14,7 +14,20 @@ services:
     depends_on:
       - tagger-postgres
     networks:
-      - network
+      - tagger-network
+
+  tagger-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: tagger-frontend
+    restart: on-failure:5
+    ports:
+      - "80:80"
+    depends_on:
+      - tagger-java
+    networks:
+      - tagger-network
 
   tagger-postgres:
     image: postgres:17.2
@@ -29,10 +42,10 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
     networks:
-      - network
+      - tagger-network
 
 networks:
-  network:
+  tagger-network:
     driver: bridge
 
 volumes:

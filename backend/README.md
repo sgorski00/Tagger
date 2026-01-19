@@ -128,8 +128,8 @@ OPENAI_API_MODEL=llama-3.3-70b-versatile
 
 ## Technologies used
 
-- Java 25
-- Spring Boot 4
+- Java 21
+- Spring Boot 3.5.6
 - OpenAI API
 - JUnit 5, Mockito
 - Maven
