@@ -58,6 +58,7 @@ public class PromptService {
 
     private Optional<String> getPrincipalName(Principal principal) {
         return Optional.ofNullable(principal)
+                .filter(p -> !"anonymousUser".equals(p.getName()))
                 .map(Principal::getName)
                 .or(() -> {
                     log.debug("User not logged, cannot retrieve user name.");
