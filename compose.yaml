@@ -1,25 +1,37 @@
 services:
-  tagger_java:
+  tagger-java:
     build:
-      context: .
-      dockerfile: ./docker-files/java/Dockerfile
-    container_name: tagger_java
-    restart: always
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: tagger-java
+    restart: on-failure:5
     ports:
       - "8080:8080"
     env_file:
       - .env
     volumes:
-      - .:/app
       - ~/.m2:/root/.m2
     depends_on:
-      - tagger_postgres
+      - tagger-postgres
     networks:
-      - network
+      - tagger-network
 
-  tagger_postgres:
+  tagger-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: tagger-frontend
+    restart: on-failure:5
+    ports:
+      - "80:80"
+    depends_on:
+      - tagger-java
+    networks:
+      - tagger-network
+
+  tagger-postgres:
     image: postgres:17.2
-    container_name: tagger_postgres
+    container_name: tagger-postgres
     restart: always
     ports:
       - "5432:5432"
@@ -28,14 +40,14 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
     networks:
-      - network
+      - tagger-network
 
 networks:
-  network:
+  tagger-network:
     driver: bridge
 
 volumes:
-    postgres_data:
+    postgres-data:
         driver: local
