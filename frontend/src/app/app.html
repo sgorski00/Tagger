@@ -1,6 +1,6 @@
 <header>
   <div class="content">
-      <h1 class="app-name">{{ title() }}</h1>
+      <h1 class="app-name">{{ title }}</h1>
       <nav>
           <a href="#">Home</a>
           <div class="dropdown">
@@ -9,7 +9,7 @@
                   <span class="bar"></span>
                   <span class="bar"></span>
               </button>
-              <div class="dropdown-content">
+              <div [class.show]="isMenuOpen()" class="dropdown-content">
                   <a href="#">Log in</a>
               </div>
           </div>

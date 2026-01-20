@@ -8,10 +8,14 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.scss'
 })
 export class App {
-  protected readonly title = signal('Tagger - powered by AI');
-  menuOpen = false;
+  protected readonly title = 'Tagger - powered by AI';
+  private readonly menuOpen = signal(false);
 
-  toggleMenu() {
-    this.menuOpen = !this.menuOpen;
+  protected toggleMenu(): void {
+    this.menuOpen.update(v => !v);
+  }
+
+  protected isMenuOpen(): boolean {
+    return this.menuOpen();
   }
 }
