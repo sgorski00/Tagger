@@ -3,9 +3,9 @@ import {Component, signal} from '@angular/core';
 @Component({
   selector: 'app-generate-page',
   imports: [],
-  templateUrl: './generate-page.component.html',
-  styleUrl: './generate-page.component.scss',
+  templateUrl: './generate-page.html',
+  styleUrl: './generate-page.scss',
 })
-export class GeneratePageComponent {
+export class GeneratePage {
   protected readonly bgColor = signal('#3b7')
 }
