@@ -1,21 +1,14 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import {Header} from './shared/header/header';
+import {Footer} from './shared/footer/footer';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, Header, Footer],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
 export class App {
-  protected readonly title = 'Tagger - powered by AI';
-  private readonly menuOpen = signal(false);
 
-  protected toggleMenu(): void {
-    this.menuOpen.update(v => !v);
-  }
-
-  protected isMenuOpen(): boolean {
-    return this.menuOpen();
-  }
 }

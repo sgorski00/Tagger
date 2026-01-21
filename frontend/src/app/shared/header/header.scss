@@ -1,0 +1,109 @@
+header {
+  padding: 1rem 2rem;
+
+  .content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .app-name {
+    font-family: 'Playfair Display', serif;
+    font-weight: 500;
+    font-size: 1.5rem;
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    position: relative;
+
+    a {
+      text-decoration: none;
+      color: var(--default-font-color);
+      font-weight: 400;
+    }
+
+    .dropdown {
+      position: relative;
+
+      .dropbtn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 25px;
+        height: 20px;
+        padding: 0;
+
+        .bar {
+          height: 3px;
+          width: 100%;
+          background-color: var(--default-font-color);
+          border-radius: 2px;
+        }
+      }
+
+      .dropdown-content {
+        visibility: hidden;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        margin-top: .5rem;
+        min-width: 160px;
+        padding: .5rem 0;
+        opacity: 0;
+        transform: translateY(-4px);
+        transition: opacity .2s ease, transform .2s ease;
+        background-color: var(--default-bg-color);
+        border-radius: 6px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        z-index: 1000;
+
+        &.show {
+          opacity: 1;
+          visibility: visible;
+          transform: translateY(0);
+        }
+
+        a {
+          display: block;
+          padding: 0.5rem 1rem;
+          color: var(--default-font-color);
+          text-decoration: none;
+          font-size: 1.1rem;
+        }
+
+        a:hover {
+          background-color: rgba(0,0,0,0.05);
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  header {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    height: 96px;
+    background-color: var(--default-bg-color);
+    z-index: 1000;
+  }
+
+  header .content {
+    flex-direction: column;
+    height: 100%;
+  }
+
+  header nav {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
