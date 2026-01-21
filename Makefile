@@ -26,3 +26,8 @@ shell:
 
 psql:
 	docker exec -it tagger-postgres psql -U postgres -d Tagger
+
+restart-front:
+	docker compose build tagger-frontend
+	docker compose down tagger-frontend
+	docker compose up -d tagger-frontend

@@ -99,11 +99,7 @@ footer {
     h2 {
       color: #633;
       font-size: 1.8rem;
-      margin-bottom: 1.3rem;
-    }
-
-    .spacer {
-      height: 1rem;
+      margin-bottom: 1rem;
     }
 
     .social-buttons {
@@ -141,15 +137,28 @@ footer {
 }
 
 @media (max-width: 480px) {
+  header {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    height: 96px;
+    background-color: var(--default-bg-color);
+    z-index: 1000;
+  }
+
   header .content {
     flex-direction: column;
-    align-items: center;
-    gap: 15px;
+    height: 100%;
   }
 
   header nav {
     width: 100%;
     justify-content: space-between;
+  }
+
+  .page {
+    padding-top: 96px;
   }
 
   footer .content {
