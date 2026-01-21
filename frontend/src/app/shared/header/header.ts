@@ -1,4 +1,5 @@
-import {Component, signal} from '@angular/core';
+import {Component, inject} from '@angular/core';
+import {MenuStateService} from './menu-state/menu-state.service';
 
 @Component({
   selector: 'app-header',
@@ -8,13 +9,10 @@ import {Component, signal} from '@angular/core';
 })
 export class Header {
   protected readonly title: string = 'Tagger -  powered by AI'
-  private readonly menuOpen = signal(false);
+  protected readonly menuStateService = inject(MenuStateService)
 
-  protected toggleMenu(): void {
-    this.menuOpen.update(v => !v);
-  }
-
-  protected isMenuOpen(): boolean {
-    return this.menuOpen();
+  protected readonly isMenuOpen = this.menuStateService.isMenuOpen;
+  protected toggleMenu() {
+    this.menuStateService.toggleMenu();
   }
 }
