@@ -7,5 +7,5 @@ import {Component, signal} from '@angular/core';
   styleUrl: './generate-page.scss',
 })
 export class GeneratePage {
-  protected readonly bgColor = signal('#3b7')
+
 }
