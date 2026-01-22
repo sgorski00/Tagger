@@ -1,12 +1,32 @@
 <form class="dynamic-form">
     <div class="tabs">
-        <button class="tab active" type="button">General</button>
-        <button class="tab" type="button">Clothes</button>
-        <button class="tab" type="button">Electronic</button>
+        @for (tab of tabs; track $index; let i = $index) {
+            <button
+                    type="button"
+                    class="tab"
+                    [class.active]="activeTab() === i"
+                    (click)="setActiveTab(i)"
+            >
+                {{ tab | titlecase }}
+            </button>
+        }
     </div>
 
     <div class="form-content">
-        <!-- tutaj dynamicznie zmieniana zawartość formularza -->
+        @switch (activeTab()) {
+            @case (0) {
+                <h1>Tab 1</h1>
+            }
+            @case (1) {
+                <h1>Tab 2</h1>
+            }
+            @case (2) {
+                <h1>Tab 3</h1>
+            }
+            @default {
+                <h1>Something went wrong...</h1>
+            }
+        }
     </div>
 
 </form>
