@@ -1,17 +1,23 @@
-$page-padding: 2rem;
-$page-bg-color: #f0f0f0;
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: var(--content-bg);
+}
 
 .page-wrapper {
-  padding: $page-padding;
-  background-color: $page-bg-color;
-  min-height: 100vh;
+  padding: 2rem;
 
-  h1 {
+  .page-title {
     color: #333;
     font-size: 2rem;
+    margin-bottom: 2rem;
   }
 
-  p {
-    color: #666;
+  .page-content-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
   }
 }

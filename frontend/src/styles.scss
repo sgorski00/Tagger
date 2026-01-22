@@ -1,20 +1,21 @@
 :root {
-  --default-bg-color: #f3efe9;
-  --default-font-family: 'Open Sans', sans-serif;
-  --default-font-color: #545454;
+  --layout-bg: #f3efe9;
+  --content-bg: #e0d7cd;
+  --text-family-base: 'Open Sans', sans-serif;
+  --text-primary-color: #545454;
 }
 
 *,
 *::before,
 *::after {
     box-sizing: border-box;
-    font-family: var(--default-font-family);
-    color: var(--default-font-color);
+    font-family: var(--text-family-base);
+    color: var(--text-primary-color);
     margin: 0;
     padding: 0;
 }
 
 body {
-    background-color: var(--default-bg-color);
+    background-color: var(--layout-bg);
     min-height: 100vh;
 }

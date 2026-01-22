@@ -1,0 +1,95 @@
+:host {
+  --form-bg: #f7f4ef;
+  --form-border: #d1c8bd;
+
+  --input-bg: #ffffff;
+  --input-border: #c6bdb2;
+  --input-border-focus: #a89f94;
+  --input-text: #3f3f3f;
+  --input-placeholder: #8a857f;
+
+  --scrollbar-thumb: #b3aba2;
+  --scrollbar-thumb-hover: #9f978e;
+
+  --tab-text: #3f3f3f;
+  --tab-text-hover: #8a857f;
+  --tab-text-active: #a89f94;
+  --tab-border: #d1c8bd;
+  --tab-border-active: #a89f94;
+
+  display: block;
+  width: 100%;
+  max-width: 720px;
+}
+
+.dynamic-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  max-width: 900px;
+  padding: 1.5rem;
+  border: 1px solid var(--form-border);
+  border-radius: 12px;
+  background: var(--form-bg);
+  color: var(--text-primary-color);
+}
+
+
+.tabs {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--tab-border);
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) transparent;
+}
+
+.tabs::-webkit-scrollbar {
+  height: 6px;
+}
+
+.tabs::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 3px;
+}
+
+.scroll-x::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbar-thumb-hover);
+}
+
+.tab {
+  padding: 0.75rem 1.25rem;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--tab-text);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: var(--tab-text-hover);
+  }
+
+  &.active {
+    color: var(--tab-text-active);
+    border-bottom-color: var(--tab-border-active);
+    font-weight: 500;
+  }
+}
+
+.form-content {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+
+  padding-top: 1rem;
+}
+
+@media (max-width: 480px) {
+  .form-content {
+    grid-template-columns: 1fr;
+  }
+}
