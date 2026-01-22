@@ -1,4 +1,4 @@
-<form class="dynamic-form">
+<div class="dynamic-form">
     <div class="tabs">
         @for (tab of tabs; track $index; let i = $index) {
             <button
@@ -12,10 +12,10 @@
         }
     </div>
 
-    <div class="form-content">
+    <div class="form-contaier">
         @switch (activeTab()) {
             @case (0) {
-                <h1>Tab 1</h1>
+                <app-general-form />
             }
             @case (1) {
                 <h1>Tab 2</h1>
@@ -28,5 +28,4 @@
             }
         }
     </div>
-
-</form>
+</div>

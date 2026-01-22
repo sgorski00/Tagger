@@ -1,0 +1,121 @@
+:host {
+  --input-bg: #ffffff;
+  --input-border: #c6bdb2;
+  --input-border-focus: #a89f94;
+  --input-text: #3f3f3f;
+  --input-placeholder: #8a857f;
+
+  --submit-button-bg: #4a90e2;
+  --submit-button-bg-hover: #357abd;
+  --submit-button-text: #ffffff;
+  --clear-button-bg: #e94e77;
+  --clear-button-bg-hover: #d7375c;
+  --clear-button-text: #ffffff;
+
+  display: block;
+  width: 100%;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    &.optional label::after {
+      content: " (optional)";
+      font-weight: 400;
+      font-size: 0.8rem;
+      color: var(--input-placeholder);
+    }
+
+    label {
+      padding-left: 5px;
+      font-weight: 500;
+      color: var(--input-text);
+    }
+
+    .input {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.95rem;
+      border: 1px solid var(--input-border);
+      border-radius: 8px;
+      background-color: var(--input-bg);
+      color: var(--input-text);
+
+      &::placeholder {
+        color: var(--input-placeholder);
+      }
+
+      &:focus {
+        outline: none;
+        border-color: var(--input-border-focus);
+        box-shadow: 0 0 0 2px rgba(168, 159, 148, 0.3);
+      }
+    }
+
+    select.input {
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Cpath fill='%238a857f' d='M4 6l4 4 4-4z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.5rem center;
+      background-size: 0.65rem auto;
+    }
+  }
+
+  .buttons-container {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    margin-top: 1rem;
+
+    .btn {
+      padding: 0.5rem 1.25rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s ease, color 0.2s ease;
+      min-width: 120px;
+    }
+
+    .submit-btn {
+      background-color: var(--submit-button-bg);
+      color: var(--submit-button-text);
+
+      &:hover {
+        background-color: var(--submit-button-bg-hover);
+      }
+    }
+
+    .clear-btn {
+      background-color: var(--clear-button-bg);
+      color: var(--clear-button-text);
+
+      &:hover {
+        background-color: var(--clear-button-bg-hover);
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  form {
+    .buttons-container {
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+
+      .btn {
+        width: 100%;
+      }
+    }
+  }
+}

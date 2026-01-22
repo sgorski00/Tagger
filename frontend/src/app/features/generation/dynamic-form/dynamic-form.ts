@@ -1,10 +1,12 @@
 import {Component, signal} from '@angular/core';
 import {TitleCasePipe} from "@angular/common";
+import {GeneralForm} from "./general-form/general-form";
 
 @Component({
   selector: 'app-dynamic-form',
   imports: [
-    TitleCasePipe
+    TitleCasePipe,
+    GeneralForm
   ],
   templateUrl: './dynamic-form.html',
   styleUrl: './dynamic-form.scss',

@@ -2,12 +2,6 @@
   --form-bg: #f7f4ef;
   --form-border: #d1c8bd;
 
-  --input-bg: #ffffff;
-  --input-border: #c6bdb2;
-  --input-border-focus: #a89f94;
-  --input-text: #3f3f3f;
-  --input-placeholder: #8a857f;
-
   --scrollbar-thumb: #b3aba2;
   --scrollbar-thumb-hover: #9f978e;
 
@@ -80,16 +74,8 @@
   }
 }
 
-.form-content {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+.form-contaier {
+  display: flex;
   gap: 1.25rem;
-
   padding-top: 1rem;
-}
-
-@media (max-width: 480px) {
-  .form-content {
-    grid-template-columns: 1fr;
-  }
 }
