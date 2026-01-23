@@ -2,7 +2,7 @@ import {Component, inject, Input, signal, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {TitleCasePipe} from "@angular/common";
 import {FormMode} from "../form-mode";
-import CustomFormBuilder from "../custom-form-builder/custom-form-builder.service";
+import {CustomFormBuilder} from "../custom-form-builder/custom-form-builder.service";
 
 @Component({
     selector: 'app-form-shell',
@@ -30,7 +30,7 @@ export class FormShell implements OnInit{
 
     protected onSubmit(): void {
         this.submitted.set(true)
-        console.log(this.form.value);
+        console.log(this.form.value); //todo: clothes/electronics form not sending with all fields
     }
 
     protected onClear(): void {

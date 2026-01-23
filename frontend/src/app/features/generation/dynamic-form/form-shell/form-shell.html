@@ -52,6 +52,40 @@
         }
     </div>
 
+    @if (mode === 'clothes') {
+        <div class="form-field optional">
+            <label for="color">Color</label>
+            <input id="color" formControlName="color" type="text" class="input" placeholder="Enter item color"/>
+        </div>
+
+        <div class="form-field optional">
+            <label for="size">Size</label>
+            <input id="size" formControlName="size" type="text" class="input" placeholder="Enter item size"/>
+        </div>
+
+        <div class="form-field optional">
+            <label for="material">Material</label>
+            <input id="material" formControlName="material" type="text" class="input" placeholder="Enter item material"/>
+        </div>
+    }
+
+    @if (mode === 'electronics') {
+        <div class="form-field optional">
+            <label for="model">Model</label>
+            <input id="model" formControlName="model" type="text" class="input" placeholder="Enter item model"/>
+        </div>
+
+        <div class="form-field optional">
+            <label for="color">Color</label>
+            <input id="color" formControlName="color" type="text" class="input" placeholder="Enter item color"/>
+        </div>
+
+        <div class="form-field optional">
+            <label for="monthsOfWarranty">Months of warranty</label>
+            <input id="monthsOfWarranty" formControlName="monthsOfWarranty" type="number" class="input" placeholder="12"/>
+        </div>
+    }
+
     <div class="buttons-container">
         <button type="submit" [disabled]="!form.valid" class="btn submit-btn">Generate</button>
         <button type="button" class="btn clear-btn" (click)="onClear()">Clear</button>
