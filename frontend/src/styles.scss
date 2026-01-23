@@ -3,6 +3,7 @@
   --content-bg: #e0d7cd;
   --text-family-base: 'Open Sans', sans-serif;
   --text-primary-color: #545454;
+  --text-warning-color: #cd3333;
 }
 
 *,
@@ -18,4 +19,8 @@
 body {
     background-color: var(--layout-bg);
     min-height: 100vh;
+}
+
+.warning {
+    color: var(--text-warning-color);
 }

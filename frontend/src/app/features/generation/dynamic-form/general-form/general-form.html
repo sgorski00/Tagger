@@ -1,41 +1,58 @@
-<form>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="form-field">
         <label for="item">Item</label>
-        <input id="item" type="text" class="input" placeholder="Enter item"/>
+        <input id="item" formControlName="item" type="text" class="input" placeholder="Enter item name"/>
+        @if (form.controls.item.invalid && (form.controls.item.dirty || form.controls.item.touched || submitted())) {
+            <small class="warning">Item name is required and should be at least {{ itemNameMinLength }} characters long</small>
+        }
     </div>
 
     <div class="form-field optional">
         <label for="tagsQuantity">Tags Quantity</label>
-        <input id="tagsQuantity" type="number" class="input" placeholder="20"/>
+        <input id="tagsQuantity"
+               formControlName="tagsQuantity"
+               [min]="tagsQuantityMin"
+               [max]="tagsQuantityMax"
+               type="number" class="input" placeholder="10"
+        />
+        @if (form.controls.tagsQuantity.invalid && (form.controls.tagsQuantity.dirty || form.controls.tagsQuantity.touched || submitted())) {
+            <small class="warning">Tags quantity should be between {{ tagsQuantityMin }} and {{ tagsQuantityMax }} or empty</small>
+        }
     </div>
 
     <div class="form-field optional">
         <label for="platform">Platform</label>
-        <select id="platform" class="input">
-            <option value="">Select platform</option>
-            <option value="amazon">Amazon</option>
-            <option value="ebay">eBay</option>
-            <option value="vinted">Vinted</option>
+        <select id="platform" formControlName="platform" class="input">
+            <option value="" disabled>Select Platform</option>
+            @for (p of platforms; track p) {
+                <option [value]="p">{{ p | titlecase }}</option>
+            }
         </select>
     </div>
 
     <div class="form-field">
         <label for="targetAudience">Target Audience</label>
-        <input id="targetAudience" type="text" class="input" placeholder="Enter target audience"/>
+        <input id="targetAudience" formControlName="targetAudience" type="text" class="input" placeholder="Enter target audience"/>
+        @if (form.controls.targetAudience.invalid && (form.controls.targetAudience.dirty || form.controls.targetAudience.touched || submitted())) {
+            <small class="warning">Target audience is required</small>
+        }
     </div>
 
     <div class="form-field">
         <label for="responseStyle">Response Style</label>
-        <select id="responseStyle" class="input">
-            <option value="">Select style</option>
-            <option value="formal">Formal</option>
-            <option value="casual">Casual</option>
-            <option value="humorous">Humorous</option>
+        <select id="responseStyle" formControlName="responseStyle" class="input">
+            <option value="" disabled>Select Response Style</option>
+            @for (rs of responseStyles; track rs) {
+                <option [value]="rs">{{ rs | titlecase }}</option>
+            }
         </select>
+        @if (form.controls.responseStyle.invalid && (form.controls.responseStyle.dirty || form.controls.responseStyle.touched || submitted())) {
+            <small class="warning">Response style is required</small>
+        }
     </div>
 
     <div class="buttons-container">
-        <button type="submit" class="btn submit-btn">Generate</button>
-        <button type="button" class="btn clear-btn">Clear</button>
+        <button type="submit" [disabled]="form.invalid" class="btn submit-btn">Generate</button>
+        <button type="button" class="btn clear-btn" (click)="onClear()">Clear</button>
     </div>
 </form>
