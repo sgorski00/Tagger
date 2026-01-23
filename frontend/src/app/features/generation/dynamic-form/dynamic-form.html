@@ -1,11 +1,11 @@
 <div class="dynamic-form">
     <div class="tabs">
-        @for (tab of tabs; track $index; let i = $index) {
+        @for (tab of tabs; track $index;) {
             <button
                     type="button"
                     class="tab"
-                    [class.active]="activeTab() === i"
-                    (click)="setActiveTab(i)"
+                    [class.active]="mode() === tab"
+                    (click)="setMode(tab)"
             >
                 {{ tab | titlecase }}
             </button>
@@ -13,19 +13,6 @@
     </div>
 
     <div class="form-contaier">
-        @switch (activeTab()) {
-            @case (0) {
-                <app-general-form />
-            }
-            @case (1) {
-                <h1>Tab 2</h1>
-            }
-            @case (2) {
-                <h1>Tab 3</h1>
-            }
-            @default {
-                <h1>Something went wrong...</h1>
-            }
-        }
+        <app-form-shell [mode]="mode()"/>
     </div>
 </div>

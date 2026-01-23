@@ -97,6 +97,11 @@ form {
       &:hover {
         background-color: var(--submit-button-bg-hover);
       }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
     }
 
     .clear-btn {

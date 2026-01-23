@@ -2,8 +2,8 @@
     <div class="form-field">
         <label for="item">Item</label>
         <input id="item" formControlName="item" type="text" class="input" placeholder="Enter item name"/>
-        @if (form.controls.item.invalid && (form.controls.item.dirty || form.controls.item.touched || submitted())) {
-            <small class="warning">Item name is required and should be at least {{ itemNameMinLength }} characters long</small>
+        @if (form.controls['item'].invalid && (form.controls['item'].dirty || form.controls['item'].touched || submitted())) {
+            <small class="warning">Item name is required and should be at least {{ formConfig.itemNameMinLength }} characters long</small>
         }
     </div>
 
@@ -11,12 +11,12 @@
         <label for="tagsQuantity">Tags Quantity</label>
         <input id="tagsQuantity"
                formControlName="tagsQuantity"
-               [min]="tagsQuantityMin"
-               [max]="tagsQuantityMax"
+               [min]="formConfig.tagsQuantityMin"
+               [max]="formConfig.tagsQuantityMax"
                type="number" class="input" placeholder="10"
         />
-        @if (form.controls.tagsQuantity.invalid && (form.controls.tagsQuantity.dirty || form.controls.tagsQuantity.touched || submitted())) {
-            <small class="warning">Tags quantity should be between {{ tagsQuantityMin }} and {{ tagsQuantityMax }} or empty</small>
+        @if (form.controls['tagsQuantity'].invalid && (form.controls['tagsQuantity'].dirty || form.controls['tagsQuantity'].touched || submitted())) {
+            <small class="warning">Tags quantity should be between {{ formConfig.tagsQuantityMin }} and {{ formConfig.tagsQuantityMax }} or empty</small>
         }
     </div>
 
@@ -24,7 +24,7 @@
         <label for="platform">Platform</label>
         <select id="platform" formControlName="platform" class="input">
             <option value="" disabled>Select Platform</option>
-            @for (p of platforms; track p) {
+            @for (p of formConfig.platforms; track p) {
                 <option [value]="p">{{ p | titlecase }}</option>
             }
         </select>
@@ -32,8 +32,9 @@
 
     <div class="form-field">
         <label for="targetAudience">Target Audience</label>
-        <input id="targetAudience" formControlName="targetAudience" type="text" class="input" placeholder="Enter target audience"/>
-        @if (form.controls.targetAudience.invalid && (form.controls.targetAudience.dirty || form.controls.targetAudience.touched || submitted())) {
+        <input id="targetAudience" formControlName="targetAudience" type="text" class="input"
+               placeholder="Enter target audience"/>
+        @if (form.controls['targetAudience'].invalid && (form.controls['targetAudience'].dirty || form.controls['targetAudience'].touched || submitted())) {
             <small class="warning">Target audience is required</small>
         }
     </div>
@@ -42,17 +43,17 @@
         <label for="responseStyle">Response Style</label>
         <select id="responseStyle" formControlName="responseStyle" class="input">
             <option value="" disabled>Select Response Style</option>
-            @for (rs of responseStyles; track rs) {
+            @for (rs of formConfig.responseStyles; track rs) {
                 <option [value]="rs">{{ rs | titlecase }}</option>
             }
         </select>
-        @if (form.controls.responseStyle.invalid && (form.controls.responseStyle.dirty || form.controls.responseStyle.touched || submitted())) {
+        @if (form.controls['responseStyle'].invalid && (form.controls['responseStyle'].dirty || form.controls['responseStyle'].touched || submitted())) {
             <small class="warning">Response style is required</small>
         }
     </div>
 
     <div class="buttons-container">
-        <button type="submit" [disabled]="form.invalid" class="btn submit-btn">Generate</button>
+        <button type="submit" [disabled]="!form.valid" class="btn submit-btn">Generate</button>
         <button type="button" class="btn clear-btn" (click)="onClear()">Clear</button>
     </div>
 </form>

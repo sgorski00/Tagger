@@ -1,21 +1,22 @@
 import {Component, signal} from '@angular/core';
 import {TitleCasePipe} from "@angular/common";
-import {GeneralForm} from "./general-form/general-form";
+import {FormShell} from "./form-shell/form-shell";
+import {FORM_MODES, FormMode} from "./form-mode";
 
 @Component({
   selector: 'app-dynamic-form',
   imports: [
     TitleCasePipe,
-    GeneralForm
+    FormShell
   ],
   templateUrl: './dynamic-form.html',
   styleUrl: './dynamic-form.scss',
 })
 export class DynamicForm {
-  protected readonly tabs = ['general', 'clothes', 'electronics'];
-  protected readonly activeTab = signal(0);
+  protected readonly mode = signal<FormMode>('general');
+  protected readonly tabs: readonly FormMode[] = FORM_MODES;
 
-  protected setActiveTab(index: number) {
-    this.activeTab.set(index);
+  protected setMode(mode: FormMode) {
+    this.mode.set(mode);
   }
 }

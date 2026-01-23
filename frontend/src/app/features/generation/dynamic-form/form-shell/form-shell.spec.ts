@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GeneralForm } from './general-form';
+import { FormShell } from './form-shell';
 
-describe('GeneralForm', () => {
-  let component: GeneralForm;
-  let fixture: ComponentFixture<GeneralForm>;
+describe('FormShell', () => {
+  let component: FormShell;
+  let fixture: ComponentFixture<FormShell>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GeneralForm]
+      imports: [FormShell]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(GeneralForm);
+    fixture = TestBed.createComponent(FormShell);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
