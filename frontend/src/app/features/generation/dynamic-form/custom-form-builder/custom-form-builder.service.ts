@@ -8,6 +8,8 @@ import {FormMode} from "../form-mode";
 export class CustomFormBuilder {
     readonly #tagsQuantityMin = 1;
     readonly #tagsQuantityMax = 30;
+    readonly #monthsOfWarrantyMin = 0;
+    readonly #monthsOfWarrantyMax = 120;
     readonly #itemNameMinLength = 3;
     readonly #platforms: Array<string> = ['amazon', 'ebay', 'vinted'];
     readonly #responseStyles: Array<string> = ['formal', 'casual', 'humorous'];
@@ -62,6 +64,8 @@ export class CustomFormBuilder {
         return {
             tagsQuantityMin: this.#tagsQuantityMin,
             tagsQuantityMax: this.#tagsQuantityMax,
+            monthsOfWarrantyMin: this.#monthsOfWarrantyMin,
+            monthsOfWarrantyMax: this.#monthsOfWarrantyMax,
             itemNameMinLength: this.#itemNameMinLength,
             responseStyles: this.#responseStyles,
             platforms: this.#platforms

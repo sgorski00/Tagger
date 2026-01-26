@@ -1,89 +1,106 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div class="form-field">
-        <label for="item">Item</label>
-        <input id="item" formControlName="item" type="text" class="input" placeholder="Enter item name"/>
-        @if (form.controls['item'].invalid && (form.controls['item'].dirty || form.controls['item'].touched || submitted())) {
-            <small class="warning">Item name is required and should be at least {{ formConfig.itemNameMinLength }} characters long</small>
-        }
-    </div>
+    <app-text-input
+            [control]="formControl('item')"
+            controlId="item"
+            label="Item"
+            placeholder="Enter item name"
+            [minLength]="formConfig.itemNameMinLength"
+            [isSubmitted]="submitted()"
+    ></app-text-input>
 
-    <div class="form-field optional">
-        <label for="tagsQuantity">Tags Quantity</label>
-        <input id="tagsQuantity"
-               formControlName="tagsQuantity"
-               [min]="formConfig.tagsQuantityMin"
-               [max]="formConfig.tagsQuantityMax"
-               type="number" class="input" placeholder="10"
-        />
-        @if (form.controls['tagsQuantity'].invalid && (form.controls['tagsQuantity'].dirty || form.controls['tagsQuantity'].touched || submitted())) {
-            <small class="warning">Tags quantity should be between {{ formConfig.tagsQuantityMin }} and {{ formConfig.tagsQuantityMax }} or empty</small>
-        }
-    </div>
+    <app-number-input
+            [control]="formControl('tagsQuantity')"
+            controlId="tagsQuantity"
+            label="Tags Quantity"
+            placeholder="10"
+            [min]="formConfig.tagsQuantityMin"
+            [max]="formConfig.tagsQuantityMax"
+            isOptional=true
+            [isSubmitted]="submitted()"
+    ></app-number-input>
 
-    <div class="form-field optional">
-        <label for="platform">Platform</label>
-        <select id="platform" formControlName="platform" class="input">
-            <option value="" disabled>Select Platform</option>
-            @for (p of formConfig.platforms; track p) {
-                <option [value]="p">{{ p | titlecase }}</option>
-            }
-        </select>
-    </div>
+    <app-select-input
+        [control]="formControl('platform')"
+        controlId="platform"
+        label="Platform"
+        [options]="formConfig.platforms"
+        isOptional=true
+        [isSubmitted]="submitted()"
+    ></app-select-input>
 
-    <div class="form-field">
-        <label for="targetAudience">Target Audience</label>
-        <input id="targetAudience" formControlName="targetAudience" type="text" class="input"
-               placeholder="Enter target audience"/>
-        @if (form.controls['targetAudience'].invalid && (form.controls['targetAudience'].dirty || form.controls['targetAudience'].touched || submitted())) {
-            <small class="warning">Target audience is required</small>
-        }
-    </div>
+    <app-text-input
+            [control]="formControl('targetAudience')"
+            controlId="targetAudience"
+            label="Target Audience"
+            placeholder="Enter target audience"
+            [minLength]="formConfig.itemNameMinLength"
+            [isSubmitted]="submitted()"
+    ></app-text-input>
 
-    <div class="form-field">
-        <label for="responseStyle">Response Style</label>
-        <select id="responseStyle" formControlName="responseStyle" class="input">
-            <option value="" disabled>Select Response Style</option>
-            @for (rs of formConfig.responseStyles; track rs) {
-                <option [value]="rs">{{ rs | titlecase }}</option>
-            }
-        </select>
-        @if (form.controls['responseStyle'].invalid && (form.controls['responseStyle'].dirty || form.controls['responseStyle'].touched || submitted())) {
-            <small class="warning">Response style is required</small>
-        }
-    </div>
+    <app-select-input
+            [control]="formControl('responseStyle')"
+            controlId="responseStyle"
+            label="Response Style"
+            [options]="formConfig.responseStyles"
+            placeholder="Select Response Style"
+            [isSubmitted]="submitted()"
+    ></app-select-input>
 
     @if (mode === 'clothes') {
-        <div class="form-field optional">
-            <label for="color">Color</label>
-            <input id="color" formControlName="color" type="text" class="input" placeholder="Enter item color"/>
-        </div>
-
-        <div class="form-field optional">
-            <label for="size">Size</label>
-            <input id="size" formControlName="size" type="text" class="input" placeholder="Enter item size"/>
-        </div>
-
-        <div class="form-field optional">
-            <label for="material">Material</label>
-            <input id="material" formControlName="material" type="text" class="input" placeholder="Enter item material"/>
-        </div>
+        <app-text-input
+                [control]="formControl('color')"
+                controlId="color" label="Color"
+                placeholder="Enter cloth color"
+                isOptional=true
+                [isSubmitted]="submitted()"
+        ></app-text-input>
+        <app-text-input
+                [control]="formControl('size')"
+                controlId="size"
+                label="Size"
+                placeholder="Enter cloth size"
+                isOptional=true
+                [isSubmitted]="submitted()"
+        ></app-text-input>
+        <app-text-input
+                [control]="formControl('material')"
+                controlId="material"
+                label="Materal"
+                placeholder="Enter cloth material"
+                isOptional=true
+                [isSubmitted]="submitted()"
+        ></app-text-input>
     }
 
     @if (mode === 'electronics') {
-        <div class="form-field optional">
-            <label for="model">Model</label>
-            <input id="model" formControlName="model" type="text" class="input" placeholder="Enter item model"/>
-        </div>
+        <app-text-input
+                [control]="formControl('model')"
+                controlId="model"
+                label="Model"
+                placeholder="Enter item model"
+                isOptional=true
+                [isSubmitted]="submitted()"
+        ></app-text-input>
 
-        <div class="form-field optional">
-            <label for="color">Color</label>
-            <input id="color" formControlName="color" type="text" class="input" placeholder="Enter item color"/>
-        </div>
+        <app-text-input
+                [control]="formControl('color')"
+                controlId="color"
+                label="Color"
+                placeholder="Enter item color"
+                isOptional=true
+                [isSubmitted]="submitted()"
+        ></app-text-input>
 
-        <div class="form-field optional">
-            <label for="monthsOfWarranty">Months of warranty</label>
-            <input id="monthsOfWarranty" formControlName="monthsOfWarranty" type="number" class="input" placeholder="12"/>
-        </div>
+        <app-number-input
+                [control]="formControl('monthsOfWarranty')"
+                controlId="monthsOfWarranty"
+                label="Months of warranty"
+                placeholder="12"
+                [min]="formConfig.monthsOfWarrantyMin"
+                [max]="formConfig.monthsOfWarrantyMax"
+                isOptional=true
+                [isSubmitted]="submitted()"
+        ></app-number-input>
     }
 
     <div class="buttons-container">
