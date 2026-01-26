@@ -1,4 +1,4 @@
-import {Component, inject, Input, signal, OnInit} from '@angular/core';
+import {Component, inject, Input, signal, OnChanges, SimpleChanges} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {TitleCasePipe} from "@angular/common";
 import {FormMode} from "../form-mode";
@@ -13,7 +13,7 @@ import {CustomFormBuilder} from "../custom-form-builder/custom-form-builder.serv
     templateUrl: './form-shell.html',
     styleUrl: './form-shell.scss',
 })
-export class FormShell implements OnInit{
+export class FormShell implements OnChanges{
     @Input({required: true}) mode!: FormMode;
     readonly #customFormBuilder = inject(CustomFormBuilder);
     readonly #fb = new FormBuilder();
@@ -22,10 +22,13 @@ export class FormShell implements OnInit{
     protected formConfig!: any;
     protected readonly submitted = signal(false);
 
-    ngOnInit() {
-        this.form = this.#customFormBuilder.buildForm(this.#fb, this.mode);
-        this.initialFormValue = this.#customFormBuilder.getInitialFormValue(this.mode);
-        this.formConfig = this.#customFormBuilder.getFormConfig();
+    ngOnChanges(changes: SimpleChanges): void {
+        if(changes['mode'] && this.mode) {
+            this.form = this.#customFormBuilder.buildForm(this.#fb, this.mode);
+            this.initialFormValue = this.#customFormBuilder.getInitialFormValue(this.mode);
+            this.formConfig = this.#customFormBuilder.getFormConfig();
+            this.submitted.set(false);
+        }
     }
 
     protected onSubmit(): void {
