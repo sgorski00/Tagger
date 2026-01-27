@@ -2,5 +2,8 @@
     <h1 class="page-title">{{ headerLabel }}</h1>
     <div class="page-content-container">
         <app-dynamic-form (formSubmit)="onGenerate($event)" />
+        @if (response(); as response) {
+            <app-generation-result [response]="response" />
+        }
     </div>
 </div>
