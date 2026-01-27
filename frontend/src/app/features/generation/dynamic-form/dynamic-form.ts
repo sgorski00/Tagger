@@ -25,7 +25,6 @@ export class DynamicForm {
   }
 
   protected onSubmit(data: GeneralGenerationRequest | ElectronicsGenerationsRequest | ClothesGenerationsRequest) {
-    console.log("Dynamic form submitting data:", data);
     this.formSubmit.emit(data);
   }
 }

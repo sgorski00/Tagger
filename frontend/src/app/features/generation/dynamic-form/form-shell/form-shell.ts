@@ -47,7 +47,7 @@ export class FormShell {
             ...this.form()?.value,
             mode: this.mode()
         };
-        console.log("Form shell submitting data:", data);
+        console.log("Submitting form:", data);
         this.submitted.set(true);
         this.formSubmit.emit(data);
     }

@@ -17,9 +17,8 @@ export class GeneratePage {
   protected readonly headerLabel = "Generate your item's info!"
 
   protected onGenerate(data: GeneralGenerationRequest | ElectronicsGenerationsRequest | ClothesGenerationsRequest) {
-    console.log("Generate page submitting data:", data);
     this.#apiClient.getGenerationResponse(data).subscribe((response) => {
-      console.log("Generation response received:", response.title);
+      console.log("Generation response received:", response);
     });
   }
 }
