@@ -106,7 +106,7 @@
         }
 
         <div class="buttons-container">
-            <button type="submit" [disabled]="!form.valid" class="btn submit-btn">Generate</button>
+            <button type="submit" [disabled]="loading() || !form.valid" class="btn submit-btn">Generate</button>
             <button type="button" class="btn clear-btn" (click)="onClear()">Clear</button>
         </div>
     </form>

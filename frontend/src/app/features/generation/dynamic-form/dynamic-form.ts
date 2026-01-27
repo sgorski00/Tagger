@@ -1,4 +1,4 @@
-import {Component, output, signal} from '@angular/core';
+import {Component, input, output, signal} from '@angular/core';
 import {TitleCasePipe} from "@angular/common";
 import {FormShell} from "./form-shell/form-shell";
 import {FORM_MODES, FormMode} from "./form-mode";
@@ -16,6 +16,7 @@ import {ClothesGenerationsRequest} from "../clothes-generations-request";
   styleUrl: './dynamic-form.scss',
 })
 export class DynamicForm {
+  readonly loading = input.required<boolean>();
   protected readonly formSubmit = output<GeneralGenerationRequest | ElectronicsGenerationsRequest | ClothesGenerationsRequest>();
   protected readonly mode = signal<FormMode>('general');
   protected readonly tabs: readonly FormMode[] = FORM_MODES;

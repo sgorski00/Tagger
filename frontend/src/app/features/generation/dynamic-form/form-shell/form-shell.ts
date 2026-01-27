@@ -22,6 +22,7 @@ import {ClothesGenerationsRequest} from "../../clothes-generations-request";
 })
 export class FormShell {
     readonly mode = input.required<FormMode>();
+    readonly loading = input.required<boolean>();
     readonly formSubmit = output<GeneralGenerationRequest | ElectronicsGenerationsRequest | ClothesGenerationsRequest>();
     readonly #customFormBuilder = inject(CustomFormBuilder);
     readonly #fb = new FormBuilder();

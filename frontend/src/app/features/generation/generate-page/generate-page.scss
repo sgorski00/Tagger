@@ -21,6 +21,11 @@
     width: 100%;
     height: 100%;
     gap: 50px;
+
+    #result {
+      width: 100%;
+      max-width: 720px;
+    }
   }
 
   .loading {
@@ -28,4 +33,6 @@
     text-align: center;
     font-weight: 600;
   }
+
+
 }
