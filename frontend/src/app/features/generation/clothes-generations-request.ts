@@ -1,6 +1,7 @@
-import {GeneralGenerationRequest} from './general-generation-request';
+import {BaseGenerationRequest} from "./base-generation-request";
 
-export interface ClothesGenerationsRequest extends GeneralGenerationRequest {
+export interface ClothesGenerationsRequest extends BaseGenerationRequest {
+  mode: 'clothes';
   color?: string;
   size?: string;
   material?: string;

@@ -1,7 +1,5 @@
-export interface GeneralGenerationRequest {
-  item: string;
-  tagsQuantity?: number;
-  platform?: string;
-  targetAudience: string;
-  responseStyle: string;
+import {BaseGenerationRequest} from "./base-generation-request";
+
+export interface GeneralGenerationRequest extends BaseGenerationRequest{
+  mode: 'general';
 }

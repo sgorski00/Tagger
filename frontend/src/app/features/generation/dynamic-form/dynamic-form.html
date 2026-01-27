@@ -13,6 +13,6 @@
     </div>
 
     <div class="form-contaier">
-        <app-form-shell [mode]="mode()"/>
+        <app-form-shell [mode]="mode()" (formSubmit)="onSubmit($event)"/>
     </div>
 </div>

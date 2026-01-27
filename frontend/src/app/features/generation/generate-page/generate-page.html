@@ -1,6 +1,6 @@
 <div class="page-wrapper">
     <h1 class="page-title">{{ headerLabel }}</h1>
     <div class="page-content-container">
-        <app-dynamic-form />
+        <app-dynamic-form (formSubmit)="onGenerate($event)" />
     </div>
 </div>

@@ -1,10 +1,13 @@
-import {Component, inject, input, signal, effect} from '@angular/core';
+import {Component, inject, input, signal, effect, output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {FormMode} from "../form-mode";
 import {CustomFormBuilder} from "../custom-form-builder/custom-form-builder";
 import {TextInput} from "./inputs/text-input/text-input";
 import {NumberInput} from "./inputs/number-input/number-input";
 import {SelectInput} from "./inputs/select-input/select-input";
+import {GeneralGenerationRequest} from "../../general-generation-request";
+import {ElectronicsGenerationsRequest} from "../../electronics-generations-request";
+import {ClothesGenerationsRequest} from "../../clothes-generations-request";
 
 @Component({
     selector: 'app-form-shell',
@@ -19,6 +22,7 @@ import {SelectInput} from "./inputs/select-input/select-input";
 })
 export class FormShell {
     readonly mode = input.required<FormMode>();
+    readonly formSubmit = output<GeneralGenerationRequest | ElectronicsGenerationsRequest | ClothesGenerationsRequest>();
     readonly #customFormBuilder = inject(CustomFormBuilder);
     readonly #fb = new FormBuilder();
     protected readonly form = signal<FormGroup | null>(null);
@@ -39,8 +43,13 @@ export class FormShell {
     }
 
     protected onSubmit(): void {
-        this.submitted.set(true)
-        console.log(this.form()?.value);
+        const data = {
+            ...this.form()?.value,
+            mode: this.mode()
+        };
+        console.log("Form shell submitting data:", data);
+        this.submitted.set(true);
+        this.formSubmit.emit(data);
     }
 
     protected onClear(): void {
