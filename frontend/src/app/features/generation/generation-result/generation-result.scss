@@ -1,0 +1,30 @@
+:host {
+  --container-bg: #f7f4ef;
+  --container-border: #d1c8bd;
+
+  display: block;
+  width: 100%;
+  max-width: 720px;
+}
+
+.result-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  max-width: 720px;
+  padding: 1.5rem;
+  border: 1px solid var(--container-border);
+  border-radius: 12px;
+  background: var(--container-bg);
+  color: var(--text-primary-color);
+
+  h2 {
+    letter-spacing: 1px;
+  }
+
+  .single-result {
+    text-wrap: pretty;
+    line-height: 1.4;
+  }
+}

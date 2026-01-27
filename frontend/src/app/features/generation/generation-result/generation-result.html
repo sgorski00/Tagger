@@ -1,3 +1,10 @@
-<p>{{ response().title }}</p>
-<p>{{ response().description }}</p>
-<p>{{ response().tags }}</p>
+<div class="result-container">
+  <h2>Title</h2>
+  <p class="single-result">{{ response().title }}</p>
+  <hr>
+  <h2>Description</h2>
+  <p class="single-result">{{ response().description }}</p>
+  <hr>
+  <h2>Tags</h2>
+  <p class="single-result">{{ getPrettyTags() }}</p>
+</div>

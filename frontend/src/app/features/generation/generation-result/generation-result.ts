@@ -9,4 +9,13 @@ import {GenerationResponse} from "../generation-response";
 })
 export class GenerationResult {
   response = input.required<GenerationResponse>();
+
+  protected getPrettyTags(): string {
+    let tagsString = ''
+    this.response().tags?.forEach(tag => {
+      if (!tag.startsWith('#')) tag = `#${tag}`;
+      tagsString += `${tag} `
+    })
+    return tagsString.trim();
+  }
 }
