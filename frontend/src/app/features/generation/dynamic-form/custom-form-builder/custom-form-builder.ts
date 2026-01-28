@@ -1,6 +1,8 @@
 import {Injectable} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {FormMode} from "../form-mode";
+import {FormConfig} from "../form-config";
+import {ClothesFormValue, ElectronicsFormValue, FormValue, GeneralFormValue} from "../form-value";
 
 @Injectable({
     providedIn: 'root',
@@ -11,10 +13,10 @@ export class CustomFormBuilder {
     readonly #monthsOfWarrantyMin = 0;
     readonly #monthsOfWarrantyMax = 120;
     readonly #itemNameMinLength = 3;
-    readonly #platforms: string[] = ['amazon', 'ebay', 'vinted'];
-    readonly #responseStyles: string[] = ['formal', 'casual', 'humorous'];
+    readonly #platforms: ReadonlyArray<string> = ['amazon', 'ebay', 'vinted'];
+    readonly #responseStyles: ReadonlyArray<string> = ['formal', 'casual', 'humorous'];
 
-    readonly #initialFormValue = {
+    readonly #initialFormValue: GeneralFormValue = {
         item: '',
         tagsQuantity: 10,
         platform: this.#platforms[0],
@@ -22,13 +24,13 @@ export class CustomFormBuilder {
         responseStyle: this.#responseStyles[0],
     }
 
-    readonly #clothesFormValue = {
+    readonly #clothesFormValue: Omit<ClothesFormValue, keyof GeneralFormValue> = {
         color: '',
         size: '',
         material: ''
     }
 
-    readonly #electronicsFormValue = {
+    readonly #electronicsFormValue: Omit<ElectronicsFormValue, keyof GeneralFormValue> = {
         model: '',
         color: '',
         monthsOfWarranty: null
@@ -47,7 +49,7 @@ export class CustomFormBuilder {
         }
     }
 
-    public getInitialFormValue(mode: FormMode) {
+    public getInitialFormValue(mode: FormMode): FormValue {
         switch (mode) {
             case 'general':
                 return this.#initialFormValue;
@@ -60,7 +62,7 @@ export class CustomFormBuilder {
         }
     }
 
-    public getFormConfig() {
+    public getFormConfig(): FormConfig {
         return {
             tagsQuantityMin: this.#tagsQuantityMin,
             tagsQuantityMax: this.#tagsQuantityMax,

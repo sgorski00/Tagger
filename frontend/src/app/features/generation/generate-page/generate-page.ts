@@ -2,12 +2,10 @@ import {Component, effect, inject, signal} from '@angular/core';
 import {DynamicForm} from "../dynamic-form/dynamic-form";
 import {GenerationHttpClient} from "../generation-http-client";
 import {GenerationResponse} from "../generation-response";
-import {GeneralGenerationRequest} from "../general-generation-request";
-import {ElectronicsGenerationsRequest} from "../electronics-generations-request";
-import {ClothesGenerationsRequest} from "../clothes-generations-request";
 import {GenerationResult} from "../generation-result/generation-result";
 import {ViewportScroller} from '@angular/common';
 import {ErrorService, LoadingService} from '../../../core/services';
+import {GenerationRequest} from "../generation-request.types";
 
 @Component({
   selector: 'app-generate-page',
@@ -32,7 +30,7 @@ export class GeneratePage {
     });
   }
 
-  protected onGenerate(data: GeneralGenerationRequest | ElectronicsGenerationsRequest | ClothesGenerationsRequest) {
+  protected onGenerate(data: GenerationRequest) {
     this.response.set(null)
     this.#errorService.clearError();
     this.#apiClient.getGenerationResponse(data).subscribe({

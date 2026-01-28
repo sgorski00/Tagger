@@ -1,5 +1,5 @@
 export interface GenerationResponse {
   title: string;
   description: string;
-  tags: string[];
+  tags: ReadonlyArray<string>;
 }

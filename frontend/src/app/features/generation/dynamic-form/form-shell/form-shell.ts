@@ -5,10 +5,10 @@ import {CustomFormBuilder} from "../custom-form-builder/custom-form-builder";
 import {TextInput} from "./inputs/text-input/text-input";
 import {NumberInput} from "./inputs/number-input/number-input";
 import {SelectInput} from "./inputs/select-input/select-input";
-import {GeneralGenerationRequest} from "../../general-generation-request";
-import {ElectronicsGenerationsRequest} from "../../electronics-generations-request";
-import {ClothesGenerationsRequest} from "../../clothes-generations-request";
 import {LoadingService} from "../../../../core/services";
+import {FormValue} from "../form-value";
+import {FormConfig} from "../form-config";
+import {GenerationRequest} from "../../generation-request.types";
 
 @Component({
     selector: 'app-form-shell',
@@ -24,12 +24,12 @@ import {LoadingService} from "../../../../core/services";
 export class FormShell {
     readonly mode = input.required<FormMode>();
     readonly loading = inject(LoadingService).isLoading;
-    readonly formSubmit = output<GeneralGenerationRequest | ElectronicsGenerationsRequest | ClothesGenerationsRequest>();
+    readonly formSubmit = output<GenerationRequest>();
     readonly #customFormBuilder = inject(CustomFormBuilder);
     readonly #fb = new FormBuilder();
     protected readonly form = signal<FormGroup | null>(null);
-    protected readonly initialFormValue = signal<any | null>(null);
-    protected readonly formConfig = signal<any | null>(null);
+    protected readonly initialFormValue = signal<FormValue | null>(null);
+    protected readonly formConfig = signal<FormConfig | null>(null);
     protected readonly submitted = signal<boolean>(false);
 
     constructor() {
@@ -55,7 +55,7 @@ export class FormShell {
 
     protected onClear(): void {
         this.submitted.set(false)
-        this.form()?.reset(this.initialFormValue);
+        this.form()?.reset(this.initialFormValue());
     }
 
     protected formControl(controlName: string): FormControl {

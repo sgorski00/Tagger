@@ -1,11 +1,11 @@
-@if (form(); as form) {
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+@if (form() && formConfig()) {
+    <form [formGroup]="form()!" (ngSubmit)="onSubmit()">
         <app-text-input
                 [control]="formControl('item')"
                 [controlId]="'item'"
                 [label]="'Item'"
                 [placeholder]="'Enter item name'"
-                [minLength]="formConfig().itemNameMinLength"
+                [minLength]="formConfig()!.itemNameMinLength"
                 [isSubmitted]="submitted()"
         ></app-text-input>
 
@@ -14,8 +14,8 @@
                 [controlId]="'tagsQuantity'"
                 [label]="'Tags Quantity'"
                 [placeholder]="'10'"
-                [min]="formConfig().tagsQuantityMin"
-                [max]="formConfig().tagsQuantityMax"
+                [min]="formConfig()!.tagsQuantityMin"
+                [max]="formConfig()!.tagsQuantityMax"
                 [isOptional]=true
                 [isSubmitted]="submitted()"
         ></app-number-input>
@@ -24,7 +24,7 @@
                 [control]="formControl('platform')"
                 [controlId]="'platform'"
                 [label]="'Platform'"
-                [options]="formConfig().platforms"
+                [options]="formConfig()!.platforms"
                 [isOptional]=true
                 [isSubmitted]="submitted()"
         ></app-select-input>
@@ -34,7 +34,7 @@
                 [controlId]="'targetAudience'"
                 [label]="'Target Audience'"
                 [placeholder]="'Enter target audience'"
-                [minLength]="formConfig().itemNameMinLength"
+                [minLength]="formConfig()!.itemNameMinLength"
                 [isSubmitted]="submitted()"
         ></app-text-input>
 
@@ -42,7 +42,7 @@
                 [control]="formControl('responseStyle')"
                 [controlId]="'responseStyle'"
                 [label]="'Response Style'"
-                [options]="formConfig().responseStyles"
+                [options]="formConfig()!.responseStyles"
                 [placeholder]="'Select Response Style'"
                 [isSubmitted]="submitted()"
         ></app-select-input>
@@ -98,15 +98,15 @@
                     [controlId]="'monthsOfWarranty'"
                     [label]="'Months of warranty'"
                     [placeholder]="'12'"
-                    [min]="formConfig().monthsOfWarrantyMin"
-                    [max]="formConfig().monthsOfWarrantyMax"
+                    [min]="formConfig()!.monthsOfWarrantyMin"
+                    [max]="formConfig()!.monthsOfWarrantyMax"
                     [isOptional]=true
                     [isSubmitted]="submitted()"
             ></app-number-input>
         }
 
         <div class="buttons-container">
-            <button type="submit" [disabled]="loading() || !form.valid" class="btn submit-btn">Generate</button>
+            <button type="submit" [disabled]="loading() || !form()!.valid" class="btn submit-btn">Generate</button>
             <button type="button" class="btn clear-btn" (click)="onClear()">Clear</button>
         </div>
     </form>
