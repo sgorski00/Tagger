@@ -1,4 +1,4 @@
-import {Component, input} from '@angular/core';
+import {Component, input, output} from '@angular/core';
 import {GenerationResponse} from "../generation-response";
 
 @Component({
@@ -8,7 +8,8 @@ import {GenerationResponse} from "../generation-response";
   styleUrl: './generation-result.scss',
 })
 export class GenerationResult {
-  response = input.required<GenerationResponse>();
+  readonly response = input.required<GenerationResponse>();
+  readonly backToForm = output<void>();
 
   protected getPrettyTags(): string {
     let tagsString = ''
@@ -17,5 +18,9 @@ export class GenerationResult {
       tagsString += `${tag} `
     })
     return tagsString.trim();
+  }
+
+  protected onClick() {
+    this.backToForm.emit();
   }
 }

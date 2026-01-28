@@ -41,4 +41,8 @@ export class GeneratePage {
       this.#errorService.setError(err.message || 'An error occurred while generating the response');
     }});
   }
+
+  protected scrollToForm() {
+    this.#scroller.scrollToAnchor('form', {behavior: 'smooth'});
+  }
 }

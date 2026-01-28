@@ -1,10 +1,13 @@
 <div class="result-container">
-  <h2>Title</h2>
-  <p class="single-result">{{ response().title }}</p>
-  <hr>
-  <h2>Description</h2>
-  <p class="single-result">{{ response().description }}</p>
-  <hr>
-  <h2>Tags</h2>
-  <p class="single-result">{{ getPrettyTags() }}</p>
+    <h2>Title</h2>
+    <p class="single-result">{{ response().title }}</p>
+    <hr>
+    <h2>Description</h2>
+    <p class="single-result">{{ response().description }}</p>
+    <hr>
+    <h2>Tags</h2>
+    <p class="single-result">{{ getPrettyTags() }}</p>
+    <div class="result-bottom-panel">
+        <button class="btn" (click)="onClick()">Go back to the form</button>
+    </div>
 </div>
