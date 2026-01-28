@@ -1,0 +1,21 @@
+<div class="dynamic-form">
+    <div class="tabs">
+        @for (tab of tabs; track $index;) {
+            <button
+                    type="button"
+                    class="tab"
+                    [class.active]="mode() === tab"
+                    (click)="setMode(tab)"
+            >
+                {{ tab | titlecase }}
+            </button>
+        }
+    </div>
+
+    <div class="form-contaier">
+        <app-form-shell
+          [mode]="mode()"
+          (formSubmit)="onSubmit($event)"
+        />
+    </div>
+</div>

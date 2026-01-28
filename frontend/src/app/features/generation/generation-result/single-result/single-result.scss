@@ -1,0 +1,85 @@
+:host {
+  --bg-semi-transparent: rgba(247, 244, 239, 0.6);
+  --border-accent-color: #a8956c;
+  --btn-success-color: #8b7355;
+  --btn-success-hover: #6d5a44;
+  --shadow-light: rgba(168, 149, 108, 0.3);
+
+  display: block;
+  width: 100%;
+}
+
+.single-result-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.single-result-top-panel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+
+  h2 {
+    margin: 0;
+    letter-spacing: 1px;
+    font-size: 1.25rem;
+    color: var(--text-primary-color);
+  }
+}
+
+.single-result {
+  text-wrap: pretty;
+  line-height: 1.6;
+  margin: 0;
+  padding: 1rem;
+  background-color: var(--bg-semi-transparent);
+  border-radius: 8px;
+  border-left: 3px solid var(--border-accent-color);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.copy-btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid var(--submit-button-bg);
+  border-radius: 6px;
+  background-color: transparent;
+  color: var(--submit-button-bg);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  min-width: 100px;
+
+  &:hover {
+    background-color: var(--submit-button-bg-hover);
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px var(--shadow-light);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 3px var(--shadow-light);
+  }
+
+  &.copied {
+    background-color: var(--btn-success-color);
+    border-color: var(--btn-success-color);
+    color: white;
+
+    &:hover {
+      background-color: var(--btn-success-hover);
+      border-color: var(--btn-success-hover);
+    }
+  }
+
+  span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+}

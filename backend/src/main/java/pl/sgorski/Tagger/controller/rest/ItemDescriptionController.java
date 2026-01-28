@@ -33,7 +33,7 @@ public class ItemDescriptionController {
     private final ItemsHistoryService itemsHistoryService;
     private final ItemDescriptionMapper mapper;
 
-    @PostMapping
+    @PostMapping("/general")
     @Operation(summary = "Get tags, title and description for every product. Check other endpoints for specific products that are more detailed.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Successfully retrieved tags, title and description",

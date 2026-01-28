@@ -1,0 +1,71 @@
+:host {
+  --clear-button-bg: #e93d3d;
+  --clear-button-bg-hover: #cc0e0e;
+  --clear-button-text: #ffffff;
+
+  display: block;
+  width: 100%;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+
+  .buttons-container {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    margin-top: 1rem;
+
+    .btn {
+      padding: 0.5rem 1.25rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s ease, color 0.2s ease;
+      min-width: 120px;
+    }
+
+    .submit-btn {
+      background-color: var(--submit-button-bg);
+      color: var(--submit-button-text);
+
+      &:hover {
+        background-color: var(--submit-button-bg-hover);
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+
+    .clear-btn {
+      background-color: var(--clear-button-bg);
+      color: var(--clear-button-text);
+
+      &:hover {
+        background-color: var(--clear-button-bg-hover);
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  form {
+    .buttons-container {
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+
+      .btn {
+        width: 100%;
+      }
+    }
+  }
+}

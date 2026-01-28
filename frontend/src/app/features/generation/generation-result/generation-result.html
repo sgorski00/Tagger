@@ -1,0 +1,19 @@
+<div class="result-container">
+    <app-single-result
+            [title]="'Title'"
+            [value]="response().title"
+    />
+    <hr>
+    <app-single-result
+            [title]="'Description'"
+            [value]="response().description"
+    />
+    <hr>
+    <app-single-result
+            [title]="'Tags'"
+            [value]="getPrettyTags()"
+    />
+    <div class="result-bottom-panel">
+        <button class="btn" (click)="onClick()">Go back to the form</button>
+    </div>
+</div>
