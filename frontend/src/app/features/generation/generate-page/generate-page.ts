@@ -1,4 +1,4 @@
-import {afterNextRender, Component, effect, inject, signal} from '@angular/core';
+import {Component, effect, inject, signal} from '@angular/core';
 import {DynamicForm} from "../dynamic-form/dynamic-form";
 import {GenerationHttpClient} from "../generation-http-client";
 import {GenerationResponse} from "../generation-response";
@@ -7,7 +7,7 @@ import {ElectronicsGenerationsRequest} from "../electronics-generations-request"
 import {ClothesGenerationsRequest} from "../clothes-generations-request";
 import {GenerationResult} from "../generation-result/generation-result";
 import {ViewportScroller} from '@angular/common';
-import {delay} from 'rxjs';
+import {ErrorService, LoadingService} from '../../../core/services';
 
 @Component({
   selector: 'app-generate-page',
@@ -18,13 +18,15 @@ import {delay} from 'rxjs';
 export class GeneratePage {
   #apiClient = inject(GenerationHttpClient)
   #scroller = inject(ViewportScroller)
+  #errorService = inject(ErrorService)
+  protected readonly loading = inject(LoadingService).isLoading;
   protected readonly response = signal<GenerationResponse | null>(null);
-  protected readonly resultLoading = signal(false)
+  protected readonly error = this.#errorService.error;
   protected readonly headerLabel = "Generate your item's info!"
 
   constructor() {
     effect(() => {
-      if(this.resultLoading()) {
+      if(this.loading()) {
         this.#scroller.scrollToAnchor('result', {behavior: 'smooth'});
       }
     });
@@ -32,18 +34,13 @@ export class GeneratePage {
 
   protected onGenerate(data: GeneralGenerationRequest | ElectronicsGenerationsRequest | ClothesGenerationsRequest) {
     this.response.set(null)
-    this.resultLoading.set(true);
-
+    this.#errorService.clearError();
     this.#apiClient.getGenerationResponse(data).subscribe({
       next: (r) => {
-        console.log("Generation response received:", r);
         this.response.set(r);
     },
     error: (err) => {
-      console.error("Error while generating response:", err);
-    },
-    complete: () => {
-        this.resultLoading.set(false);
+      this.#errorService.setError(err.message || 'An error occurred while generating the response');
     }});
   }
 }

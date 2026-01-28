@@ -6,7 +6,7 @@ COPY package*.json ./
 RUN npm ci
 
 COPY . .
-RUN npx ng build --configuration=production
+RUN npx ng build --configuration=development
 
 FROM nginx:alpine
 

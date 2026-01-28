@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import CustomFormBuilder from './custom-form-builder';
+import {CustomFormBuilder} from './custom-form-builder';
 
 describe('CustomFormBuilder', () => {
   let service: CustomFormBuilder;

@@ -8,6 +8,7 @@ import {SelectInput} from "./inputs/select-input/select-input";
 import {GeneralGenerationRequest} from "../../general-generation-request";
 import {ElectronicsGenerationsRequest} from "../../electronics-generations-request";
 import {ClothesGenerationsRequest} from "../../clothes-generations-request";
+import {LoadingService} from "../../../../core/services";
 
 @Component({
     selector: 'app-form-shell',
@@ -22,7 +23,7 @@ import {ClothesGenerationsRequest} from "../../clothes-generations-request";
 })
 export class FormShell {
     readonly mode = input.required<FormMode>();
-    readonly loading = input.required<boolean>();
+    readonly loading = inject(LoadingService).isLoading;
     readonly formSubmit = output<GeneralGenerationRequest | ElectronicsGenerationsRequest | ClothesGenerationsRequest>();
     readonly #customFormBuilder = inject(CustomFormBuilder);
     readonly #fb = new FormBuilder();
@@ -48,7 +49,6 @@ export class FormShell {
             ...this.form()?.value,
             mode: this.mode()
         };
-        console.log("Submitting form:", data);
         this.submitted.set(true);
         this.formSubmit.emit(data);
     }

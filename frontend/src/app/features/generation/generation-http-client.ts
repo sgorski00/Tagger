@@ -5,12 +5,13 @@ import {GenerationResponse} from "./generation-response";
 import {Observable} from "rxjs";
 import {ElectronicsGenerationsRequest} from "./electronics-generations-request";
 import {ClothesGenerationsRequest} from "./clothes-generations-request";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root',
 })
 export class GenerationHttpClient {
-  readonly #BASE_API_URL = 'http://localhost:8080/api/tags';
+  readonly #BASE_API_URL = `${environment.apiUrl}/tags`;
   http = inject(HttpClient)
 
   getGenerationResponse(data: GeneralGenerationRequest | ElectronicsGenerationsRequest | ClothesGenerationsRequest): Observable<GenerationResponse> {

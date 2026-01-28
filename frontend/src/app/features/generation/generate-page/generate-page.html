@@ -1,10 +1,15 @@
 <div class="page-wrapper">
   <h1 class="page-title">{{ headerLabel }}</h1>
   <div class="page-content-container">
-    <app-dynamic-form [loading]="resultLoading()" (formSubmit)="onGenerate($event)"/>
+    <app-dynamic-form (formSubmit)="onGenerate($event)"/>
     <div id="result">
-      @if (resultLoading()) {
-        <div class="loading">Generating...</div>
+      @if (error(); as errorMsg) {
+        <div class="error-message" role="alert">
+          <strong>Error:</strong> {{ errorMsg.message }}
+        </div>
+      }
+      @if (loading()) {
+        <div class="loading" role="status" aria-live="polite">Generating...</div>
       }
       @if (response(); as response) {
         <app-generation-result [response]="response"/>

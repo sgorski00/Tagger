@@ -34,5 +34,18 @@
     font-weight: 600;
   }
 
+  .error-message {
+    margin-top: 24px;
+    padding: 1rem;
+    background-color: #fee;
+    border-left: 4px solid #d32f2f;
+    border-radius: 4px;
+    color: #c62828;
+    text-align: left;
 
+    strong {
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+  }
 }

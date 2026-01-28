@@ -11,8 +11,8 @@ export class CustomFormBuilder {
     readonly #monthsOfWarrantyMin = 0;
     readonly #monthsOfWarrantyMax = 120;
     readonly #itemNameMinLength = 3;
-    readonly #platforms: Array<string> = ['amazon', 'ebay', 'vinted'];
-    readonly #responseStyles: Array<string> = ['formal', 'casual', 'humorous'];
+    readonly #platforms: string[] = ['amazon', 'ebay', 'vinted'];
+    readonly #responseStyles: string[] = ['formal', 'casual', 'humorous'];
 
     readonly #initialFormValue = {
         item: '',
