@@ -1,0 +1,13 @@
+<div class="single-result-container">
+    <div class="single-result-top-panel">
+        <h2>{{ title() }}</h2>
+        <button class="copy-btn" (click)="copyToClipboard()" [class.copied]="copySuccess()">
+            @if (copySuccess()) {
+                <span>✓ Copied!</span>
+            } @else {
+                <span>📋 Copy</span>
+            }
+        </button>
+    </div>
+    <p class="single-result">{{ value() }}</p>
+</div>

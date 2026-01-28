@@ -19,13 +19,8 @@
   background: var(--container-bg);
   color: var(--text-primary-color);
 
-  h2 {
-    letter-spacing: 1px;
-  }
-
-  .single-result {
-    text-wrap: pretty;
-    line-height: 1.4;
+  hr {
+    color: var(--text-primary-color);
   }
 
   .result-bottom-panel {
@@ -41,31 +36,31 @@
       font-weight: 500;
       border: none;
       border-radius: 8px;
-      background-color: #4a90e2;
-      color: white;
+      background-color: var(--submit-button-bg);
+      color: var(--submit-button-text);
       cursor: pointer;
       transition: all 0.3s ease;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 4px var(--shadow-light);
 
       &:hover {
-        background-color: #357abd;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        background-color: var(--submit-button-bg-hover);
+        box-shadow: 0 4px 8px var(--shadow-medium);
         transform: translateY(-1px);
       }
 
       &:active {
         transform: translateY(0);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 2px 4px var(--shadow-light);
       }
 
       &:disabled {
-        background-color: #ccc;
+        background-color: var(--button-disabled-bg);
         cursor: not-allowed;
         opacity: 0.6;
 
         &:hover {
           transform: none;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 2px 4px var(--shadow-light);
         }
       }
     }

@@ -1,9 +1,12 @@
 import {Component, input, output} from '@angular/core';
 import {GenerationResponse} from "../generation-response";
+import {SingleResult} from "./single-result/single-result";
 
 @Component({
   selector: 'app-generation-result',
-  imports: [],
+  imports: [
+    SingleResult
+  ],
   templateUrl: './generation-result.html',
   styleUrl: './generation-result.scss',
 })
