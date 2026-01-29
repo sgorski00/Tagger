@@ -23,7 +23,7 @@ import {GenerationRequest} from "../../generation-request.types";
 })
 export class FormShell {
     readonly mode = input.required<FormMode>();
-    readonly loading = inject(LoadingService).isLoading;
+    readonly loading = inject(LoadingService).isFormLoading;
     readonly formSubmit = output<GenerationRequest>();
     readonly #customFormBuilder = inject(CustomFormBuilder);
     readonly #fb = new FormBuilder();

@@ -6,9 +6,9 @@ import {finalize} from 'rxjs';
 export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
   const loadingService = inject(LoadingService);
 
-  loadingService.show();
+  loadingService.showFormLoading();
 
   return next(req).pipe(
-    finalize(() => loadingService.hide())
+    finalize(() => loadingService.hideFormLoading())
   );
 };

@@ -1,6 +1,7 @@
 package pl.sgorski.Tagger.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,6 +19,8 @@ import pl.sgorski.Tagger.service.auth.OAuth2UserServiceImpl;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    @Value("${tagger.frontend.url}")
+    private String frontendUrl;
     private final OAuth2UserServiceImpl oAuth2UserService;
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
     private final JwtAuthFilter jwtAuthFilter;
@@ -25,20 +28,19 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").not().authenticated()
                         .requestMatchers("/api/tags/history/**").authenticated()
-                        .anyRequest().permitAll()
+                        .requestMatchers("/api/tags/**", "/swagger-ui/**", "/graphql/**", "/login/**").permitAll()
+                        .anyRequest().denyAll()
                 )
                 .oauth2Login(oauth2 -> oauth2
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(oAuth2UserService)
                         )
                         .successHandler(oAuth2LoginSuccessHandler)
-                        .loginPage("/auth/login")
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 )
                 .csrf(AbstractHttpConfigurer::disable)
                 .build();
@@ -46,12 +48,11 @@ public class SecurityConfig {
 
     @Bean
     public WebMvcConfigurer corsConfigurer() {
-        // TODO: In production, configure CORS more restrictively
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("*")
+                        .allowedOrigins(frontendUrl)
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*");
             }
