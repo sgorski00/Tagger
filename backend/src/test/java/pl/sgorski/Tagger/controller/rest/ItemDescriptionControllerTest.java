@@ -83,7 +83,7 @@ public class ItemDescriptionControllerTest {
 
         when(promptService.getResponseAndSaveHistoryIfUserPresent(any(ItemDescriptionRequest.class), nullable(Principal.class))).thenReturn(response);
 
-        mockMvc.perform(post("/api/tags")
+        mockMvc.perform(post("/api/tags/general")
                         .contentType("application/json")
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
@@ -107,7 +107,7 @@ public class ItemDescriptionControllerTest {
 
         when(promptService.getResponseAndSaveHistoryIfUserPresent(any(ItemDescriptionRequest.class), any(Principal.class))).thenReturn(response);
 
-        mockMvc.perform(post("/api/tags")
+        mockMvc.perform(post("/api/tags/general")
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(request))
                         .principal(() -> "testUser"))
@@ -127,7 +127,7 @@ public class ItemDescriptionControllerTest {
 
         when(promptService.getResponseAndSaveHistoryIfUserPresent(any(ItemDescriptionRequest.class), nullable(Principal.class))).thenReturn(response);
 
-        mockMvc.perform(post("/api/tags")
+        mockMvc.perform(post("/api/tags/general")
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isConflict())
@@ -142,7 +142,7 @@ public class ItemDescriptionControllerTest {
 
     @Test
     void shouldReturnProblemDetail_getInfo_NotValidFormatInTagsQuantity() throws Exception {
-        mockMvc.perform(post("/api/tags")
+        mockMvc.perform(post("/api/tags/general")
                         .contentType("application/json")
                         .content("{\"item\":\"test item\",\"platform\":\"olx\",\"responseStyle\":\"formal\",\"targetAudience\":\"adults\",\"tagsQuantity\":\"not_valid\"}"))
                 .andExpect(status().isBadRequest())

@@ -26,7 +26,7 @@ Error messages are available only in english and polish.
 Rest API documentation is available at `/docs`. Below is a simple example of how to use the REST API.
 
 ### Request
-`POST /api/tags`
+`POST /api/tags/general`
 
 ```json
 {
