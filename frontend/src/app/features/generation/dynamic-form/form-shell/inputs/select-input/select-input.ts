@@ -25,5 +25,5 @@ import {BaseInput} from "../base-input";
 })
 export class SelectInput extends BaseInput{
   override readonly placeholder = input<string>('Please select an option');
-  readonly options = input.required<ReadonlyArray<string>>();
+  readonly options = input.required<readonly string[]>();
 }

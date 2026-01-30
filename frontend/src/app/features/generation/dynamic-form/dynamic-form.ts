@@ -16,7 +16,7 @@ import {GenerationRequest} from "../generation-request.types";
 export class DynamicForm {
   protected readonly formSubmit = output<GenerationRequest>();
   protected readonly mode = signal<FormMode>('general');
-  protected readonly tabs: ReadonlyArray<FormMode> = FORM_MODES;
+  protected readonly tabs: readonly FormMode[] = FORM_MODES;
 
   protected setMode(mode: FormMode) {
     this.mode.set(mode);

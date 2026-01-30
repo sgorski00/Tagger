@@ -1,7 +1,11 @@
 <app-header />
 
 <main class="page">
-    <router-outlet />
+    @if (isNavigationLoading()) {
+        <div class="progress-bar"></div>
+    } @else {
+        <router-outlet />
+    }
 </main>
 
 <app-footer />

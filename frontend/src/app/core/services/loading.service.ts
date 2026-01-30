@@ -4,14 +4,24 @@ import {Injectable, signal} from '@angular/core';
   providedIn: 'root',
 })
 export class LoadingService {
-  readonly #loadingCount = signal(0);
-  readonly isLoading = this.#loadingCount.asReadonly();
+  readonly #navigationLoading = signal(false);
+  readonly isNavigationLoading = this.#navigationLoading.asReadonly();
+  readonly #formLoading = signal(false);
+  readonly isFormLoading = this.#formLoading.asReadonly();
 
-  show(): void {
-    this.#loadingCount.update(count => count + 1);
+  showFormLoading(): void {
+    this.#formLoading.set(true);
   }
 
-  hide(): void {
-    this.#loadingCount.update(count => Math.max(0, count - 1));
+  hideFormLoading(): void {
+    this.#formLoading.set(false);
+  }
+
+  showNavigationLoading(): void {
+    this.#navigationLoading.set(true);
+  }
+
+  hideNavigationLoading(): void {
+    this.#navigationLoading.set(false);
   }
 }

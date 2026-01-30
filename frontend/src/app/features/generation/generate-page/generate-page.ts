@@ -17,7 +17,7 @@ export class GeneratePage {
   #apiClient = inject(GenerationHttpClient)
   #scroller = inject(ViewportScroller)
   #errorService = inject(ErrorService)
-  protected readonly loading = inject(LoadingService).isLoading;
+  protected readonly loading = inject(LoadingService).isFormLoading;
   protected readonly response = signal<GenerationResponse | null>(null);
   protected readonly error = this.#errorService.error;
   protected readonly headerLabel = "Generate your item's info!"

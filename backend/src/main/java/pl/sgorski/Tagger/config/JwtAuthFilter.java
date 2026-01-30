@@ -25,20 +25,16 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        final String authHeader = request.getHeader("Authorization");
-        final String jwt;
-        final String email;
-
+        final var authHeader = request.getHeader("Authorization");
         if(headerValueIsNotBearer(authHeader)) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        jwt = getToken(authHeader);
-        email = jwtService.extractUsername(jwt);
-
+        final var jwt = getToken(authHeader);
+        final var email = jwtService.extractUsername(jwt);
         if(shouldAuthenticateUser(email)) {
-            UserDetails user = userService.findByEmail(email);
+            var user = userService.findByEmail(email);
             if(jwtService.isTokenValid(jwt, user)) {
                 var authToken = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

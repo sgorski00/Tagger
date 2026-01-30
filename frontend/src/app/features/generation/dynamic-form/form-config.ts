@@ -4,6 +4,6 @@ export interface FormConfig {
   monthsOfWarrantyMin: number;
   monthsOfWarrantyMax: number;
   itemNameMinLength: number;
-  responseStyles: ReadonlyArray<string>;
-  platforms: ReadonlyArray<string>;
+  responseStyles: readonly string[];
+  platforms: readonly string[];
 }
