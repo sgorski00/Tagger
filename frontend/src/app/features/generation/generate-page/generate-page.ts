@@ -6,10 +6,11 @@ import {GenerationResult} from "../generation-result/generation-result";
 import {ViewportScroller} from '@angular/common';
 import {ErrorService, LoadingService} from '../../../core/services';
 import {GenerationRequest} from "../generation-request.types";
+import {BasePage} from "../../../shared/base-page/base-page";
 
 @Component({
   selector: 'app-generate-page',
-  imports: [DynamicForm, GenerationResult],
+    imports: [DynamicForm, GenerationResult, BasePage],
   templateUrl: './generate-page.html',
   styleUrl: './generate-page.scss',
 })
