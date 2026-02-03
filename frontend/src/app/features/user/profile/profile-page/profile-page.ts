@@ -1,8 +1,11 @@
-import {Component, signal} from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import {RouterLink} from "@angular/router";
 import {DatePipe} from "@angular/common";
 import {BasePage} from "../../../../shared/base-page/base-page";
 import {HistoryPage} from "../../history/history-page/history-page";
+import {HistoryHttpClient} from "../../history/history-http-client";
+import {GenerationResponse} from "../../../generation/generation-response";
+import {toSignal} from "@angular/core/rxjs-interop";
 
 @Component({
     selector: 'app-user-page',
@@ -15,21 +18,16 @@ import {HistoryPage} from "../../history/history-page/history-page";
     styleUrl: './profile-page.scss',
 })
 export class ProfilePage {
+    readonly #historyHttpService = inject(HistoryHttpClient);
     protected readonly headerLabel = 'Profile';
+    protected readonly historyItems = toSignal(
+        this.#historyHttpService.getRequestsHistory(),
+        {initialValue: [] as ReadonlyArray<GenerationResponse>}
+    )
 
     protected readonly accountData = signal({
-        username: 'john_doe',
+        name: 'John Doe',
         email: 'john.doe@example.com',
         createdAt: new Date('2024-01-15'),
-        firstName: 'John',
-        lastName: 'Doe'
     });
-
-    protected readonly historyItems = signal([
-        { id: 1, title: 'Vintage Leather Jacket', date: new Date('2025-02-01') },
-        { id: 2, title: 'Samsung Galaxy S23', date: new Date('2025-01-28') },
-        { id: 3, title: 'Nike Air Max 90', date: new Date('2025-01-25') },
-        { id: 4, title: 'MacBook Pro 16"', date: new Date('2025-01-20') },
-    ]);
-    protected readonly HistoryPage = HistoryPage;
 }

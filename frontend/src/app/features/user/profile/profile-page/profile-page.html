@@ -4,11 +4,7 @@
         <div class="info">
             <div class="row">
                 <span class="label">Name:</span>
-                <span class="value">{{ accountData().firstName }} {{ accountData().lastName }}</span>
-            </div>
-            <div class="row">
-                <span class="label">Username:</span>
-                <span class="value">{{ accountData().username }}</span>
+                <span class="value">{{ accountData().name }}</span>
             </div>
             <div class="row">
                 <span class="label">Email:</span>
@@ -26,15 +22,7 @@
             @for (item of historyItems(); track item.id) {
                 <a class="history-item" [routerLink]="['/user/history', item.id]">
                     <span class="title">{{ item.title }}</span>
-                    <span class="date">{{ item.date | date: 'yyyy-MM-dd HH:mm' }}</span>
-                </a>
-                <a class="history-item" [routerLink]="['/user', item.id]">
-                    <span class="title">{{ item.title }}</span>
-                    <span class="date">{{ item.date | date: 'yyyy-MM-dd HH:mm' }}</span>
-                </a>
-                <a class="history-item" [routerLink]="['/user', item.id]">
-                    <span class="title">{{ item.title }}</span>
-                    <span class="date">{{ item.date | date: 'yyyy-MM-dd HH:mm' }}</span>
+                    <span class="date">{{ item.createdAt | date: 'yyyy-MM-dd HH:mm' }}</span>
                 </a>
             } @empty {
                 <p class="empty">No generation history yet.</p>
