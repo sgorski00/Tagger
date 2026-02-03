@@ -1,6 +1,5 @@
 :host {
   display: block;
-  min-height: 100vh;
   background-color: var(--content-bg);
 }
 
@@ -25,7 +24,7 @@
     &[data-layout="row"] {
       flex-direction: row;
       justify-content: space-around;
-      align-items: flex-start;
+      align-items: stretch;
 
       @media (max-width: 768px) {
         flex-direction: column;

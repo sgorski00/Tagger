@@ -2,28 +2,16 @@
     <div class="account-card">
         <h2 class="title">Account Information</h2>
         <div class="info">
-            <div class="row">
-                <span class="label">Name:</span>
-                <span class="value">{{ accountData().name }}</span>
-            </div>
-            <div class="row">
-                <span class="label">Email:</span>
-                <span class="value">{{ accountData().email }}</span>
-            </div>
-            <div class="row">
-                <span class="label">Account created:</span>
-                <span class="value">{{ accountData().createdAt | date: 'yyyy-MM-dd' }}</span>
-            </div>
+            <app-profile-row [label]="'Name'" [value]="accountData().name" />
+            <app-profile-row [label]="'Email'" [value]="accountData().email" />
+            <app-profile-row [label]="'Account created'" [value]="accountData().createdAt" />
         </div>
     </div>
     <div class="history-list">
         <h2 class="title">Generation History</h2>
         <div class="items">
             @for (item of historyItems(); track item.id) {
-                <a class="history-item" [routerLink]="['/user/history', item.id]">
-                    <span class="title">{{ item.title }}</span>
-                    <span class="date">{{ item.createdAt | date: 'yyyy-MM-dd HH:mm' }}</span>
-                </a>
+                <app-history-item-card [item]="item" />
             } @empty {
                 <p class="empty">No generation history yet.</p>
             }

@@ -1,6 +1,12 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 .page {
+  flex:1;
   background-color: var(--content-bg);
-  min-height: calc(100vh - var(--header-height));
 
   .progress-bar {
     position: fixed;
@@ -33,6 +39,5 @@
 @media (max-width: 480px) {
   .page {
     padding-top: var(--header-height-mobile);
-    min-height: calc(100vh - var(--header-height-mobile));
   }
 }

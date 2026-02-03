@@ -1,18 +1,19 @@
 import {Component, inject, signal} from '@angular/core';
 import {RouterLink} from "@angular/router";
-import {DatePipe} from "@angular/common";
 import {BasePage} from "../../../../shared/base-page/base-page";
-import {HistoryPage} from "../../history/history-page/history-page";
 import {HistoryHttpClient} from "../../history/history-http-client";
 import {GenerationResponse} from "../../../generation/generation-response";
 import {toSignal} from "@angular/core/rxjs-interop";
+import {HistoryItemCard} from "../../history/history-item-card/history-item-card";
+import {ProfileRow} from "../profile-row/profile-row";
 
 @Component({
     selector: 'app-user-page',
     imports: [
         BasePage,
         RouterLink,
-        DatePipe
+        HistoryItemCard,
+        ProfileRow
     ],
     templateUrl: './profile-page.html',
     styleUrl: './profile-page.scss',
