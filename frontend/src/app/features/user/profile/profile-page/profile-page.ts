@@ -23,7 +23,7 @@ export class ProfilePage {
     protected readonly headerLabel = 'Profile';
     protected readonly historyItems = toSignal(
         this.#historyHttpService.getRequestsHistory(),
-        {initialValue: [] as ReadonlyArray<GenerationResponse>}
+        {initialValue: [] as readonly GenerationResponse[]}
     )
 
     protected readonly accountData = signal({

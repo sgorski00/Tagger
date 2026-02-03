@@ -11,7 +11,7 @@ export class HistoryHttpClient {
     readonly #BASE_API_URL = `${environment.apiUrl}`;
     readonly #http = inject(HttpClient)
 
-    getRequestsHistory(): Observable<ReadonlyArray<GenerationResponse>> {
-        return this.#http.get<ReadonlyArray<GenerationResponse>>(`${this.#BASE_API_URL}/tags/history`);
+    getRequestsHistory(): Observable<readonly GenerationResponse[]> {
+        return this.#http.get<readonly GenerationResponse[]>(`${this.#BASE_API_URL}/tags/history`);
     }
 }
