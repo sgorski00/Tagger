@@ -8,4 +8,5 @@ import {Component, input} from '@angular/core';
 })
 export class BasePage {
   readonly headerLabel = input.required<string>();
+  readonly layout = input<'column' | 'row'>('column');
 }

@@ -11,7 +11,8 @@
                 </button>
                 <div [class.show]="isMenuOpen()" class="dropdown-content">
                     @if (isAuthenticated()) {
-                        <a [routerLink]="'/history'">History</a>
+                        <a [routerLink]="'/user/profile'">Profile</a>
+                        <a [routerLink]="'/user/history'">History</a>
                         <a [routerLink]="'/oauth2/logout'">Log out</a>
                     } @else {
                         <a [href]="backendGoogleOauthUrl">Log in with Google</a>

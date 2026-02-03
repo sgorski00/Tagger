@@ -1,0 +1,47 @@
+<app-base-page [headerLabel]="headerLabel" [layout]="'row'">
+    <div class="account-card">
+        <h2 class="title">Account Information</h2>
+        <div class="info">
+            <div class="row">
+                <span class="label">Name:</span>
+                <span class="value">{{ accountData().firstName }} {{ accountData().lastName }}</span>
+            </div>
+            <div class="row">
+                <span class="label">Username:</span>
+                <span class="value">{{ accountData().username }}</span>
+            </div>
+            <div class="row">
+                <span class="label">Email:</span>
+                <span class="value">{{ accountData().email }}</span>
+            </div>
+            <div class="row">
+                <span class="label">Account created:</span>
+                <span class="value">{{ accountData().createdAt | date: 'yyyy-MM-dd' }}</span>
+            </div>
+        </div>
+    </div>
+    <div class="history-list">
+        <h2 class="title">Generation History</h2>
+        <div class="items">
+            @for (item of historyItems(); track item.id) {
+                <a class="history-item" [routerLink]="['/user/history', item.id]">
+                    <span class="title">{{ item.title }}</span>
+                    <span class="date">{{ item.date | date: 'yyyy-MM-dd HH:mm' }}</span>
+                </a>
+                <a class="history-item" [routerLink]="['/user', item.id]">
+                    <span class="title">{{ item.title }}</span>
+                    <span class="date">{{ item.date | date: 'yyyy-MM-dd HH:mm' }}</span>
+                </a>
+                <a class="history-item" [routerLink]="['/user', item.id]">
+                    <span class="title">{{ item.title }}</span>
+                    <span class="date">{{ item.date | date: 'yyyy-MM-dd HH:mm' }}</span>
+                </a>
+            } @empty {
+                <p class="empty">No generation history yet.</p>
+            }
+        </div>
+        @if (historyItems().length > 0) {
+            <button [routerLink]="'/user/history'" class="btn">View full history</button>
+        }
+    </div>
+</app-base-page>

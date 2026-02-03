@@ -13,6 +13,9 @@
 
   --header-height: 64px;
   --header-height-mobile: 96px;
+
+  --scrollbar-thumb: #b3aba2;
+  --scrollbar-thumb-hover: #9f978e;
 }
 
 *,
@@ -28,6 +31,10 @@
 body {
     background-color: var(--layout-bg);
     min-height: 100vh;
+}
+
+hr {
+  color: var(--text-primary-color);
 }
 
 .warning {
