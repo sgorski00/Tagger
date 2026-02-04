@@ -42,21 +42,21 @@ public class JwtServiceTests {
 
     @Test
     void shouldReturnCorrectSubjectFromToken() {
-        String result = jwtService.extractUsername(jwt);
+        var result = jwtService.extractUsername(jwt);
 
         assertEquals("test@user.com", result);
     }
 
     @Test
     void shouldValidateToken() {
-        boolean result = jwtService.isTokenValid(jwt, user);
+        var result = jwtService.isTokenValid(jwt, user);
 
         assertTrue(result);
     }
 
     @Test
     void shouldNotValidateToken_WrongUser() {
-        boolean result = jwtService.isTokenValid(jwt, new User());
+        var result = jwtService.isTokenValid(jwt, new User());
 
         assertFalse(result);
     }
@@ -66,7 +66,7 @@ public class JwtServiceTests {
         when(jwtProperties.expirationTime()).thenReturn(-1L);
         jwt = jwtService.generateToken(user);
 
-        boolean result = jwtService.isTokenValid(jwt, user);
+        var result = jwtService.isTokenValid(jwt, user);
 
         assertFalse(result);
     }
@@ -76,7 +76,7 @@ public class JwtServiceTests {
         when(jwtProperties.expirationTime()).thenReturn(-1L);
         jwt = jwtService.generateToken(user);
 
-        String result = jwtService.extractUsername(jwt);
+        var result = jwtService.extractUsername(jwt);
 
         assertEquals("test@user.com", result);
     }

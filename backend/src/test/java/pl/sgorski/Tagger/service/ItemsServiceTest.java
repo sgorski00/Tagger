@@ -25,20 +25,20 @@ public class ItemsServiceTest {
     @Test
     void shouldReturnResponse_getFullInfo() {
         when(aiService.generateResponse(anyString())).thenReturn(new ItemDescriptionResponse());
-        ItemDescriptionRequest promptRequest = new ItemDescriptionRequest();
+        var promptRequest = new ItemDescriptionRequest();
 
-        ItemDescriptionResponse result = itemsService.getFullInfo(promptRequest);
+        var result = itemsService.getFullInfo(promptRequest);
 
         assertNotNull(result);
     }
 
     @Test
     void shouldReturnPrompt_getFullInfo() {
-        ItemDescriptionRequest promptRequest = new ItemDescriptionRequest();
+        var promptRequest = new ItemDescriptionRequest();
         promptRequest.setItem("Test Item");
         promptRequest.setTagsQuantity(10);
 
-        String result = itemsService.generatePrompt(promptRequest);
+        var result = itemsService.generatePrompt(promptRequest);
 
         assertNotNull(result);
         assertTrue(result.contains("Test Item"));

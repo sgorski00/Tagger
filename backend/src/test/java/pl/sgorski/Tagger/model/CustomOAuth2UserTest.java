@@ -11,11 +11,11 @@ public class CustomOAuth2UserTest {
 
     @Test
     void shouldCreateCustomOAuth2User() {
-        User user = new User();
+        var user = new User();
         user.setId(1L);
-        HashMap<String, Object> attributes = new HashMap<>();
+        var attributes = new HashMap<String, Object>();
 
-        CustomOAuth2User customOAuth2User = new CustomOAuth2User(user, attributes);
+        var customOAuth2User = new CustomOAuth2User(user, attributes);
 
         assertNotNull(customOAuth2User);
         assertEquals(user, customOAuth2User.user());
@@ -23,10 +23,10 @@ public class CustomOAuth2UserTest {
 
     @Test
     void shouldReturnUsersAuthorities() {
-        User user = new User();
+        var user = new User();
         var auths = user.getAuthorities();
-        HashMap<String, Object> attributes = new HashMap<>();
-        CustomOAuth2User customOAuth2User = new CustomOAuth2User(user, attributes);
+        var attributes = new HashMap<String, Object>();
+        var customOAuth2User = new CustomOAuth2User(user, attributes);
 
         var result = customOAuth2User.getAuthorities();
 
@@ -36,10 +36,10 @@ public class CustomOAuth2UserTest {
 
     @Test
     void shouldReturnAttributes() {
-        User user = new User();
-        HashMap<String, Object> attributes = new HashMap<>();
+        var user = new User();
+        var attributes = new HashMap<String, Object>();
         attributes.put("key", "value");
-        CustomOAuth2User customOAuth2User = new CustomOAuth2User(user, attributes);
+        var customOAuth2User = new CustomOAuth2User(user, attributes);
 
         var result = customOAuth2User.getAttributes();
 
@@ -51,10 +51,10 @@ public class CustomOAuth2UserTest {
 
     @Test
     void shouldReturnUserName() {
-        User user = new User();
+        var user = new User();
         user.setName("test");
-        HashMap<String, Object> attributes = new HashMap<>();
-        CustomOAuth2User customOAuth2User = new CustomOAuth2User(user, attributes);
+        var attributes = new HashMap<String, Object>();
+        var customOAuth2User = new CustomOAuth2User(user, attributes);
 
         var result = customOAuth2User.getName();
 

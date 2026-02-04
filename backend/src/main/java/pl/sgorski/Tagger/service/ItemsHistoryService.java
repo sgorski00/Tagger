@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import pl.sgorski.Tagger.model.ItemDescription;
-import pl.sgorski.Tagger.model.User;
 import pl.sgorski.Tagger.repository.ItemDescriptionRepository;
 import pl.sgorski.Tagger.service.auth.UserService;
 
@@ -23,8 +25,12 @@ public class ItemsHistoryService {
         itemDescriptionRepository.save(itemDescription);
     }
 
-    public Page<ItemDescription> getHistory(String requesterEmail, Pageable pageable) {
-        User user = userService.findByEmail(requesterEmail);
+    public Page<ItemDescription> getHistory(Pageable pageable) {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        if(auth instanceof AnonymousAuthenticationToken) {
+            throw new AccessDeniedException("You must be logged in to access your items history.");
+        }
+        var user = userService.findByEmail(auth.getName());
         return itemDescriptionRepository.findAllByCreatedByOrderByIdDesc(user, pageable);
     }
 }

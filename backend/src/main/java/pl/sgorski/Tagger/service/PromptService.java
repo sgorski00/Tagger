@@ -2,6 +2,8 @@ package pl.sgorski.Tagger.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import pl.sgorski.Tagger.dto.ClothesRequest;
@@ -10,10 +12,8 @@ import pl.sgorski.Tagger.dto.ItemDescriptionRequest;
 import pl.sgorski.Tagger.dto.ItemDescriptionResponse;
 import pl.sgorski.Tagger.mapper.ItemDescriptionMapper;
 import pl.sgorski.Tagger.model.ItemDescription;
-import pl.sgorski.Tagger.model.User;
 import pl.sgorski.Tagger.service.auth.UserService;
 
-import java.security.Principal;
 import java.util.Optional;
 
 @Log4j2
@@ -36,15 +36,15 @@ public class PromptService {
         };
     }
 
-    public ItemDescriptionResponse getResponseAndSaveHistoryIfUserPresent(ItemDescriptionRequest request, Principal principal) {
-        ItemDescriptionResponse result = getResponse(request);
-        getPrincipalName(principal).ifPresent(email -> createAndSaveItemHistory(result, email));
+    public ItemDescriptionResponse getResponseAndSaveHistoryIfUserPresent(ItemDescriptionRequest request) {
+        var result = getResponse(request);
+        getPrincipalName().ifPresent(email -> createAndSaveItemHistory(result, email));
         return result;
     }
 
     private void createAndSaveItemHistory(ItemDescriptionResponse response, String requesterEmail) {
-        User user = userService.findByEmail(requesterEmail);
-        ItemDescription itemDescription = mapper.toDescription(response, user);
+        var user = userService.findByEmail(requesterEmail);
+        var itemDescription = mapper.toDescription(response, user);
         assignParentToTags(itemDescription);
         itemsHistoryService.save(itemDescription);
     }
@@ -56,13 +56,12 @@ public class PromptService {
         }
     }
 
-    private Optional<String> getPrincipalName(Principal principal) {
-        return Optional.ofNullable(principal)
-                .filter(p -> !"anonymousUser".equals(p.getName()))
-                .map(Principal::getName)
-                .or(() -> {
-                    log.debug("User not logged, cannot retrieve user name.");
-                    return Optional.empty();
-                });
+    private Optional<String> getPrincipalName() {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        if(auth == null || !auth.isAuthenticated() || auth instanceof AnonymousAuthenticationToken){
+            log.debug("User not logged, cannot retrieve user name.");
+            return Optional.empty();
+        }
+        return Optional.of(auth.getName());
     }
 }

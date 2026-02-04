@@ -17,7 +17,7 @@ public class GraphqlExceptionController extends DataFetcherExceptionResolverAdap
 
     @Override
     protected GraphQLError resolveToSingleError(Throwable ex, DataFetchingEnvironment env) {
-        String message = messageSource.getMessage("error.generic.message", null, env.getLocale());
+        var message = messageSource.getMessage("error.generic.message", null, env.getLocale());
         return GraphqlErrorBuilder.newError(env)
                 .message(message + ": " + ex.getMessage())
                 .errorType(ErrorType.INTERNAL_ERROR)

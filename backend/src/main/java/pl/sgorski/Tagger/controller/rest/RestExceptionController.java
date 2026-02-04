@@ -22,9 +22,9 @@ public class RestExceptionController {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ProblemDetail handleInvalidFormatException(HttpMessageNotReadableException e) {
         log.error("Invalid format: {}", e.getMessage(), e);
-        String msg = messageSource.getMessage("error.invalid.format.message", null, LocaleContextHolder.getLocale());
-        String title = messageSource.getMessage("error.invalid.format.title", null, LocaleContextHolder.getLocale());
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+        var msg = messageSource.getMessage("error.invalid.format.message", null, LocaleContextHolder.getLocale());
+        var title = messageSource.getMessage("error.invalid.format.title", null, LocaleContextHolder.getLocale());
+        var problemDetail = ProblemDetail.forStatusAndDetail(
                 HttpStatus.BAD_REQUEST,
                 msg + ": " + e.getMessage()
         );
@@ -35,9 +35,9 @@ public class RestExceptionController {
     @ExceptionHandler(BindException.class)
     public ProblemDetail handleValidationException(BindException e) {
         log.error("Validation error: {}", e.getMessage(), e);
-        String msg = messageSource.getMessage("error.validation.message", null, LocaleContextHolder.getLocale());
-        String title = messageSource.getMessage("error.validation.title", null, LocaleContextHolder.getLocale());
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+        var msg = messageSource.getMessage("error.validation.message", null, LocaleContextHolder.getLocale());
+        var title = messageSource.getMessage("error.validation.title", null, LocaleContextHolder.getLocale());
+        var problemDetail = ProblemDetail.forStatusAndDetail(
                 HttpStatus.CONFLICT,
                 msg + ": " + e.getAllErrors().getFirst().getDefaultMessage()
         );
@@ -48,9 +48,9 @@ public class RestExceptionController {
     @ExceptionHandler(AiParsingException.class)
     public ProblemDetail handleAiParsingException(AiParsingException e) {
         log.error("Ai parsing error: {}", e.getMessage(), e);
-        String msg = messageSource.getMessage("error.ai.parsing.message", null, LocaleContextHolder.getLocale());
-        String title = messageSource.getMessage("error.ai.parsing.title", null, LocaleContextHolder.getLocale());
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+        var msg = messageSource.getMessage("error.ai.parsing.message", null, LocaleContextHolder.getLocale());
+        var title = messageSource.getMessage("error.ai.parsing.title", null, LocaleContextHolder.getLocale());
+        var problemDetail = ProblemDetail.forStatusAndDetail(
                 HttpStatus.BAD_REQUEST,
                 msg + ": " + e.getMessage()
         );
@@ -61,9 +61,9 @@ public class RestExceptionController {
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleException(Exception e) {
         log.error("An error occurred: {}", e.getMessage(), e);
-        String msg = messageSource.getMessage("error.generic.message", null, LocaleContextHolder.getLocale());
-        String title = messageSource.getMessage("error.generic.title", null, LocaleContextHolder.getLocale());
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+        var msg = messageSource.getMessage("error.generic.message", null, LocaleContextHolder.getLocale());
+        var title = messageSource.getMessage("error.generic.title", null, LocaleContextHolder.getLocale());
+        var problemDetail = ProblemDetail.forStatusAndDetail(
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 msg + ": " + e.getMessage()
         );

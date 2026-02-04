@@ -9,9 +9,9 @@ public class TagTests {
 
     @Test
     void shouldCreateTagWithName() {
-        String name = "#Tag";
+        var name = "#Tag";
 
-        Tag tag = new Tag(name);
+        var tag = new Tag(name);
 
         assertNotNull(tag);
         assertEquals(name, tag.getName());

@@ -6,6 +6,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import pl.sgorski.Tagger.dto.ClothesRequest;
 import pl.sgorski.Tagger.dto.ElectronicsRequest;
 import pl.sgorski.Tagger.dto.ItemDescriptionRequest;
@@ -16,7 +18,6 @@ import pl.sgorski.Tagger.model.Tag;
 import pl.sgorski.Tagger.model.User;
 import pl.sgorski.Tagger.service.auth.UserService;
 
-import java.security.Principal;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -48,18 +49,20 @@ public class PromptServiceTest {
         response.setTitle("Sample Title");
         response.setDescription("Sample Description");
         response.setTags(new String[]{"#tag1", "#tag2"});
+
+        SecurityContextHolder.clearContext();
     }
 
     @Test
     void shouldGetResponseForElectronicsRequest_NotLogged() {
-        ElectronicsRequest request = new ElectronicsRequest();
+        var request = new ElectronicsRequest();
         request.setItem("Laptop");
         request.setBrand("Dell");
         request.setModel("XPS 13");
 
         when(electronicsService.getFullInfo(any(ElectronicsRequest.class))).thenReturn(response);
 
-        ItemDescriptionResponse result = promptService.getResponseAndSaveHistoryIfUserPresent(request, null);
+        var result = promptService.getResponseAndSaveHistoryIfUserPresent(request);
 
         assertNotNull(result);
         assertEquals("Sample Title", result.getTitle());
@@ -73,14 +76,14 @@ public class PromptServiceTest {
 
     @Test
     void shouldGetResponseForClothesRequest_NotLogged() {
-        ClothesRequest request = new ClothesRequest();
+        var request = new ClothesRequest();
         request.setItem("Dress");
         request.setSize("XL");
         request.setMaterial("Cotton");
 
         when(clothesService.getFullInfo(any(ClothesRequest.class))).thenReturn(response);
 
-        ItemDescriptionResponse result = promptService.getResponseAndSaveHistoryIfUserPresent(request, null);
+        var result = promptService.getResponseAndSaveHistoryIfUserPresent(request);
 
         assertNotNull(result);
         assertEquals("Sample Title", result.getTitle());
@@ -94,14 +97,14 @@ public class PromptServiceTest {
 
     @Test
     void shouldGetResponseForGeneralRequest_NotLogged() {
-        ItemDescriptionRequest request = new ItemDescriptionRequest();
+        var request = new ItemDescriptionRequest();
         request.setItem("Dress");
         request.setPlatform("ebay");
         request.setResponseStyle("detailed");
 
         when(itemsService.getFullInfo(any(ItemDescriptionRequest.class))).thenReturn(response);
 
-        ItemDescriptionResponse result = promptService.getResponseAndSaveHistoryIfUserPresent(request, null);
+        var result = promptService.getResponseAndSaveHistoryIfUserPresent(request);
 
         assertNotNull(result);
         assertEquals("Sample Title", result.getTitle());
@@ -115,7 +118,7 @@ public class PromptServiceTest {
 
     @Test
     void shouldThrowWhenRequestIsNull_NotLogged() {
-        assertThrows(NullPointerException.class, () -> promptService.getResponseAndSaveHistoryIfUserPresent(null, null));
+        assertThrows(NullPointerException.class, () -> promptService.getResponseAndSaveHistoryIfUserPresent(null));
 
         verify(electronicsService, never()).getFullInfo(any());
         verify(itemsService, never()).getFullInfo(any());
@@ -125,17 +128,16 @@ public class PromptServiceTest {
 
     @Test
     void shouldGetResponseForElectronicsRequest_LoggedAndNoTags() {
-        ElectronicsRequest request = new ElectronicsRequest();
+        setUpContext("user@example.com");
+        var request = new ElectronicsRequest();
         request.setItem("Laptop");
         request.setBrand("Dell");
         request.setModel("XPS 13");
-        Principal principal = mock(Principal.class);
-        when(principal.getName()).thenReturn("test@email.com");
         when(userService.findByEmail(anyString())).thenReturn(new User());
         when(mapper.toDescription(any(ItemDescriptionResponse.class), any(User.class))).thenReturn(new ItemDescription());
         when(electronicsService.getFullInfo(any(ElectronicsRequest.class))).thenReturn(response);
 
-        ItemDescriptionResponse result = promptService.getResponseAndSaveHistoryIfUserPresent(request, principal);
+        ItemDescriptionResponse result = promptService.getResponseAndSaveHistoryIfUserPresent(request);
 
         assertNotNull(result);
         assertEquals("Sample Title", result.getTitle());
@@ -149,21 +151,20 @@ public class PromptServiceTest {
 
     @Test
     void shouldGetResponseForElectronicsRequest_LoggedAndWithTags() {
-        ElectronicsRequest request = new ElectronicsRequest();
+        setUpContext("user@example.com");
+        var request = new ElectronicsRequest();
         request.setItem("Laptop");
         request.setBrand("Dell");
         request.setModel("XPS 13");
-        Set<Tag> tags = Set.of(new Tag("#tag1"), new Tag("#tag2"));
-        ItemDescription itemDescription = new ItemDescription();
+        var tags = Set.of(new Tag("#tag1"), new Tag("#tag2"));
+        var itemDescription = new ItemDescription();
         itemDescription.setTags(tags);
 
-        Principal principal = mock(Principal.class);
-        when(principal.getName()).thenReturn("test@email.com");
         when(userService.findByEmail(anyString())).thenReturn(new User());
         when(mapper.toDescription(any(ItemDescriptionResponse.class), any(User.class))).thenReturn(itemDescription);
         when(electronicsService.getFullInfo(any(ElectronicsRequest.class))).thenReturn(response);
 
-        ItemDescriptionResponse result = promptService.getResponseAndSaveHistoryIfUserPresent(request, principal);
+        var result = promptService.getResponseAndSaveHistoryIfUserPresent(request);
 
         assertNotNull(result);
         assertEquals("Sample Title", result.getTitle());
@@ -175,5 +176,10 @@ public class PromptServiceTest {
         verify(itemsService, never()).getFullInfo(any());
         verify(clothesService, never()).getFullInfo(any());
         verify(itemsHistoryService, times(1)).save(any());
+    }
+
+    private void setUpContext(String email) {
+        var auth = new UsernamePasswordAuthenticationToken(email, null, null);
+        SecurityContextHolder.getContext().setAuthentication(auth);
     }
 }

@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,6 @@ import pl.sgorski.Tagger.service.ItemsHistoryService;
 import pl.sgorski.Tagger.service.PromptService;
 
 import java.security.Principal;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/tags")
@@ -50,7 +50,7 @@ public class ItemDescriptionController {
             Principal principal
     ) {
         var code = getResponseCode(principal);
-        return ResponseEntity.status(code).body(promptService.getResponseAndSaveHistoryIfUserPresent(request, principal));
+        return ResponseEntity.status(code).body(promptService.getResponseAndSaveHistoryIfUserPresent(request));
     }
 
     @PostMapping("/clothes")
@@ -68,7 +68,7 @@ public class ItemDescriptionController {
             Principal principal
     ) {
         var code = getResponseCode(principal);
-        return ResponseEntity.status(code).body(promptService.getResponseAndSaveHistoryIfUserPresent(request, principal));
+        return ResponseEntity.status(code).body(promptService.getResponseAndSaveHistoryIfUserPresent(request));
     }
 
     @PostMapping("/electronics")
@@ -86,21 +86,19 @@ public class ItemDescriptionController {
             Principal principal
     ) {
         var code = getResponseCode(principal);
-        return ResponseEntity.status(code).body(promptService.getResponseAndSaveHistoryIfUserPresent(request, principal));
+        return ResponseEntity.status(code).body(promptService.getResponseAndSaveHistoryIfUserPresent(request));
     }
 
     @GetMapping("/history")
     @Operation(summary = "Get history of generated tags, titles and descriptions for products.")
     @ApiResponse(responseCode = "200", description = "Successfully retrieved tags, title and description")
-    public ResponseEntity<List<ItemDescriptionResponse>> getHistory(
+    public ResponseEntity<Page<ItemDescriptionResponse>> getHistory(
             @RequestParam(value = "page", defaultValue = "1") int page,
-            @RequestParam(value = "size", defaultValue = "10") int size,
-            Principal principal
+            @RequestParam(value = "size", defaultValue = "10") int size
     ) {
         var pageRequest = PageRequest.of(page - 1, size);
-        var result = itemsHistoryService.getHistory(principal.getName(), pageRequest).stream()
-                .map(mapper::toResponse)
-                .toList();
+        var result = itemsHistoryService.getHistory(pageRequest)
+          .map(mapper::toResponse);
         return ResponseEntity.ok(result);
     }
 

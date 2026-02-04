@@ -13,10 +13,10 @@ public class UserTests {
 
     @Test
     void shouldCreateUserFromOAuth2User_unknownName() {
-        OAuth2User oAuth2User = mock(OAuth2User.class);
+        var oAuth2User = mock(OAuth2User.class);
         when(oAuth2User.getAttribute("email")).thenReturn("test@email.com");
 
-        User user = new User(oAuth2User);
+        var user = new User(oAuth2User);
 
         assertNotNull(user);
         assertEquals("test@email.com", user.getEmail());
@@ -26,14 +26,14 @@ public class UserTests {
 
     @Test
     void shouldCreateUserFromOAuth2User_knownName() {
-        HashMap<String, Object> attributes = new HashMap<>();
+        var attributes = new HashMap<String, Object>();
         attributes.put("name", "John Doe");
 
-        OAuth2User oAuth2User = mock(OAuth2User.class);
+        var oAuth2User = mock(OAuth2User.class);
         when(oAuth2User.getAttribute("email")).thenReturn("test@email.com");
         when(oAuth2User.getAttributes()).thenReturn(attributes);
 
-        User user = new User(oAuth2User);
+        var user = new User(oAuth2User);
 
         assertNotNull(user);
         assertEquals("test@email.com", user.getEmail());
@@ -43,7 +43,7 @@ public class UserTests {
 
     @Test
     void shouldReturnAuthority() {
-        User user = new User();
+        var user = new User();
 
         var result = user.getAuthorities();
 
@@ -54,10 +54,10 @@ public class UserTests {
 
     @Test
     void shouldReturnEmailAsUsername() {
-        User user = new User();
+        var user = new User();
         user.setEmail("test@email.com");
 
-        String result = user.getUsername();
+        var result = user.getUsername();
 
         assertEquals("test@email.com", result);
     }
