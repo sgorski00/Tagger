@@ -2,10 +2,10 @@ import {Component, inject, signal} from '@angular/core';
 import {RouterLink} from "@angular/router";
 import {BasePage} from "../../../../shared/base-page/base-page";
 import {HistoryHttpClient} from "../../history/history-http-client";
-import {GenerationResponse} from "../../../generation/generation-response";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {HistoryItemCard} from "../../history/history-item-card/history-item-card";
 import {ProfileRow} from "../profile-row/profile-row";
+import {map} from "rxjs";
 
 @Component({
     selector: 'app-user-page',
@@ -22,8 +22,10 @@ export class ProfilePage {
     readonly #historyHttpService = inject(HistoryHttpClient);
     protected readonly headerLabel = 'Profile';
     protected readonly historyItems = toSignal(
-        this.#historyHttpService.getRequestsHistory(),
-        {initialValue: [] as readonly GenerationResponse[]}
+        this.#historyHttpService.getRequestsHistory().pipe(
+            map(resp => resp.content)
+        ),
+        {initialValue: []}
     )
 
     protected readonly accountData = signal({
