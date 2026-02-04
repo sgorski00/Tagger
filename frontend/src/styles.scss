@@ -21,16 +21,16 @@
 *,
 *::before,
 *::after {
-    box-sizing: border-box;
-    font-family: var(--text-family-base);
-    color: var(--text-primary-color);
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  font-family: var(--text-family-base);
+  color: var(--text-primary-color);
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    background-color: var(--layout-bg);
-    min-height: 100vh;
+  background-color: var(--layout-bg);
+  min-height: 100vh;
 }
 
 hr {
@@ -38,5 +38,12 @@ hr {
 }
 
 .warning {
-    color: var(--text-warning-color);
+  color: var(--text-warning-color);
+}
+
+.sub-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary-color);
+  margin: 0 0 1rem 0;
 }

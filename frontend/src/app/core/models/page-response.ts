@@ -1,9 +1,11 @@
 export interface PageResponse<T> {
     content: ReadonlyArray<T>;
+    pageable: {
+        pageNumber: number;
+        pageSize: number;
+    }
     totalElements: number;
     totalPages: number;
-    number: number;
-    size: number;
     last: boolean;
     first: boolean;
 }

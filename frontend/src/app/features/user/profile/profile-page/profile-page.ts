@@ -3,17 +3,17 @@ import {RouterLink} from "@angular/router";
 import {BasePage} from "../../../../shared/base-page/base-page";
 import {HistoryHttpClient} from "../../history/history-http-client";
 import {toSignal} from "@angular/core/rxjs-interop";
-import {HistoryItemCard} from "../../history/history-item-card/history-item-card";
 import {ProfileRow} from "../profile-row/profile-row";
 import {map} from "rxjs";
+import {HistoryItemsList} from "../../history/history-items-list/history-items-list";
 
 @Component({
     selector: 'app-user-page',
     imports: [
         BasePage,
         RouterLink,
-        HistoryItemCard,
-        ProfileRow
+        ProfileRow,
+        HistoryItemsList
     ],
     templateUrl: './profile-page.html',
     styleUrl: './profile-page.scss',
