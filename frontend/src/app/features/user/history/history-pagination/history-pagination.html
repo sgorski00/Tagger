@@ -1,0 +1,10 @@
+<ul class="pagination">
+  <li><button type="button" (click)="selectPage(1)">&laquo;</button></li>
+  @for (page of getRange(); track page) {
+    <li><button type="button"
+      [class.active]="activePage() === page"
+      (click)="selectPage(page)"
+    >{{ page }}</button></li>
+  }
+  <li><button type="button" (click)="selectPage(totalPages())">&raquo;</button></li>
+</ul>

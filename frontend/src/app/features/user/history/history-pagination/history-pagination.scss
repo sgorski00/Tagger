@@ -1,0 +1,49 @@
+:host {
+  --pg-text-color: #000;
+  --pg-border-color: #ccc;
+  --pg-hover-bg: #d3d3d3;
+  --pg-active-bg: #48ce45;
+  --pg-active-text-color: #fff;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+
+  li {
+    button {
+      appearance: none;
+      background: none;
+      border: 1px solid var(--pg-border-color);
+      color: var(--pg-text-color);
+      padding: 8px 12px;
+      margin: 0 4px;
+      border-radius: 5px;
+      cursor: pointer;
+      font: inherit;
+      line-height: 1;
+      text-align: center;
+
+      &.active {
+        background-color: var(--pg-active-bg);
+        color: var(--pg-active-text-color);
+      }
+
+      &:hover:not(.active) {
+        background-color: var(--pg-hover-bg);
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--pg-active-bg);
+        outline-offset: 2px;
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: default;
+      }
+    }
+  }
+}
