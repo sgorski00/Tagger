@@ -42,6 +42,7 @@ header {
         padding: 0;
 
         .bar {
+          min-height: 3px;
           height: 3px;
           width: 100%;
           background-color: var(--text-primary-color);

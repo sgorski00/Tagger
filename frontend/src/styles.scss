@@ -16,6 +16,12 @@
 
   --scrollbar-thumb: #b3aba2;
   --scrollbar-thumb-hover: #9f978e;
+
+  --card-bg: #bdb3a7;
+  --card-text-secondary-color: #4a4a4a;
+  --card-border-color: #9c8f85;
+  --card-hover-background: #d5c0aa;
+  --card-hover-border-color: #a8998f;
 }
 
 *,
@@ -45,5 +51,5 @@ hr {
   font-size: 1.25rem;
   font-weight: 600;
   color: var(--text-primary-color);
-  margin: 0 0 1rem 0;
+  padding: 0 0 1rem 0;
 }

@@ -7,53 +7,53 @@ import {PageResponse} from "../../../../core/models/page-response";
 import {HistoryPagination} from '../history-pagination/history-pagination';
 
 @Component({
-  selector: 'app-history-page',
-  imports: [
-    BasePage,
-    HistoryItemsList,
-    HistoryPagination
-  ],
-  templateUrl: './history-page.html',
-  styleUrl: './history-page.scss',
+    selector: 'app-history-page',
+    imports: [
+        BasePage,
+        HistoryItemsList,
+        HistoryPagination
+    ],
+    templateUrl: './history-page.html',
+    styleUrl: './history-page.scss',
 })
 export class HistoryPage {
-  readonly #historyHttpClient = inject(HistoryHttpClient);
-  readonly #initialHistoryPage: PageResponse<GenerationResponse> = {
-    content: [],
-    pageable: {
-      pageNumber: 0,
-      pageSize: 0,
-    },
-    totalElements: 0,
-    totalPages: 0,
-    last: false,
-    first: true
-  }
+    readonly #historyHttpClient = inject(HistoryHttpClient);
+    readonly #initialHistoryPage: PageResponse<GenerationResponse> = {
+        content: [],
+        pageable: {
+            pageNumber: 0,
+            pageSize: 0,
+        },
+        totalElements: 0,
+        totalPages: 0,
+        last: false,
+        first: true
+    }
 
-  protected readonly page = signal(1);
-  protected readonly historyPage = signal(this.#initialHistoryPage);
+    protected readonly page = signal(1);
+    protected readonly historyPage = signal(this.#initialHistoryPage)
 
-  constructor() {
-    effect(() => {
-      const page = this.page();
-      this.#historyHttpClient.getRequestsHistory(page)
-        .subscribe(data => this.historyPage.set(data));
-    })
-  }
+    constructor() {
+        effect(() => {
+            const page = this.page();
+            this.#historyHttpClient.getRequestsHistory(page)
+                .subscribe(data => this.historyPage.set(data));
+        })
+    }
 
-  protected getHistoryItems(): ReadonlyArray<GenerationResponse> {
-    return this.historyPage().content;
-  }
+    protected getHistoryItems(): ReadonlyArray<GenerationResponse> {
+        return this.historyPage().content;
+    }
 
-  protected getActivePage(): number {
-    return this.historyPage().pageable.pageNumber + 1;
-  }
+    protected getActivePage(): number {
+        return this.historyPage().pageable.pageNumber + 1;
+    }
 
-  protected getTotalPages(): number {
-    return this.historyPage().totalPages;
-  }
+    protected getTotalPages(): number {
+        return this.historyPage().totalPages;
+    }
 
-  protected changePage($event: number) {
-    this.page.set($event);
-  }
+    protected changePage($event: number) {
+        this.page.set($event);
+    }
 }

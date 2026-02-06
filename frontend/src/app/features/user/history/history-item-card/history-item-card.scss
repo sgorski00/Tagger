@@ -1,3 +1,7 @@
+:host {
+  --card-hover-translate-x: 4px;
+}
+
 .history-item {
   display: flex;
   justify-content: space-between;
@@ -11,11 +15,12 @@
   text-decoration: none;
   color: inherit;
   transition: all 0.2s ease;
+  width: calc(100% - var(--card-hover-translate-x));
 
   &:hover {
     border-color: var(--card-hover-border-color);
     background-color: var(--card-hover-background);
-    transform: translateX(4px);
+    transform: translateX(var(--card-hover-translate-x));
   }
 
   .title {
