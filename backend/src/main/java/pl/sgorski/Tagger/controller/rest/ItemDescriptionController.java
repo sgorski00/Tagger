@@ -8,8 +8,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,8 +15,6 @@ import pl.sgorski.Tagger.dto.ClothesRequest;
 import pl.sgorski.Tagger.dto.ElectronicsRequest;
 import pl.sgorski.Tagger.dto.ItemDescriptionRequest;
 import pl.sgorski.Tagger.dto.ItemDescriptionResponse;
-import pl.sgorski.Tagger.mapper.ItemDescriptionMapper;
-import pl.sgorski.Tagger.service.ItemsHistoryService;
 import pl.sgorski.Tagger.service.PromptService;
 
 import java.security.Principal;
@@ -32,8 +28,6 @@ import java.security.Principal;
 public class ItemDescriptionController {
 
     private final PromptService promptService;
-    private final ItemsHistoryService itemsHistoryService;
-    private final ItemDescriptionMapper mapper;
 
     @PostMapping("/general")
     @Operation(summary = "Get tags, title and description for every product. Check other endpoints for specific products that are more detailed.")
@@ -87,19 +81,6 @@ public class ItemDescriptionController {
     ) {
         var code = getResponseCode(principal);
         return ResponseEntity.status(code).body(promptService.getResponseAndSaveHistoryIfUserPresent(request));
-    }
-
-    @GetMapping("/history")
-    @Operation(summary = "Get history of generated tags, titles and descriptions for products.")
-    @ApiResponse(responseCode = "200", description = "Successfully retrieved tags, title and description")
-    public ResponseEntity<Page<ItemDescriptionResponse>> getHistory(
-            @RequestParam(value = "page", defaultValue = "1") int page,
-            @RequestParam(value = "size", defaultValue = "10") int size
-    ) {
-        var pageRequest = PageRequest.of(page - 1, size);
-        var result = itemsHistoryService.getHistory(pageRequest)
-          .map(mapper::toResponse);
-        return ResponseEntity.ok(result);
     }
 
     private int getResponseCode(Principal principal) {

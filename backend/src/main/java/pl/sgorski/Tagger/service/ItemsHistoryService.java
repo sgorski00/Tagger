@@ -17,20 +17,26 @@ import pl.sgorski.Tagger.service.auth.UserService;
 @RequiredArgsConstructor
 public class ItemsHistoryService {
 
-    private final UserService userService;
-    private final ItemDescriptionRepository itemDescriptionRepository;
+  private final UserService userService;
+  private final ItemDescriptionRepository itemDescriptionRepository;
 
-    public void save(ItemDescription itemDescription) {
-        log.debug("Saving new item description");
-        itemDescriptionRepository.save(itemDescription);
-    }
+  public void save(ItemDescription itemDescription) {
+    log.debug("Saving new item description");
+    itemDescriptionRepository.save(itemDescription);
+  }
 
-    public Page<ItemDescription> getHistory(Pageable pageable) {
-        var auth = SecurityContextHolder.getContext().getAuthentication();
-        if(auth instanceof AnonymousAuthenticationToken) {
-            throw new AccessDeniedException("You must be logged in to access your items history.");
-        }
-        var user = userService.findByEmail(auth.getName());
-        return itemDescriptionRepository.findAllByCreatedByOrderByIdDesc(user, pageable);
+  public Page<ItemDescription> getHistory(Pageable pageable) {
+    var auth = SecurityContextHolder.getContext().getAuthentication();
+    if (auth instanceof AnonymousAuthenticationToken) {
+      throw new AccessDeniedException("You must be logged in to access your items history.");
     }
+    var user = userService.findByEmail(auth.getName());
+    return itemDescriptionRepository.findAllByCreatedByOrderByIdDesc(user, pageable);
+  }
+
+  public ItemDescription getHistoryItem(Long id) {
+    //TODO: implement domain exception and security check to prevent access to other users items
+    return itemDescriptionRepository.findById(id)
+      .orElseThrow();
+  }
 }
