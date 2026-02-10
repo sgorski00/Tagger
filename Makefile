@@ -31,3 +31,8 @@ restart-front:
 	docker compose build tagger-frontend
 	docker compose down tagger-frontend
 	docker compose up -d tagger-frontend
+
+restart-back:
+	docker compose build tagger-java
+	docker compose down tagger-java
+	docker compose up -d tagger-java

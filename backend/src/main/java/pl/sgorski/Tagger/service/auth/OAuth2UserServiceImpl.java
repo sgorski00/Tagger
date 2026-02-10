@@ -22,15 +22,15 @@ public class OAuth2UserServiceImpl extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         log.debug("Loading user from OAuth2 provider: {}", userRequest.getClientRegistration().getRegistrationId());
-        OAuth2User oAuth2User = super.loadUser(userRequest);
+        var oAuth2User = super.loadUser(userRequest);
         log.debug("User logged: {}", oAuth2User);
-        User user = getUserOrCreateWithOAuth2User(oAuth2User);
+        var user = getUserOrCreateWithOAuth2User(oAuth2User);
         log.debug("Mapped User: {}", user);
         return new CustomOAuth2User(user, oAuth2User.getAttributes());
     }
 
     private User getUserOrCreateWithOAuth2User(OAuth2User oAuth2User) {
-        String email = getEmailOrThrow(oAuth2User);
+        var email = getEmailOrThrow(oAuth2User);
         if(userService.existsByEmail(email)) {
             log.debug("User with email {} already exists, fetching from database.", email);
             return userService.findByEmail(email);

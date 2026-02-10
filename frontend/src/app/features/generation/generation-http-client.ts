@@ -10,7 +10,7 @@ import {GenerationRequest, GeneralGenerationRequest, ClothesGenerationRequest, E
 })
 export class GenerationHttpClient {
   readonly #BASE_API_URL = `${environment.apiUrl}/tags`;
-  http = inject(HttpClient)
+  readonly #http = inject(HttpClient)
 
   getGenerationResponse(data: GenerationRequest): Observable<GenerationResponse> {
     switch (data.mode) {
@@ -25,14 +25,14 @@ export class GenerationHttpClient {
   }
 
   private fetchGeneralInfo(request: GeneralGenerationRequest): Observable<GenerationResponse> {
-    return this.http.post<GenerationResponse>(`${this.#BASE_API_URL}/general`, request);
+    return this.#http.post<GenerationResponse>(`${this.#BASE_API_URL}/general`, request);
   }
 
   private fetchClothesInfo(request: ClothesGenerationRequest): Observable<GenerationResponse> {
-    return this.http.post<GenerationResponse>(`${this.#BASE_API_URL}/clothes`, request);
+    return this.#http.post<GenerationResponse>(`${this.#BASE_API_URL}/clothes`, request);
   }
 
   private fetchElectronicsInfo(request: ElectronicsGenerationRequest): Observable<GenerationResponse> {
-    return this.http.post<GenerationResponse>(`${this.#BASE_API_URL}/electronics`, request);
+    return this.#http.post<GenerationResponse>(`${this.#BASE_API_URL}/electronics`, request);
   }
 }

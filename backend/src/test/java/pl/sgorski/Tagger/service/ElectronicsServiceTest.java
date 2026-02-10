@@ -28,29 +28,29 @@ public class ElectronicsServiceTest {
 
     @Test
     void shouldReturnResponse_getFullInfo() {
-        ElectronicsRequest request = new ElectronicsRequest();
+        var request = new ElectronicsRequest();
         when(aiService.generateResponse(any(String.class))).thenReturn(new ItemDescriptionResponse());
 
-        ItemDescriptionResponse result = electronicsService.getFullInfo(request);
+        var result = electronicsService.getFullInfo(request);
 
         assertNotNull(result);
     }
 
     @Test
     void shouldThrow_getFullInfo_WrongRequest() {
-        ItemDescriptionRequest request = new ItemDescriptionRequest();
+        var request = new ItemDescriptionRequest();
 
         assertThrows(IllegalArgumentException.class, () -> electronicsService.getFullInfo(request));
     }
 
     @Test
     void shouldReturnPrompt_generatePrompt() {
-        ElectronicsRequest request = new ElectronicsRequest();
+        var request = new ElectronicsRequest();
         request.setPlatform("eBay");
         request.setBrand("Samsung");
         request.setModel("Galaxy S21");
 
-        String result = electronicsService.generatePrompt(request);
+        var result = electronicsService.generatePrompt(request);
 
         assertFalse(result.isBlank());
         assertTrue(result.contains("electronic item"));
@@ -61,7 +61,7 @@ public class ElectronicsServiceTest {
 
     @Test
     void shouldThrow_generatePrompt_WrongRequest() {
-        ItemDescriptionRequest request = new ItemDescriptionRequest();
+        var request = new ItemDescriptionRequest();
 
         assertThrows(IllegalArgumentException.class, () -> electronicsService.generatePrompt(request));
     }

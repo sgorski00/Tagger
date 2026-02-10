@@ -2,7 +2,7 @@
     <div class="content">
         <h1 class="app-name">{{ title }}</h1>
         <nav>
-            <a [routerLink]="'#'">Home</a>
+            <a [routerLink]="'/generate'">Generate</a>
             <div class="dropdown">
                 <button class="dropbtn" (click)="toggleMenu()">
                     <span class="bar"></span>
@@ -11,11 +11,11 @@
                 </button>
                 <div [class.show]="isMenuOpen()" class="dropdown-content">
                     @if (isAuthenticated()) {
-                        <a [routerLink]="'#'">Profile</a>
-                        <a [routerLink]="'#'">History</a>
-                        <a [routerLink]="'/oauth2/logout'">Log out</a>
+                        <a (click)="toggleMenu()" [routerLink]="'/user/profile'">Profile</a>
+                        <a (click)="toggleMenu()" [routerLink]="'/user/history'">History</a>
+                        <a (click)="toggleMenu()" [routerLink]="'/oauth2/logout'">Log out</a>
                     } @else {
-                        <a [href]="backendGoogleOauthUrl">Log in with Google</a>
+                        <a (click)="toggleMenu()" [href]="backendGoogleOauthUrl">Log in with Google</a>
                     }
                 </div>
             </div>

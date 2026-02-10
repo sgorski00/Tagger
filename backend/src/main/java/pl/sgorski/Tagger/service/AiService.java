@@ -32,26 +32,24 @@ public class AiService {
 
     public ItemDescriptionResponse generateResponse(String userPrompt) {
         var outputConverter = new BeanOutputConverter<>(ItemDescriptionResponse.class);
-        String jsonSchema = outputConverter.getJsonSchema();
-        Prompt prompt;
-        String content;
+        var jsonSchema = outputConverter.getJsonSchema();
         try {
-            prompt = createPrompt(userPrompt, jsonSchema);
-            content = getAiResponseText(prompt);
+            var prompt = createPrompt(userPrompt, jsonSchema);
+            var content = getAiResponseText(prompt);
             return outputConverter.convert(content);
         } catch (NonTransientAiException e) {
             log.info("Current model does not support JSON schema response format, falling back to text response.");
-            prompt = createPromptWithoutSchemaSupport(userPrompt, jsonSchema);
-            content = getAiResponseText(prompt);
+            var prompt = createPromptWithoutSchemaSupport(userPrompt, jsonSchema);
+            var content = getAiResponseText(prompt);
             try {
                 return objectMapper.readValue(content, ItemDescriptionResponse.class);
             } catch (Exception ex) {
                 log.error("Failed to parse response: {}", content);
-                String message = messageSource.getMessage("exception.ai.parsing", null, LocaleContextHolder.getLocale());
+                var message = messageSource.getMessage("exception.ai.parsing", null, LocaleContextHolder.getLocale());
                 throw new AiParsingException(message);
             }
         } catch (Exception e) {
-            String message = messageSource.getMessage("exception.ai.generic", null, LocaleContextHolder.getLocale());
+            var message = messageSource.getMessage("exception.ai.generic", null, LocaleContextHolder.getLocale());
             log.error("Failed to generate response: {}", e.getMessage());
             throw new RuntimeException(message);
         }
@@ -84,7 +82,7 @@ public class AiService {
     }
 
     private String addLanguageHint(String prompt) {
-        String language = LocaleContextHolder.getLocale().getLanguage();
+        var language = LocaleContextHolder.getLocale().getLanguage();
         log.info("Adding language hint for language: {}", language);
         return """
                 %s

@@ -28,29 +28,29 @@ public class ClothesServiceTest {
 
     @Test
     void shouldReturnResponse_getFullInfo() {
-        ClothesRequest request = new ClothesRequest();
+        var request = new ClothesRequest();
         when(aiService.generateResponse(any(String.class))).thenReturn(new ItemDescriptionResponse());
 
-        ItemDescriptionResponse result = clothesService.getFullInfo(request);
+        var result = clothesService.getFullInfo(request);
 
         assertNotNull(result);
     }
 
     @Test
     void shouldThrow_getFullInfo_WrongRequest() {
-        ItemDescriptionRequest request = new ItemDescriptionRequest();
+        var request = new ItemDescriptionRequest();
 
         assertThrows(IllegalArgumentException.class, () -> clothesService.getFullInfo(request));
     }
 
     @Test
     void shouldReturnPrompt_generatePrompt() {
-        ClothesRequest request = new ClothesRequest();
+        var request = new ClothesRequest();
         request.setPlatform("Vinted");
         request.setColor("Red");
         request.setMaterial("100% cotton");
 
-        String result = clothesService.generatePrompt(request);
+        var result = clothesService.generatePrompt(request);
 
         assertFalse(result.isBlank());
         assertTrue(result.contains("clothing item"));
@@ -61,7 +61,7 @@ public class ClothesServiceTest {
 
     @Test
     void shouldThrow_generatePrompt_WrongRequest() {
-        ItemDescriptionRequest request = new ItemDescriptionRequest();
+        var request = new ItemDescriptionRequest();
 
         assertThrows(IllegalArgumentException.class, () -> clothesService.generatePrompt(request));
     }

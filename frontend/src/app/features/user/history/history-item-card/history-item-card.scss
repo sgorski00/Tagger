@@ -1,0 +1,37 @@
+:host {
+  --card-hover-translate-x: 4px;
+}
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border-color);
+  border-radius: 6px;
+  margin-bottom: 0.75rem;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s ease;
+  width: calc(100% - var(--card-hover-translate-x));
+
+  &:hover {
+    border-color: var(--card-hover-border-color);
+    background-color: var(--card-hover-background);
+    transform: translateX(var(--card-hover-translate-x));
+  }
+
+  .title {
+    font-weight: 500;
+    color: var(--text-primary-color);
+    flex: 1;
+  }
+
+  .date {
+    font-size: 0.875rem;
+    color: var(--card-text-secondary-color);
+    white-space: nowrap;
+  }
+}

@@ -28,7 +28,7 @@ public class UserServiceTests {
     void shouldFindUserByEmail() {
         when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(new User()));
 
-        User user = userService.findByEmail("test@email.com");
+        var user = userService.findByEmail("test@email.com");
 
         assertNotNull(user);
         verify(userRepository, times(1)).findByEmail(anyString());
@@ -38,7 +38,7 @@ public class UserServiceTests {
     void shouldThrowWhenFindUserByEmail_UserNotExists() {
         when(userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
 
-        NoSuchElementException thrown = assertThrows(NoSuchElementException.class, () -> userService.findByEmail("test@email.com"));
+        var thrown = assertThrows(NoSuchElementException.class, () -> userService.findByEmail("test@email.com"));
 
         assertTrue(thrown.getMessage().contains("User not found"));
         verify(userRepository, times(1)).findByEmail(anyString());
@@ -46,7 +46,7 @@ public class UserServiceTests {
 
     @Test
     void shouldSaveUser() {
-        User user = new User();
+        var user = new User();
 
         userService.save(user);
 
@@ -57,7 +57,7 @@ public class UserServiceTests {
     void shouldReturnTrueIfUsersExistsByEmail() {
         when(userRepository.existsByEmail(anyString())).thenReturn(true);
 
-        boolean result = userService.existsByEmail("test@email.com");
+        var result = userService.existsByEmail("test@email.com");
 
         assertTrue(result);
     }
@@ -66,7 +66,7 @@ public class UserServiceTests {
     void shouldReturnFalseIfUsersExistsByEmail() {
         when(userRepository.existsByEmail(anyString())).thenReturn(false);
 
-        boolean result = userService.existsByEmail("test@email.com");
+        var result = userService.existsByEmail("test@email.com");
 
         assertFalse(result);
     }

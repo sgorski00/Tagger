@@ -5,12 +5,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest;
 import org.springframework.boot.test.autoconfigure.graphql.tester.AutoConfigureGraphQlTester;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.graphql.test.tester.GraphQlTester;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.test.context.support.WithAnonymousUser;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import pl.sgorski.Tagger.dto.ClothesRequest;
@@ -22,7 +22,6 @@ import pl.sgorski.Tagger.model.ItemDescription;
 import pl.sgorski.Tagger.service.ItemsHistoryService;
 import pl.sgorski.Tagger.service.PromptService;
 
-import java.security.Principal;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -31,6 +30,7 @@ import static org.mockito.Mockito.*;
 @GraphQlTest(PromptResolver.class)
 @AutoConfigureGraphQlTester
 @ActiveProfiles("test")
+@EnableMethodSecurity
 public class PromptResolverTest {
 
     @Autowired
@@ -53,9 +53,6 @@ public class PromptResolverTest {
         response.setTitle("Test Title");
         response.setDescription("Test Description");
         response.setTags(new String[]{"#tag1", "#tag2", "#tag3"});
-
-        var auth = new UsernamePasswordAuthenticationToken("testUser", "password");
-        SecurityContextHolder.getContext().setAuthentication(auth);
     }
 
     @Test
@@ -70,7 +67,7 @@ public class PromptResolverTest {
                     }
                 """;
 
-        when(promptService.getResponseAndSaveHistoryIfUserPresent(any(ItemDescriptionRequest.class), any(Principal.class)))
+        when(promptService.getResponseAndSaveHistoryIfUserPresent(any(ItemDescriptionRequest.class)))
                 .thenReturn(response);
 
         tester.document(query)
@@ -79,7 +76,7 @@ public class PromptResolverTest {
                 .path("generateListing.description").entity(String.class).isEqualTo("Test Description")
                 .path("generateListing.tags").entityList(String.class).hasSize(3);
 
-        verify(promptService, times(1)).getResponseAndSaveHistoryIfUserPresent(any(ItemDescriptionRequest.class), any(Principal.class));
+        verify(promptService, times(1)).getResponseAndSaveHistoryIfUserPresent(any(ItemDescriptionRequest.class));
     }
 
     @Test
@@ -94,7 +91,7 @@ public class PromptResolverTest {
                     }
                 """;
 
-        when(promptService.getResponseAndSaveHistoryIfUserPresent(any(ClothesRequest.class), any(Principal.class)))
+        when(promptService.getResponseAndSaveHistoryIfUserPresent(any(ClothesRequest.class)))
                 .thenReturn(response);
 
         tester.document(query)
@@ -103,7 +100,7 @@ public class PromptResolverTest {
                 .path("generateListingClothes.description").entity(String.class).isEqualTo("Test Description")
                 .path("generateListingClothes.tags").entityList(String.class).hasSize(3);
 
-        verify(promptService, times(1)).getResponseAndSaveHistoryIfUserPresent(any(ItemDescriptionRequest.class), any(Principal.class));
+        verify(promptService, times(1)).getResponseAndSaveHistoryIfUserPresent(any(ItemDescriptionRequest.class));
     }
 
     @Test
@@ -118,7 +115,7 @@ public class PromptResolverTest {
                     }
                 """;
 
-        when(promptService.getResponseAndSaveHistoryIfUserPresent(any(ElectronicsRequest.class), any(Principal.class)))
+        when(promptService.getResponseAndSaveHistoryIfUserPresent(any(ElectronicsRequest.class)))
                 .thenReturn(response);
 
         tester.document(query)
@@ -127,10 +124,11 @@ public class PromptResolverTest {
                 .path("generateListingElectronics.description").entity(String.class).isEqualTo("Test Description")
                 .path("generateListingElectronics.tags").entityList(String.class).hasSize(3);
 
-        verify(promptService, times(1)).getResponseAndSaveHistoryIfUserPresent(any(ItemDescriptionRequest.class), any(Principal.class));
+        verify(promptService, times(1)).getResponseAndSaveHistoryIfUserPresent(any(ItemDescriptionRequest.class));
     }
 
     @Test
+    @WithMockUser("user@example.com")
     void shouldReturnHistory() {
         String query = """
                     query {
@@ -140,9 +138,9 @@ public class PromptResolverTest {
                         }
                     }
                 """;
-        Page<ItemDescription> page = new PageImpl<>(Arrays.asList(new ItemDescription(), new ItemDescription()));
+        var page = new PageImpl<>(Arrays.asList(new ItemDescription(), new ItemDescription()));
 
-        when(itemsHistoryService.getHistory(anyString(), any(Pageable.class))).thenReturn(page);
+        when(itemsHistoryService.getHistory(any(Pageable.class))).thenReturn(page);
         when(mapper.toResponse(any(ItemDescription.class))).thenReturn(response);
 
         tester.document(query)
@@ -151,12 +149,12 @@ public class PromptResolverTest {
                 .path("getHistory[1].title").entity(String.class).isEqualTo("Test Title")
                 .path("getHistory[1].description").entity(String.class).isEqualTo("Test Description");
 
-        verify(itemsHistoryService, times(1)).getHistory(anyString(), any(Pageable.class));
+        verify(itemsHistoryService, times(1)).getHistory(any(Pageable.class));
     }
 
     @Test
+    @WithAnonymousUser
     void shouldNotReturnHistory_NotAuthenticated() {
-        SecurityContextHolder.clearContext();
         String query = """
                     query {
                         getHistory {
@@ -170,6 +168,6 @@ public class PromptResolverTest {
                 .execute()
                 .errors()
                 .satisfy(err -> assertEquals(1, err.size()));
-        verify(itemsHistoryService, times(0)).getHistory(anyString(), any(Pageable.class));
+        verify(itemsHistoryService, times(0)).getHistory(any(Pageable.class));
     }
 }

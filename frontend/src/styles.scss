@@ -13,23 +13,43 @@
 
   --header-height: 64px;
   --header-height-mobile: 96px;
+
+  --scrollbar-thumb: #b3aba2;
+  --scrollbar-thumb-hover: #9f978e;
+
+  --card-bg: #bdb3a7;
+  --card-text-secondary-color: #4a4a4a;
+  --card-border-color: #9c8f85;
+  --card-hover-background: #d5c0aa;
+  --card-hover-border-color: #a8998f;
 }
 
 *,
 *::before,
 *::after {
-    box-sizing: border-box;
-    font-family: var(--text-family-base);
-    color: var(--text-primary-color);
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  font-family: var(--text-family-base);
+  color: var(--text-primary-color);
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    background-color: var(--layout-bg);
-    min-height: 100vh;
+  background-color: var(--layout-bg);
+  min-height: 100vh;
+}
+
+hr {
+  color: var(--text-primary-color);
 }
 
 .warning {
-    color: var(--text-warning-color);
+  color: var(--text-warning-color);
+}
+
+.sub-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary-color);
+  padding: 0 0 1rem 0;
 }

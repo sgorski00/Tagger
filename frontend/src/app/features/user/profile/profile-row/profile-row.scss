@@ -1,0 +1,16 @@
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+
+  .label {
+    font-weight: 500;
+    color: var(--card-text-secondary-color);
+  }
+
+  .value {
+    color: var(--text-primary-color);
+    text-align: right;
+  }
+}

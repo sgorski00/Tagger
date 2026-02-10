@@ -1,0 +1,35 @@
+:host {
+  display: block;
+  background-color: var(--content-bg);
+}
+
+.page-wrapper {
+  padding: 2rem;
+
+  .page-title {
+    color: var(--text-primary-color);
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .page-content-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    gap: 50px;
+
+    &[data-layout="row"] {
+      flex-direction: row;
+      justify-content: space-around;
+      align-items: stretch;
+
+      @media (max-width: 768px) {
+        flex-direction: column;
+        gap: 0;
+      }
+    }
+  }
+}

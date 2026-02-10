@@ -60,9 +60,9 @@ public class AiServiceTest {
         when(generation.getOutput()).thenReturn(assistantMessage);
         when(assistantMessage.getText()).thenReturn("{\"title\":\"T-shirt\",\"description\":\"cotton tshirt\",\"tags\":[\"#fashion\",\"#cotton\"]}");
 
-        String userPrompt = "Describe the clothing item.";
+        var userPrompt = "Describe the clothing item.";
 
-        ItemDescriptionResponse result = aiService.generateResponse(userPrompt);
+        var result = aiService.generateResponse(userPrompt);
 
         assertNotNull(result);
         assertEquals("T-shirt", result.getTitle());
@@ -72,7 +72,7 @@ public class AiServiceTest {
 
     @Test
     void shouldReturn_GenerateResponseWithObjectMapper() throws Exception {
-        ItemDescriptionResponse promptResponse = new ItemDescriptionResponse();
+        var promptResponse = new ItemDescriptionResponse();
         promptResponse.setTitle("T-shirt");
         promptResponse.setDescription("Cotton tshirt");
         promptResponse.setTags(new String[]{"#fashion", "#cotton"});
@@ -85,9 +85,9 @@ public class AiServiceTest {
         when(assistantMessage.getText()).thenReturn("here should be a JSON response");
         when(objectMapper.readValue(anyString(), any(Class.class))).thenReturn(promptResponse);
 
-        String userPrompt = "Describe the clothing item.";
+        var userPrompt = "Describe the clothing item.";
 
-        ItemDescriptionResponse result = aiService.generateResponse(userPrompt);
+        var result = aiService.generateResponse(userPrompt);
 
         assertNotNull(result);
         assertEquals("T-shirt", result.getTitle());
@@ -105,7 +105,7 @@ public class AiServiceTest {
         when(assistantMessage.getText()).thenReturn("here should be a JSON response");
         when(objectMapper.readValue(anyString(), any(Class.class))).thenThrow(JsonMappingException.class);
 
-        String userPrompt = "Describe the clothing item.";
+        var userPrompt = "Describe the clothing item.";
 
         assertThrows(AiParsingException.class, () -> aiService.generateResponse(userPrompt));
     }
@@ -114,7 +114,7 @@ public class AiServiceTest {
     void shouldThrow_GenerateResponseWithJsonSchema_ServerError() throws Exception {
         when(model.call(any(Prompt.class))).thenThrow(new RestClientException("Server error"));
 
-        String userPrompt = "Describe the clothing item.";
+        var userPrompt = "Describe the clothing item.";
 
         assertThrows(RuntimeException.class, () -> aiService.generateResponse(userPrompt));
     }

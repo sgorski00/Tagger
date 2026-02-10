@@ -1,0 +1,17 @@
+<app-base-page [headerLabel]="'History'" [layout]="'row'">
+    <div class="his-list-container">
+        <app-history-items-list
+                (showDetails)="onItemChange($event)"
+                [titleLabel]="'History list'"
+                [items]="getHistoryItems()"
+        />
+        <app-history-pagination
+                [activePage]="getActivePage()"
+                [totalPages]="getTotalPages()"
+                (pageChange)="onPageChange($event)"
+        />
+    </div>
+    <div class="his-item-container">
+        <app-history-item-full-card [itemId]="itemId()"/>
+    </div>
+</app-base-page>

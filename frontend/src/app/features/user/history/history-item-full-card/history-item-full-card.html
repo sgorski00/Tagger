@@ -1,0 +1,11 @@
+<h2 class="sub-title">Generation info</h2>
+<div class="full-item-card">
+    @if (item(); as item) {
+        <h1>{{ item.title }}</h1>
+        <p>{{ item.description }}</p>
+        <p>{{ getPrettyTags() }}</p>
+        <p class="meta-date">{{ item.createdAt | date:'yyyy-MM-dd HH:mm:ss' }}</p>
+    } @else {
+        <h1>Select item from the list</h1>
+    }
+</div>

@@ -1,0 +1,32 @@
+.sub-title {
+  box-shadow: 0 10px 10px 0 rgba(0, 0, 0, 0.1);
+  clip-path: inset(0 0 -20px 0);
+}
+
+.items {
+  max-height: 720px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) transparent;
+
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: var(--scrollbar-thumb-hover);
+  }
+
+  .empty {
+    text-align: center;
+    color: var(--card-text-secondary-color);
+    padding: 2rem;
+    font-style: italic;
+  }
+}
