@@ -1,4 +1,4 @@
-import {Component, input} from '@angular/core';
+import {Component, input, output} from '@angular/core';
 import {HistoryItemCard} from "../history-item-card/history-item-card";
 import {GenerationResponse} from "../../../generation/generation-response";
 
@@ -13,4 +13,9 @@ import {GenerationResponse} from "../../../generation/generation-response";
 export class HistoryItemsList {
   readonly items = input.required<ReadonlyArray<GenerationResponse>>();
   readonly titleLabel = input.required<string>();
+  readonly showDetails = output<number>()
+
+  protected showItemDetails(id: number) {
+    this.showDetails.emit(id);
+  }
 }

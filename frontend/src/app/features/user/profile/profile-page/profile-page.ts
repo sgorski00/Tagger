@@ -1,5 +1,5 @@
 import {Component, inject, signal} from '@angular/core';
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {BasePage} from "../../../../shared/base-page/base-page";
 import {HistoryHttpClient} from "../../history/history-http-client";
 import {toSignal} from "@angular/core/rxjs-interop";
@@ -8,7 +8,7 @@ import {map} from "rxjs";
 import {HistoryItemsList} from "../../history/history-items-list/history-items-list";
 
 @Component({
-    selector: 'app-user-page',
+    selector: 'app-user-profile-page',
     imports: [
         BasePage,
         RouterLink,
@@ -20,6 +20,7 @@ import {HistoryItemsList} from "../../history/history-items-list/history-items-l
 })
 export class ProfilePage {
     readonly #historyHttpService = inject(HistoryHttpClient);
+    readonly #router = inject(Router);
     protected readonly headerLabel = 'Profile';
     protected readonly historyItems = toSignal(
         this.#historyHttpService.getRequestsHistory().pipe(
@@ -33,4 +34,8 @@ export class ProfilePage {
         email: 'john.doe@example.com',
         createdAt: new Date('2024-01-15'),
     });
+
+    protected onItemClick(id: number) {
+        this.#router.navigate(['user', 'history', id]);
+    }
 }

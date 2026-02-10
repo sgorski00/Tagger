@@ -15,5 +15,9 @@ export const userRoutes: Routes = [
     {
         path: 'history',
         component: HistoryPage
+    },
+    {
+        path: 'history/:id',
+        component: HistoryPage
     }
 ]

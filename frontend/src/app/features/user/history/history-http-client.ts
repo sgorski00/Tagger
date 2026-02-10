@@ -17,6 +17,10 @@ export class HistoryHttpClient {
             page: page.toString(),
             size: size.toString()
         };
-        return this.#http.get<PageResponse<GenerationResponse>>(`${this.#BASE_API_URL}/tags/history`, {params});
+        return this.#http.get<PageResponse<GenerationResponse>>(`${this.#BASE_API_URL}/history`, {params});
+    }
+
+    getRequestDetails(id: number) {
+        return this.#http.get<GenerationResponse>(`${this.#BASE_API_URL}/history/${id}`);
     }
 }

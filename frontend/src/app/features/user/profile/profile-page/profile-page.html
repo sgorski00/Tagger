@@ -9,9 +9,9 @@
         </div>
     </div>
     <div class="history-list">
-        <app-history-items-list [titleLabel]="'History preview'" [items]="historyItems()" />
+        <app-history-items-list (showDetails)="onItemClick($event)" [titleLabel]="'History preview'" [items]="historyItems()" />
         @if (historyItems().length > 0) {
-            <button [routerLink]="'/user/history'" class="btn">View full history</button>
+            <button [routerLink]="['user', 'history']" class="btn">View full history</button>
         }
     </div>
 </app-base-page>
