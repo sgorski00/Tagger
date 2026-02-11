@@ -39,7 +39,7 @@ export class GeneratePage {
         this.response.set(r);
     },
     error: (err) => {
-      this.#errorService.setError(err.message || 'An error occurred while generating the response');
+      this.#errorService.setError(err.message || 'An errors occurred while generating the response');
     }});
   }
 

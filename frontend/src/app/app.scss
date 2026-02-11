@@ -7,6 +7,9 @@
 .page {
   flex:1;
   background-color: var(--content-bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   .progress-bar {
     position: fixed;
@@ -39,5 +42,6 @@
 @media (max-width: 480px) {
   .page {
     padding-top: var(--header-height-mobile);
+    display: block;
   }
 }
