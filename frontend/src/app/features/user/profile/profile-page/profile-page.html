@@ -1,11 +1,14 @@
 <app-base-page [headerLabel]="headerLabel" [layout]="'row'">
     <div class="account-card">
-        <h4>DISCLAIMER: not implemented on backend yet. Data mocked.</h4>
         <h2 class="sub-title">Account Information</h2>
         <div class="info">
-            <app-profile-row [label]="'Name'" [value]="accountData().name" />
-            <app-profile-row [label]="'Email'" [value]="accountData().email" />
-            <app-profile-row [label]="'Account created'" [value]="accountData().createdAt" />
+            @if (accountData(); as accountData) {
+                <app-profile-row [label]="'Name'" [value]="accountData.name" />
+                <app-profile-row [label]="'Email'" [value]="accountData.email" />
+                <app-profile-row [label]="'Account created'" [value]="accountData.createdAt" />
+            } @else {
+                <p>Loading...</p>
+            }
         </div>
     </div>
     <div class="history-list">
