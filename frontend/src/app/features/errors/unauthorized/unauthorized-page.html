@@ -1,0 +1,13 @@
+<div class="error-container">
+    @if (details; as details) {
+        <h2>Unauthorized access!</h2>
+        <p>Cannot visit this page: {{ details }}</p>
+    } @else {
+        <h2>Unauthorized access!</h2>
+        <p>Cannot visit this page</p>
+    }
+    <div class="buttons-container">
+        <button (click)="goHome()" type="button" class="btn">Go Home</button>
+        <button (click)="login()" type="button" class="btn">Log in with Google</button>
+    </div>
+</div>

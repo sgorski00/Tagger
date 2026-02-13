@@ -4,13 +4,13 @@ import {catchError, throwError} from 'rxjs';
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-      let errorMessage = 'An error occurred';
+      let errorMessage = 'An errors occurred';
 
       if (error.error instanceof ErrorEvent) {
-        // Client-side error
+        // Client-side errors
         errorMessage = `Error: ${error.error.message}`;
       } else {
-        // Server-side error
+        // Server-side errors
         if (error.status === 0) {
           errorMessage = 'Unable to connect to the server. Please check your connection.';
         } else if (error.error?.detail) {
