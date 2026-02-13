@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {Router, RouterLink} from "@angular/router";
 import {BasePage} from "../../../../shared/base-page/base-page";
 import {HistoryHttpClient} from "../../history/history-http-client";
@@ -6,6 +6,7 @@ import {toSignal} from "@angular/core/rxjs-interop";
 import {ProfileRow} from "../profile-row/profile-row";
 import {map} from "rxjs";
 import {HistoryItemsList} from "../../history/history-items-list/history-items-list";
+import {ProfileHttpClient} from "../profile-http-client";
 
 @Component({
     selector: 'app-user-profile-page',
@@ -19,6 +20,7 @@ import {HistoryItemsList} from "../../history/history-items-list/history-items-l
     styleUrl: './profile-page.scss',
 })
 export class ProfilePage {
+    readonly #profileHttpService = inject(ProfileHttpClient);
     readonly #historyHttpService = inject(HistoryHttpClient);
     readonly #router = inject(Router);
     protected readonly headerLabel = 'Profile';
@@ -28,12 +30,10 @@ export class ProfilePage {
         ),
         {initialValue: []}
     )
-
-    protected readonly accountData = signal({
-        name: 'John Doe',
-        email: 'john.doe@example.com',
-        createdAt: new Date('2024-01-15'),
-    });
+    protected readonly accountData = toSignal(
+        this.#profileHttpService.getProfile(),
+        {initialValue: null}
+    );
 
     protected onItemClick(id: number) {
         this.#router.navigate(['user', 'history', id]);

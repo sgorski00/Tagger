@@ -3,7 +3,7 @@ import {environment} from "../../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {GenerationResponse} from "../../generation/generation-response";
-import {PageResponse} from "../../../core/models/page-response";
+import {PageResponse} from "../../../core/models";
 
 @Injectable({
     providedIn: 'root',

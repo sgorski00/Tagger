@@ -3,7 +3,7 @@ import {BasePage} from "../../../../shared/base-page/base-page";
 import {HistoryItemsList} from "../history-items-list/history-items-list";
 import {HistoryHttpClient} from "../history-http-client";
 import {GenerationResponse} from "../../../generation/generation-response";
-import {PageResponse} from "../../../../core/models/page-response";
+import {PageResponse} from "../../../../core/models";
 import {HistoryPagination} from '../history-pagination/history-pagination';
 import {HistoryItemFullCard} from "../history-item-full-card/history-item-full-card";
 import {ActivatedRoute} from "@angular/router";
