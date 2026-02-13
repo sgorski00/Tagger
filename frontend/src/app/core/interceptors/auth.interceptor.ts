@@ -19,7 +19,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         catchError(err => {
             if(err.status === 401) {
                 authService.removeToken();
-                router.navigate(['/401'], {queryParams: {details: err.error?.message || 'Unauthorized'}});
+                router.navigate(['/401'], {state: {details: err.error?.message || 'Login required'}});
             }
             return throwError(() => err);
         })
