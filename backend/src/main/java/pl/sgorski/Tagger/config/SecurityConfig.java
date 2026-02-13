@@ -24,7 +24,7 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     return http.authorizeHttpRequests(auth -> auth
-        .requestMatchers("/api/history/**").authenticated()
+        .requestMatchers("/api/history/**", "/api/profile/**").authenticated()
         .requestMatchers("/api/tags/**", "/swagger-ui/**", "/graphql/**", "/login/**").permitAll()
         .anyRequest().denyAll()
       )
