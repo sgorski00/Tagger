@@ -1,6 +1,11 @@
 :host {
+  --btn-bg: #e0d7cd;
+  --btn-border-color: #8f8982;
+
   display: flex;
+  align-items: center;
   justify-content: center;
+  padding: 1rem;
 }
 
 .error-container {
@@ -8,10 +13,56 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1.5rem;
+  gap: 1.25rem;
   padding: 2rem;
   background-color: var(--card-bg);
   border: 1px solid var(--card-border-color);
   width: 90%;
   max-width: 480px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  text-align: center;
+
+  h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  p {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--muted-text-color, #666);
+  }
+
+  .buttons-container {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+
+    .btn {
+      min-width: 120px;
+      padding: 0.5rem;
+      border-radius: 8px;
+      border: 1px solid var(--btn-border-color);
+      background-color: var(--btn-bg);
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 120ms ease, filter 120ms ease;
+
+      &:hover {
+        transform: translateY(-2px);
+        filter: brightness(0.98);
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .buttons-container {
+    flex-direction: column;
+    gap: 1rem;
+  }
 }
