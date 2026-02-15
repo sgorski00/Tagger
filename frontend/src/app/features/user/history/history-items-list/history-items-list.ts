@@ -11,7 +11,7 @@ import {GenerationResponse} from "../../../generation/generation-response";
   styleUrl: './history-items-list.scss',
 })
 export class HistoryItemsList {
-  readonly items = input.required<ReadonlyArray<GenerationResponse>>();
+  readonly items = input.required<readonly GenerationResponse[]>();
   readonly titleLabel = input.required<string>();
   readonly showDetails = output<number>()
 

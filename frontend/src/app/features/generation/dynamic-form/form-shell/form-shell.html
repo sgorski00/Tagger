@@ -1,5 +1,15 @@
 @if (form() && formConfig()) {
     <form [formGroup]="form()!" (ngSubmit)="onSubmit()">
+      <app-select-input
+        [control]="formControl('language')"
+        [controlId]="'language'"
+        [label]="'Language'"
+        [options]="formConfig()!.languages"
+        [placeholder]="'Select language'"
+        [isSubmitted]="submitted()"
+        [isLanguageSelect]="true"
+        (languageChange)="onLanguageChange($event)"
+      ></app-select-input>
         <app-text-input
                 [control]="formControl('item')"
                 [controlId]="'item'"
