@@ -1,5 +1,5 @@
 export interface PageResponse<T> {
-    content: ReadonlyArray<T>;
+    content: readonly T[];
     pageable: {
         pageNumber: number;
         pageSize: number;

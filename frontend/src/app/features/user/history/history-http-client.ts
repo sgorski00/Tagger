@@ -12,7 +12,7 @@ export class HistoryHttpClient {
     readonly #BASE_API_URL = `${environment.apiUrl}`;
     readonly #http = inject(HttpClient)
 
-    getRequestsHistory(page: number = 1, size: number = 10): Observable<PageResponse<GenerationResponse>>{
+    getRequestsHistory(page = 1, size = 10): Observable<PageResponse<GenerationResponse>>{
         const params = {
             page: page.toString(),
             size: size.toString()

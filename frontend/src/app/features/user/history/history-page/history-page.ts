@@ -49,7 +49,7 @@ export class HistoryPage {
         })
     }
 
-    protected getHistoryItems(): ReadonlyArray<GenerationResponse> {
+    protected getHistoryItems(): readonly GenerationResponse[] {
         return this.historyPage().content;
     }
 

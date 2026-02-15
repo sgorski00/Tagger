@@ -6,9 +6,10 @@ import {TextInput} from "./inputs/text-input/text-input";
 import {NumberInput} from "./inputs/number-input/number-input";
 import {SelectInput} from "./inputs/select-input/select-input";
 import {LoadingService} from "../../../../core/services";
-import {FormValue} from "../form-value";
 import {FormConfig} from "../form-config";
 import {GenerationRequest} from "../../generation-request.types";
+import {FormValue} from '../form-value';
+import {LanguageService} from '../../../language/language.service';
 
 @Component({
     selector: 'app-form-shell',
@@ -27,6 +28,7 @@ export class FormShell {
     readonly formSubmit = output<GenerationRequest>();
     readonly #customFormBuilder = inject(CustomFormBuilder);
     readonly #fb = new FormBuilder();
+    readonly #languageService = inject(LanguageService);
     protected readonly form = signal<FormGroup | null>(null);
     protected readonly initialFormValue = signal<FormValue | null>(null);
     protected readonly formConfig = signal<FormConfig | null>(null);
@@ -63,4 +65,8 @@ export class FormShell {
         if (!form) throw new Error('Form is not initialized');
         return form.get(controlName) as FormControl;
     }
+
+  protected onLanguageChange(language: string) {
+    this.#languageService.saveLanguage(language);
+  }
 }

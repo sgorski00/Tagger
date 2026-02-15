@@ -1,4 +1,5 @@
 export interface GeneralFormValue {
+  language: string;
   item: string;
   tagsQuantity: number | null;
   platform: string;
