@@ -12,6 +12,8 @@ import pl.sgorski.Tagger.model.ItemDescription;
 import pl.sgorski.Tagger.repository.ItemDescriptionRepository;
 import pl.sgorski.Tagger.service.auth.UserService;
 
+import java.util.NoSuchElementException;
+
 @Log4j2
 @Service
 @RequiredArgsConstructor
@@ -26,17 +28,34 @@ public class ItemsHistoryService {
   }
 
   public Page<ItemDescription> getHistory(Pageable pageable) {
-    var auth = SecurityContextHolder.getContext().getAuthentication();
-    if (auth instanceof AnonymousAuthenticationToken) {
-      throw new AccessDeniedException("You must be logged in to access your items history.");
-    }
-    var user = userService.findByEmail(auth.getName());
+    var authenticatedUserEmail = getAuthenticatedUserEmail();
+    var user = userService.findByEmail(authenticatedUserEmail);
     return itemDescriptionRepository.findAllByCreatedByOrderByIdDesc(user, pageable);
   }
 
   public ItemDescription getHistoryItem(Long id) {
-    //TODO: implement domain exception and security check to prevent access to other users items
-    return itemDescriptionRepository.findById(id)
-      .orElseThrow();
+    var authenticatedUserEmail = getAuthenticatedUserEmail();
+    
+    var item = itemDescriptionRepository.findById(id)
+      .orElseThrow(() -> new NoSuchElementException("Item description with id " + id + " not found"));
+
+    validateItemOwnership(item, authenticatedUserEmail);
+
+    return item;
+  }
+
+  private String getAuthenticatedUserEmail() {
+    var auth = SecurityContextHolder.getContext().getAuthentication();
+    if (auth == null || auth instanceof AnonymousAuthenticationToken) {
+      throw new AccessDeniedException("You must be logged in to access your items history.");
+    }
+    
+    return auth.getName();
+  }
+
+  private void validateItemOwnership(ItemDescription item, String userEmail) {
+    if (item.getCreatedBy() == null || !userEmail.equals(item.getCreatedBy().getEmail())) {
+      throw new AccessDeniedException("You don't have access to this item description.");
+    }
   }
 }

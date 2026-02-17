@@ -30,10 +30,6 @@ jobs:
         working-directory: ./backend
         run: ./mvnw jacoco:report
 
-      - name: Generate JaCoCo coverage report
-        working-directory: ./backend
-        run: mvnw jacoco:repor
-
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
