@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -17,18 +15,11 @@ import pl.sgorski.Tagger.dto.ElectronicsRequest;
 import pl.sgorski.Tagger.dto.ItemDescriptionRequest;
 import pl.sgorski.Tagger.dto.ItemDescriptionResponse;
 import pl.sgorski.Tagger.exception.AiParsingException;
-import pl.sgorski.Tagger.mapper.ItemDescriptionMapper;
-import pl.sgorski.Tagger.model.ItemDescription;
-import pl.sgorski.Tagger.service.ItemsHistoryService;
 import pl.sgorski.Tagger.service.PromptService;
 import pl.sgorski.Tagger.service.auth.JwtService;
 import pl.sgorski.Tagger.service.auth.UserService;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -45,19 +36,13 @@ public class ItemDescriptionControllerTest {
     private ObjectMapper objectMapper;
 
     @MockitoBean
+    private PromptService promptService;
+
+    @MockitoBean
     private JwtService jwtService;
 
     @MockitoBean
     private UserService userService;
-
-    @MockitoBean
-    private ItemsHistoryService itemsHistoryService;
-
-    @MockitoBean
-    private ItemDescriptionMapper itemDescriptionMapper;
-
-    @MockitoBean
-    private PromptService promptService;
 
     private ItemDescriptionResponse response;
 
@@ -283,38 +268,5 @@ public class ItemDescriptionControllerTest {
                 .andExpect(jsonPath("$.status").value(HttpStatus.BAD_REQUEST.value()))
                 .andExpect(jsonPath("$.detail").isNotEmpty());
         verify(promptService, times(1)).getResponseAndSaveHistoryIfUserPresent(any(ItemDescriptionRequest.class));
-    }
-
-    @Test
-    void shouldReturnHistory() throws Exception {
-        var pageBeforeMapping  = new PageImpl<>(List.of(new ItemDescription()));
-        when(itemsHistoryService.getHistory(any(Pageable.class))).thenReturn(pageBeforeMapping);
-        when(itemDescriptionMapper.toResponse(any(ItemDescription.class))).thenReturn(response);
-
-        mockMvc.perform(get("/api/tags/history")
-                        .param("page", "1")
-                        .param("size", "10")
-                        .principal(() -> "testUser"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content").isArray())
-                .andExpect(jsonPath("$.content.length()").value(1))
-                .andExpect(jsonPath("$.content[0].title").value("Test Item"))
-                .andExpect(jsonPath("$.content[0].description").value("This is a test item description."))
-                .andExpect(jsonPath("$.content[0].tags.length()").value(2));
-        verify(itemsHistoryService, times(1)).getHistory(any(Pageable.class));
-    }
-
-    @Test
-    void shouldNotReturnHistory_UserNotFound() throws Exception {
-        when(itemsHistoryService.getHistory(any(Pageable.class))).thenThrow(new NoSuchElementException("User not found"));
-
-        mockMvc.perform(get("/api/tags/history")
-                        .param("page", "1")
-                        .param("size", "10")
-                        .principal(() -> "testUser"))
-                .andExpect(status().isInternalServerError())
-                .andExpect(jsonPath("$.title").isNotEmpty())
-                .andExpect(jsonPath("$.detail").isNotEmpty());
-        verify(itemsHistoryService, times(1)).getHistory(any(Pageable.class));
     }
 }
